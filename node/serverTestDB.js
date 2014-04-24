@@ -7,8 +7,8 @@ db.address = "127.0.0.1";
 
 /**
  * This method is called each times a request arrives on the server
- * @param req (Object) request object for this request
- * @param resp (Object) response object for this request
+ * @param (Object) req request object for this request
+ * @param (Object) resp response object for this request
  */
 db.receive_request = function (req, resp) {
     db.r.allRead(req, resp);

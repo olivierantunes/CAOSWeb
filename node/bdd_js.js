@@ -1,14 +1,38 @@
+/**
+ * \author {Olivier ANTUNES, Loic PLARD, Jean GERVOSON}
+ * \date 23 april 2014
+ * \version 0.1
+ * \brief Functions relationned with DB
+ *
+ * \details This file include all the function in relationship with the DB, except the initialisation process (@see initialisation.js)
+ * 
+ * List of functions :
+ * 1 - create_cookie
+ * 2 - insert
+ * 3 - read
+ * 4 - allRead
+ * 5 - checkLog
+ * 6 - subscribe
+ * 7 - unSubscribe
+ * 8 - checkSubscribeLog
+ * 9 - submitArticle
+ *
+ */
+
+
 var sqlite3 = require("sqlite3").verbose();
 var db = new sqlite3.Database("./test.db");
 var util = require("util");
 
 var db_co = {};
 db_co.rand_max = 1000000000000000;
+
 /**
- * Create a near unique cookie
+ * 1 - Create a near unique cookie
  * @param (string) username of the user
  * @return (string) new cookie if ok, 0 if we can't generate a cookie
  */
+ //Test OK le 24/04
 exports.create_cookie = function (username) {
 	if (username && typeof username == "string") {
 		var a = Math.random();
@@ -19,13 +43,13 @@ exports.create_cookie = function (username) {
 	return 0;
 };
 
-db_co.create = function () {
-	util.log("CREATE - Opening");
-	db.run("CREATE TABLE test (info TEXT, user TEXT PRIMARY KEY, password TEXT, articleID INT, articleStatus VARCHAR(10))");
-	util.log("CREATE - Closing");
-};
-
-db_co.insert = function () {
+/**
+ * 2 - This function 
+ * 
+ */
+// TODO: TEST function, is used for ??? TO delete if not it's not used
+// Test NOK le 24/04 => Ne pas utiliser
+exports.insert = function () {
     db.serialize( function () {
         var stmt = db.prepare("INSERT INTO test VALUES (?)");
         for (var a = 0;  a < 10; a++)  {
@@ -35,16 +59,11 @@ db_co.insert = function () {
     });
 };
 
-db_co.read = function () {
-    var stmt = "SELECT * FROM test";
-	util.log("in db_co.read");
-    db.each(stmt, function (e, r) {
-        console.log(util.inspect(r));
-    });
-};
-
-//db_co.read();
-
+/**
+ * 3 - This function read all the content of the DB
+ * 
+ */
+ // TODO: delete it ?
 exports.read = function () {
 	var stmt = "SELECT * FROM test";
     db.each(stmt, function (e, r) {
@@ -53,38 +72,36 @@ exports.read = function () {
 };
 
 /**
-* Test Function
+* 4 - Test Function
 */
+// Fonction de test => ne pas utiliser
 exports.allRead = function(req, resp){
-	util.log("IN - allRead function");
-	var login = "bob";
-	var pass = "booby";
-	db_co.create(); //1 - Creation de la table
-	db_co.subscribe(login, pass); // 2 - Insertion d'un user 
-	db_co.checkLog("blabla","iciCaDoitDireFaux"); // 3 - Controle du couple login/pass
-	db_co.submitArticle(12345, "WAIT");
+	util.log("***** Debut du Test *****");
+	db_co.subscribe("olivier", "bob", this, "susbscribe"); // 2 - Insertion d'un user 
+	//db_co.checkLog("blabla","iciCaDoitDireFaux"); // 3 - Controle du couple login/pass
+	//db_co.submitArticle(12345, "WAIT");
 	
-	// util.log("***** Fin du test *****");
+	util.log("***** Fin du test *****");
 };
 
 
 /**
- * Created by Olivier ANTUNES
- * checkLog function checks if the username & pswd puts in parameters are corrects
- * @param log
- * @param pw
- * @return true or false 
+ * \brief 5 - checkLog function checks if the username & pswd puts in parameters are corrects
+ * @param (string) log
+ * @param (string) pw
+ * @param (object) this
+ * @param (string) func_name
+ * @return (boolean) true or false 
  */
-db_co.checkLog = function (log, pw, obj, func_name) {
+exports.checkLog = function (log, pw, obj, func_name) {
 		util.log("CHECKLOG - Opening");
 		//TODO : Update here the name of the table "test" 
 		var stmt = "SELECT user FROM test WHERE user=\"" + log + "\" AND password=\"" + pw + "\"";
 		var flag = 0;
 		db.each(stmt, function (e, r) {
 			if (e) {
-				util.log("ERROR - SQL - checklogs function : " + e);
+				util.log("ERROR - SQL - CHECKLOG function : " + e);
 			} else {
-				//util.inspect(r);
 				if (r) {
 					flag++;
 				}
@@ -95,92 +112,104 @@ db_co.checkLog = function (log, pw, obj, func_name) {
 	util.log("CHECKLOG - Closing");
 };
 
-//TODO: génrer un cookie et lui renvoyer dans un objet
-//TODO: créer un init.js
-//TODO: 
 /**
-*Created by Olivier ANTUNES
-*Subscribe functions will add a new user on the website DB
-*@param log
-*@param pwd
-*@Return: true or false
-*/
-exports.subscribe = function (log,pw) {
+ * \brief 6 - Subscribe functions will add a new user on the website DB
+ * @param (string) log
+ * @param (string) pw
+ * @param (object) this
+ * @param (string) func_name 
+ * @Return (boolean) true or false
+ */
+exports.subscribe = function (log, pw, obj, func_name) {
 		util.log("SUBSCRIBE - Opening");
 		//TODO : Update here the name of the table "test" 
-		var stmt = "INSERT INTO test (user, password) VALUES (\""+log+"\",\""+pw+"\")";
-		db.each(stmt, function (e,r) {
-		if(e) {
-			util.log("ERROR - SQL - subscribe function: " + e);
-			return false;
+		var stmt = "INSERT INTO test (user, password) VALUES (\"" + log + "\",\"" + pw + "\")";
+		var flag = 0;
+		db.each(stmt, function (e, r) {
+			if(e) {
+				util.log("ERROR - SQL - SUBSCRIBE function: " + e);
 			} else {
-				util.inspect(r);
-				util.log("SUBSCRIBE - TRUE");
-				return true;
+				if (r) { 
+					flag++;
+				}
 			}
-		});
-	util.log("SUBSCRIBE - Closing");
-};
-/**
-*Created by Olivier ANTUNES
-*UnSubscribe functions will delete an user from the website DB
-*@param log
-*@Return true or false
-*/
-db_co.unSubscribe = function (log) {
-		util.log("SUBSCRIBE - Opening");
-		//TODO : Update here the name of the table "test" 
-		var stmt = "DELETE FROM test WHERE user =\""+log+"\"";
-		db.each(stmt, function (e,r) {
-		if(e) {
-			util.log("ERROR - SQL - unSubscribe function : " + e);
-			} else {
-				util.inspect(r);
-			}
+		}, function() {
+			obj[func_name](flag);
 		});
 	util.log("SUBSCRIBE - Closing");
 };
 
 /**
-*Created by Olivier ANTUNES
-*ChecksSubscribeLogs function checks if the username or the email is already insert in the website DB
-*@param log
-*@param email
-*@Return: true or false
-*/
-db_co.checkSubscribeLog = function (log, email) {
+ * 7 - UnSubscribe functions will delete an user from the website DB
+ * @param (string) log
+ * @param (object) this
+ * @param (string) func_name
+ * @return (boolean) true or false
+ */
+exports.unSubscribe = function (log, obj, func_name) {
+		util.log("UNSUBSCRIBE - Opening");
+		//TODO : Update here the name of the table "test" 
+		var stmt = "DELETE FROM test WHERE user =\""+log+"\"";
+		var flag = 0;
+		db.each(stmt, function (e,r) {
+			if(e) {
+				util.log("ERROR - SQL - UNSUBSCRIBE function : " + e);
+			} else {
+				if (r) { 
+					flag++;
+				}	
+			}	
+		}, function () {
+			obj[func_name](flag);
+		});
+	util.log("UNSUBSCRIBE - Closing");
+};
+
+/**
+ * \brief 8 - ChecksSubscribeLogs function checks if the username or the email is already insert in the website DB
+ * @param log
+ * @param email
+ * @Return true or false
+ */ 
+exports.checkSubscribeLog = function (log, email, obj, func_name) {
 		util.log("CHECKSUBSCRIBELOG - Opening");
 		//TODO : Update here the name of the table "test"
 		var stmt = "SELECT user FROM test WHERE user=\"" + log + "\" OR email=\"" + email + "\"";
+		var flag = 0;
 		db.each(stmt, function (e, r) {
 			if (e) {
 				util.log("ERROR - SQL - checksusbscribeLogs: " + e);
 			} else {
-				util.inspect(r);
-				util.log("CHECKSUBSCRIBELOG - OK"); //si le mec est log vérif avant ce qu'il y a dans r;
+				if(r) {
+					flag++;			
+				}
 			}
+		}, function () {
+			obj[fun_name](flag);
 		});
-		util.log("CHECKSUBSCRIBELOG - Closing");
+	util.log("CHECKSUBSCRIBELOG - Closing");
 };
 
 /**
-*Created by Olivier ANTUNES
-*submitArticle function adds an articleID and is status in the DB
-*it's used to submit an article which has to be checked before publication
-*@param articleID
-*@param arcticleStatus
-*@Return true (if OK) or false (if NOK)
-*/
-db_co.submitArticle = function (articleID, articleStatus) {
+ * \detail 9 - SubmitArticle function adds an articleID and is status in the DB
+ * it's used to submit an article which has to be checked before publication
+ * @param articleID
+ * @param arcticleStatus
+ *@Return true (if OK) or false (if NOK)
+ */ 
+exports.submitArticle = function (articleID, articleStatus, obj, func_name) {
 		util.log("SUBMITAARTICLE - Opening");
 		//TODO : Update here the name of the table "test" 
 		var stmt = "INSERT INTO test (articleID, articleStatus) VALUES (\""+articleID+"\",\""+articleStatus+"\")";
+		var flag = 0;
 		db.each(stmt, function (e,r) {
 		if(e) {
 			util.log("ERROR - SQL - submitArticle function: " + e);
 			} else {
 				util.inspect(r);
 			}
+		}, function () {
+			obj[func_name](flag);
 		});
-		util.log("SUBMITAARTICLE - Closing");
+	util.log("SUBMITAARTICLE - Closing");
 };

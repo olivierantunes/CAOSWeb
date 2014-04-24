@@ -167,9 +167,9 @@ exports.unSubscribe = function (log, obj, func_name) {
 
 /**
  * \brief 8 - ChecksSubscribeLogs function checks if the username or the email is already insert in the website DB
- * @param log
- * @param email
- * @Return true or false
+ * @param (string) log
+ * @param (string)email
+ * @Return (boolean) true or false
  */ 
 exports.checkSubscribeLog = function (log, email, obj, func_name) {
 		util.log("CHECKSUBSCRIBELOG - Opening");
@@ -193,9 +193,9 @@ exports.checkSubscribeLog = function (log, email, obj, func_name) {
 /**
  * \detail 9 - SubmitArticle function adds an articleID and is status in the DB
  * it's used to submit an article which has to be checked before publication
- * @param articleID
- * @param arcticleStatus
- *@Return true (if OK) or false (if NOK)
+ * @param (INT) articleID
+ * @param (string) "OK", "NOK", or "WAIT"
+ * @Return (string) true or false 
  */ 
 exports.submitArticle = function (articleID, articleStatus, obj, func_name) {
 		util.log("SUBMITAARTICLE - Opening");

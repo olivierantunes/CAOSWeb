@@ -7,15 +7,15 @@
  * \details This file include all the function in relationship with the DB, except the initialisation process (@see initialisation.js)
  * 
  * List of functions :
- * 1 - create_cookie
- * 2 - insert
- * 3 - read
- * 4 - allRead
- * 5 - checkLog
- * 6 - subscribe
- * 7 - unSubscribe
- * 8 - checkSubscribeLog
- * 9 - submitArticle
+ * 1 - create_cookie - TEST OK
+ * 2 - insert - Ne pas utiliser
+ * 3 - read - Ne pas utiliser
+ * 4 - allRead - Ne pas utiliser - Fonction de Test uniquement
+ * 5 - checkLog - Test OK
+ * 6 - subscribe - Test OK
+ * 7 - unSubscribe - Test OK
+ * 8 - checkSubscribeLog - Test OK
+ * 9 - submitArticle - Test OK
  *
  */
 
@@ -87,6 +87,7 @@ exports.allRead = function(req, resp){
 
 /**
  * \brief 5 - checkLog function checks if the username & pswd puts in parameters are corrects
+ * Test OK le 24/04
  * @param (string) log
  * @param (string) pw
  * @param (object) this
@@ -114,6 +115,7 @@ exports.checkLog = function (log, pw, obj, func_name) {
 
 /**
  * \brief 6 - Subscribe functions will add a new user on the website DB
+ * Test OK le 24/04
  * @param (string) log
  * @param (string) pw
  * @param (object) this
@@ -141,6 +143,7 @@ exports.subscribe = function (log, pw, obj, func_name) {
 
 /**
  * 7 - UnSubscribe functions will delete an user from the website DB
+ * Test OK le 24/04
  * @param (string) log
  * @param (object) this
  * @param (string) func_name
@@ -167,6 +170,7 @@ exports.unSubscribe = function (log, obj, func_name) {
 
 /**
  * \brief 8 - ChecksSubscribeLogs function checks if the username or the email is already insert in the website DB
+ * Test OK le 24/04
  * @param (string) log
  * @param (string)email
  * @Return (boolean) true or false
@@ -192,6 +196,7 @@ exports.checkSubscribeLog = function (log, email, obj, func_name) {
 
 /**
  * \detail 9 - SubmitArticle function adds an articleID and is status in the DB
+ * Test OK le 24/04 
  * it's used to submit an article which has to be checked before publication
  * @param (INT) articleID
  * @param (string) "OK", "NOK", or "WAIT"

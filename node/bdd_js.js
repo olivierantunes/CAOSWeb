@@ -21,12 +21,11 @@
  *
  */
 
-
-//TODO: fair une fonction check_cookie
+//TODO: fair une fonction check_cookie : verifie si le cookie de loic correspond dans la BDD
 //TODO: fonction to genere l'ID de l'article
-// TODO: reflechir à comment insérer un article
-// TODO Général : bien nommer la BDD avant la final version 
-// TODO changer les insert into en update
+//TODO: reflechir à comment insérer un article
+// TODO : verifier tous les nom de variable et uniformiser le nom des variable et des fonctions ! bleble_blble
+//TODO Général : bien nommer la BDD avant la final version 
 
 var sqlite3 = require("sqlite3").verbose();
 var db = new sqlite3.Database("./test.db");
@@ -105,7 +104,6 @@ exports.allRead = function(req, resp){
 // TODO: ajouter cookie
 exports.checkLog = function (log, pw, obj, func_name) {
 		util.log("CHECKLOG - Opening");
-		var cookie = create_cookie(log);
 		var stmt = "SELECT user FROM test WHERE user=\"" + log + "\" AND password=\"" + pw +"\"";
 		var flag = 0;
 		db.each(stmt, function (e, r) {
@@ -236,16 +234,16 @@ exports.submitArticle = function (articleID, articleStatus, obj, func_name) {
 /**
  * \detail 10 - This function changes the right of a user
  * TEST OK - 24/04
- * @param (string) log
+ * @param (string) user
  * @param (INT) right: 1 = super Admin, 2= Admin, 3=moderator, 4=redactor, 5=basic user
  * @param (object) this
  * @param (string) func_name
  * @return (boolean) true or false
  */
-exports.changeRight = function (log, right, obj, func_name) {
+exports.changeRight = function (user, right, obj, func_name) {
 		util.log("CHANGERIGHT - Opening");
 		//TODO : Update here the name of the table "test" 
-		var stmt = "INSERT INTO test (right) VALUES (\""+right+"\") WHERE user=\"" + log + "\"";
+		var stmt = "UPDATE test (right) VALUES (\""+right+"\") WHERE user=\"" + user + "\"";
 		var flag = 0;
 		db.each(stmt, function (e,r) {
 		if(e) {
@@ -322,7 +320,7 @@ exports.submitArticle = function (articleID, obj, func_name) {
  */ 
 exports.assignCookie = function (user, obj, func_name) {
 		util.log("ASSIGNCOOKIE - Opening");
-		var cookie = create_cookie(log);
+		var cookie = create_cookie(user);
 		var stmt = "UPDATE test SET cookie = "+cookie+" WHERE user = user ";
 		var flag = 0;
 		db.each(stmt, function (e,r) {
@@ -335,4 +333,28 @@ exports.assignCookie = function (user, obj, func_name) {
 			obj[func_name](flag);
 		});
 	util.log("ASSIGNCOOKIE - Closing");
+};
+
+/**
+ * \detail 14 - check_cookie function checks if the cookie inputs is equal with the cookie in DB
+ * @param (string) user
+ * @param (string) cookie
+ * @param (object) this
+ * @param (string) func_name
+ * @return (boolean) true or false
+ */ 
+exports.check_cookie = function (user,cookie, obj, func_name) {
+		util.log("CHECK_COOKIE - Opening");
+		var stmt = "SELECT user FROM test WHERE user=\"" + user + "\" AND cookie=\"" + cookie +"\"";
+		var flag = 0;
+		db.each(stmt, function (e,r) {
+		if(e) {
+			util.log("ERROR - SQL - CHECK_COOKIE function: " + e);
+			} else {
+				util.inspect(r);
+			}
+		}, function () {
+			obj[func_name](flag);
+		});
+	util.log("CHECK_COOKIE - Closing");
 };

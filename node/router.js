@@ -15,7 +15,7 @@ exports.router = function (req, resp) {
 };
 
 /**
- * This is the parametred constructor of a srouter
+ * This is the parameted constructor of a srouter
  * @param req (Object) the request object 
  * @param resp (Object) the response object
  */
@@ -69,23 +69,49 @@ go_post:
     function (b) {
         b = JSON.parse(b);
 		this.resp.writeHead(200, {"Content-Type": "application/json"});
-		if (b.action == "login") {
-			db.checkLogs(b.login, b.pass, this, "check_log_cb");
+		if (b.action == "log in") {
+			/*
+			var returnCheckLog = checkLog (b.login, b.pw, this, checkLog);
+			if (true == returnCheckLog) {
+				//what to return ?
+			} else {
+				this.resp.write(JSON.stringify({resp (log in) : "ko"}));
+			}		
+			*/
+			this.resp.write(JSON.stringify({resp: "log in: ok"}));
+			console.log("log in | post info: " + util.inspect(b));
+		} else if (b.action == "register") {
+			
+			var returnRegister = subscribe (b.login, b.pw, this, "cb_subscribe");
+		} else if (b.action == "submitArticle") {
+			/*
+			submitArticle = function (articleStatus, obj, func_name)
+			
+			var returnSubmitArticle = submitArticle (b.login, b.pw, this, submitArticle);
+			if (true == returnSubmitArticle) {
+				//what to return ?
+			} else {
+				this.resp.write(JSON.stringify({resp (submitArticle) : "ko"}));
+			}
+			*/
+			this.resp.write(JSON.stringify({resp: "submitArticle: ok"}));
+			console.log("submitArticle | post info: " + util.inspect(b));
 		} else {
 			this.resp.write(JSON.stringify({resp: "Service not found"}));
-			this.resp.end();
 		}
+        this.resp.end();
     },
-	
-check_log_cb = function (f) {
-	if (f) {
-		this.resp.write(JSON.stringify({resp: "ok"}));
-	} else {
-		this.resp.write(JSON.stringify({resp: "ko"}));
-	}
-	this.resp.end();
-},
 
+cb_subscribe:
+	function (f) {
+		if (f) {
+			this.resp.write(JSON.stringify({resp: "ok"}));
+		} else {
+			this.resp.write(JSON.stringify({resp: "ko"}));
+		}
+		this.resp.end();
+	},
+	
 get_method:
     function () {
         var u = url.parse(this.req.url, true, true);
@@ -94,14 +120,14 @@ get_method:
         this.pathname = this.pathname.splice(1, this.pathname.length - 1);
         this.filetype = this.pathname[this.pathname.length - 1].split(".");
 		this.filetype = this.filetype[this.filetype.length - 1];
-        this.path = ".." + u.path; //the website is one directory upper than the node server
+        this.path = ".." + u.path; //the website is one directory upper the node server
         this.read_file();
     },
 
 read_file:
     function () {
         if (!this.pathname[0]) {
-            //util.log("ALERT - Hack attempt, resquest on : " + util.inspect(this.pathname));
+            //util.log("ALERT - Hack attempt, request on : " + util.inspect(this.pathname));
             this.pathname = "../index.html";
             this.path = "../index.html";
             this.filetype = "html";

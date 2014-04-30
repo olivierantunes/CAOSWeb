@@ -65,44 +65,63 @@ post_method:
         });
     },
 
+/**
+ * This function feeds the action functions with any event 
+ * @param b (String) : 
+ * @return (Str) : "Service not found"
+ */
 go_post:
     function (b) {
         b = JSON.parse(b);
 		this.resp.writeHead(200, {"Content-Type": "application/json"});
 		if (b.action == "log in") {
-			/*
-			var returnCheckLog = checkLog (b.login, b.pw, this, checkLog);
-			if (true == returnCheckLog) {
-				//what to return ?
-			} else {
-				this.resp.write(JSON.stringify({resp (log in) : "ko"}));
-			}		
-			*/
-			this.resp.write(JSON.stringify({resp: "log in: ok"}));
-			console.log("log in | post info: " + util.inspect(b));
+			var returnCheckLog = checkLog (b.login, b.pw, this, "cb_checkLog");
 		} else if (b.action == "register") {
-			
 			var returnRegister = subscribe (b.login, b.pw, this, "cb_subscribe");
 		} else if (b.action == "submitArticle") {
-			/*
-			submitArticle = function (articleStatus, obj, func_name)
-			
-			var returnSubmitArticle = submitArticle (b.login, b.pw, this, submitArticle);
-			if (true == returnSubmitArticle) {
-				//what to return ?
-			} else {
-				this.resp.write(JSON.stringify({resp (submitArticle) : "ko"}));
-			}
-			*/
-			this.resp.write(JSON.stringify({resp: "submitArticle: ok"}));
-			console.log("submitArticle | post info: " + util.inspect(b));
+			var returnSubmitArticle = submitArticle (b.articleStatus, this, "cb_submitArticle");
 		} else {
 			this.resp.write(JSON.stringify({resp: "Service not found"}));
 		}
         this.resp.end();
     },
+	
+/**
+ * This function replies to the log in event
+ * @param f (Int) : flag of registration succeeding 1 or 0
+ * @return (Str) : "ok" or "ko"
+ */
+cb_login:
+	function (f) {
+		if (f) {
+			this.resp.write(JSON.stringify({resp: "ok"}));
+		} else {
+			this.resp.write(JSON.stringify({resp: "ko"}));
+		}
+		this.resp.end();
+	},
 
+/**
+ * This function replies to the registration event
+ * @param f (Int) : flag of registration succeeding 1 or 0
+ * @return (Str) : "ok" or "ko"
+ */
 cb_subscribe:
+	function (f) {
+		if (f) {
+			this.resp.write(JSON.stringify({resp: "ok"}));
+		} else {
+			this.resp.write(JSON.stringify({resp: "ko"}));
+		}
+		this.resp.end();
+	},
+	
+/**
+ * This function replies to the article submission event
+ * @param f (Int) : flag of registration succeeding 1 or 0
+ * @return (Str) : "ok" or "ko"
+ */
+cb_submitArticle:
 	function (f) {
 		if (f) {
 			this.resp.write(JSON.stringify({resp: "ok"}));

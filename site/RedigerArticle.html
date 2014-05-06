@@ -1,37 +1,22 @@
 <!DOCTYPE html>
 <html lang="fr">
   <head>
+		<!-- 
+		/**
+		*We link the necessary files to be able to have all the needed alphabets, 
+		*the right favicon, thee stylesheet .css and to be compatible with IE.
+		**/
+		-->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="shortcut icon" href="image/favicon.png">
-	<link href="css/blog.css" rel="stylesheet">
-
+    <link rel="shortcut icon" href="../image/favicon.png">
+	<link href="../css/blog.css" rel="stylesheet">
     <title>Blog Template of CAO</title>
-
-    <link rel="stylesheet" href="css/bootstrap.min.css" />
-	<link rel="stylesheet" href="css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" href="../css/bootstrap.min.css" />
+	<link rel="stylesheet" href="../css/bootstrap-theme.min.css" />
   </head>
-
   <body>
-
-    <div class="blog-masthead">
-      <div class="container">
-        <ul class="nav nav-pills pull-left">
-          <li class="blog-nav-item active"><a href="/index.html">Accueil</a>
-          <li class="blog-nav-item active"><a href="/site/contact.html">Contacts</a>
-          <li class="blog-nav-item active"><a href="/site/faq.html">FAQ</a>
-		  <li class="blog-nav-item active"><a href="/site/BDD.html">BDD</a>
-		  <li class="blog-nav-item active"><a href="/site/redac.html">Rédaction</a>
-		  <li class="blog-nav-item active"><a href="/site/valid.html">Validation</a>
-        </ul>
-		<ul class="nav nav-pills pull-right">
-          <li class="blog-nav-item active"><a href="/site/sins.html">S'incrire</a></li>
-          <li class="blog-nav-item active"><a href="/site/connect.html">Se connecter</a></li>
-        </ul>
-      </div>
+    <div class="blog-masthead dynamic-rights">
     </div>
 
     <div class="container">
@@ -68,8 +53,8 @@
 			</br>
 			<div class="control-group">
 				<div class="controls">
-					<button id="button1id" name="button1id" class="btn btn-success">Soumettre</button>
-					<button id="button2id" name="button2id" class="btn btn-danger">Annuler</button>
+					<button id="submit" name="button1id" class="btn btn-success">Soumettre</button>
+					<button id="button2id" name="button2id" class="btn btn-danger"><a href="redac.html">Annuler</a></button>
 				</div>
 			</div>
           </div><!-- /.blog-post -->
@@ -83,9 +68,9 @@
           <div class="sidebar-module">
             <h4>Réseaux Sociaux</h4>
             <ol class="list-unstyled">
-              <li><img src="image/favicons-github.png"><a href="https://github.com/ESMEcms/Documentation"> GitHub</a></li>
-              <li><img src="image/twitter_favicon.png"><a href="https://twitter.com/letudiant"> Twitter</a></li>
-              <li><img src="image/facebook_favicon.png"><a href="https://www.facebook.com/letudiant.fr?v=wall"> Facebook</a></li>
+              <li><img src="../image/favicons-github.png"><a href="https://github.com/ESMEcms/Documentation"> GitHub</a></li>
+              <li><img src="../image/twitter_favicon.png"><a href="https://twitter.com/letudiant"> Twitter</a></li>
+              <li><img src="../image/facebook_favicon.png"><a href="https://www.facebook.com/letudiant.fr?v=wall"> Facebook</a></li>
             </ol>
           </div>
         </div><!-- /.blog-sidebar -->
@@ -105,8 +90,8 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-    <script src="../../dist/js/bootstrap.min.js"></script>
-    <script src="../../assets/js/docs.min.js"></script>
+	<script src="../js/bob.js"></script>
+	<script src="../js/jquery.js"></script>
+	<script src="../js/bootstrap.min.js"></script>
   </body>
 </html>

@@ -18,6 +18,7 @@ register.submit = function () {
 	var cmail = document.getElementsByClassName("cmail")[0];
 	var pw = document.getElementsByClassName("pw")[0];
 	var cpw = document.getElementsByClassName("cpw")[0];
+	var p = document.getElementsByClassName("pseudo")[0];
 	register.reset_class(mail);
 	register.reset_class(cmail);
 	register.reset_class(pw);
@@ -38,7 +39,22 @@ register.submit = function () {
 		pw.add_class("alert-success");
 		cpw.add_class("alert-success");
 	}
+	if (mail.value != cmail.value || !mail.value || pw.value != cpw.value || !pw.value){
+		var data = {action: "submit", email: mail, password: pw, pseudo: p};
+		tools.post(data, register.cb_sub);
+	} 
 }
+
+site.cb_sub = function () {
+	if (this.readyState == 4 && this.statusCode == 200) {
+		var r = JSON.parse(this.responseText);
+		if (r.resp == "ok") {
+			alert("article posté");
+		} else {
+			alert("FAIL");
+		}
+	}
+};
 
 register.reset_class = function (e) {
 	e.remove_class("alert-danger");

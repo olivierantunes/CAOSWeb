@@ -20,6 +20,14 @@ site.on_click = function (ev){
 
 };
 
+site.rights_match= function () {
+	0="Super-Administrateur",
+	1="Administrateur",
+	2="Modérateur",
+	3="Rédacteur",
+	4="Utilisateur"
+}
+
 site.cb_membres = function () {
 	//if (readystate) //TODO
 	var membre0 = {

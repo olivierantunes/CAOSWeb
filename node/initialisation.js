@@ -9,11 +9,13 @@
  * user TEXT PRIMARY KEY,
  * password TEXT,
  * email TEXT 
- * articleID string,
- * articleStatus INT,
  * cookie TEXT
  * right INT
- *  
+ * articleID string,
+ * articleStatus INT,
+ * author TEXT
+ * date DATE  
+ *
  */
  
  // TODO: Date de validation
@@ -31,6 +33,6 @@ var db_co = {};
  */
 db_co.create = function () {
 	util.log("CREATE - Opening"); //TODO: delete commentary in final version
-	db.run("CREATE TABLE test (user TEXT PRIMARY KEY, password TEXT, email TEXT, articleID TEXT, articleStatus INT, cookie TEXT, right INT)");
+	db.run("CREATE TABLE test (user TEXT PRIMARY KEY, password TEXT, email TEXT, cookie TEXT, right INT, articleID TEXT, articleStatus INT, author TEXT, date DATE)");
 	util.log("CREATE - Closing");
 };

@@ -13,7 +13,7 @@
  * 4 - allRead - Ne pas utiliser - Fonction de Test uniquement
  * 5 - check_log - Test OK
  * 6 - register - Test OK
- * 7 - un_subscribe - Test OK
+ * 7 - unsubscribe - Test OK
  * 8 - check_subscribe_log - Test OK
  * 9 - submit_article - Test OK
  * 10 - change_right - Test OK
@@ -23,13 +23,15 @@
  * 14 - check_cookie - Test OK
  * 15 - Create_ID - Test OK
  * 16 - valid_article - Test OK
+ * 17 - log_out - Test OK
+ * 18 - modif_pw - TEST OK
  *
  */
 
 
-//TODO: verifier les lignes SQL avec insertion de variable
-
-// !!! TODO Général : bien nommer la BDD avant la final version 
+//TODO: verifier les lignes SQL avec insertion de variable => TOUT VERIFIER et corriger !
+// TODO: peut on sécuriser les fichiers ?
+// !!! TODO Général : bien nommer la BDD avant la finale version
 
 var sqlite3 = require("sqlite3").verbose();
 var db = new sqlite3.Database("./test.db");
@@ -140,7 +142,7 @@ exports.check_log = function (log, pw, obj, func_name) {
  */
 exports.register = function (log, pw, right, obj, func_name) {
 		util.log("REGISTER - Opening");
-		var stmt = "INSERT INTO test (user, password, right) VALUES ( \""+log+"\"," + pw + "," + right+")";
+		var stmt = "INSERT INTO test (user, password, right) VALUES ( \""+log+"\",\"" + pw + "\",\"" + right+"\")";
 		var flag = 0;
 		db.each(stmt, function (e, r) {
 			if(e) {
@@ -157,20 +159,20 @@ exports.register = function (log, pw, right, obj, func_name) {
 };
 
 /**
- * 7 - un_subscribe functions will delete an user from the website DB
+ * 7 - unsubscribe functions will delete an user from the website DB
  * Test OK le 06/05
  * @param (string) log
  * @param (object) this
  * @param (string) func_name
  * @callback (boolean) calls the callback with a boolean argument
  */
-exports.un_subscribe = function (log, obj, func_name) {
-		util.log("UN_SUBSCRIBE - Opening");
-		var stmt = "DELETE FROM test WHERE user =\""+log+"\"";
+exports.unsubscribe = function (log, obj, func_name) {
+		util.log("UNSUBSCRIBE - Opening");
+		var stmt = "DELETE FROM test WHERE user = \""+log+"\"";
 		var flag = 0;
 		db.each(stmt, function (e,r) {
 			if(e) {
-				util.log("ERROR - SQL - UN_SUBSCRIBE function : " + e);
+				util.log("ERROR - SQL - UNSUBSCRIBE function : " + e);
 			} else {
 				if (r) { 
 					flag++;
@@ -179,7 +181,7 @@ exports.un_subscribe = function (log, obj, func_name) {
 		}, function () {
 			obj[func_name](flag);
 		});
-	util.log("UN_SUBSCRIBE - Closing");
+	util.log("UNSUBSCRIBE - Closing");
 };
 
 /**
@@ -212,16 +214,18 @@ exports.check_subscribe_log = function (log, email, obj, func_name) {
 /**
  * \detail 9 - submit_article function adds an article in the DB
  * it's used to submit an article which has to be checked before publication
- * In default situation, the article has a status equal to 0, it's mean ths article is Waiting a validation. 
+ * In default situation, the article has a status equal to 0, it's mean ths article is Waiting a validation.
+ * The current date is automaticly insert in the row  
  * Test OK le 06/05 
  * @param (string) articleID
+ * @param (string) author
  * @param (object) this
  * @param (string) func_name
  * @callback (boolean) calls the callback with a boolean argument
  */ 
-exports.submit_article = function (articleID, obj, func_name) {
+exports.submit_article = function (articleID, author, obj, func_name) {
 		util.log("SUBMIT_ARTICLE - Opening");
-		var stmt = "INSERT INTO test (articleID, articleStatus) VALUES (\""+articleID+",0)";
+		var stmt = "INSERT INTO test (articleID, articleStatus, author, date) VALUES (\""+articleID+"\",0,\""+author+"\", NOW() )";
 		var flag = 0;
 		db.each(stmt, function (e,r) {
 		if(e) {
@@ -271,7 +275,7 @@ exports.change_right = function (user, right, obj, func_name) {
  */
 exports.check_data = function (dbfield, data, obj, func_name) {
 		util.log("CHECK_DATA - Opening");
-		var stmt = "SELECT "+dbfield+" FROM test WHERE " +dbfield+ "=" + data;
+		var stmt = "SELECT "+dbfield+" FROM test WHERE \"" +dbfield+ "\"=\"" + data+"\"";
 		var flag = 0;
 		db.each(stmt, function (e,r) {
 		if(e) {
@@ -295,7 +299,7 @@ exports.check_data = function (dbfield, data, obj, func_name) {
  */ 
 exports.delete_article = function (articleID, obj, func_name) {
 		util.log("DELETE_ARTICLE - Opening");
-		var stmt = "DELETE FROM test WHERE (articleID) VALUES ("+articleID+")";
+		var stmt = "DELETE FROM test WHERE (articleID) VALUES (\""+articleID+"\")";
 		var flag = 0;
 		db.each(stmt, function (e,r) {
 		if(e) {
@@ -320,7 +324,7 @@ exports.delete_article = function (articleID, obj, func_name) {
 exports.assign_cookie = function (user, obj, func_name) {
 		util.log("ASSIGN_COOKIE - Opening");
 		var cookie = create_cookie(user);
-		var stmt = "UPDATE test SET cookie = "+cookie+" WHERE user ="+ user ;
+		var stmt = "UPDATE test SET cookie = \""+cookie+"\" WHERE user =\""+ user +"\"" ;
 		var flag = 0;
 		db.each(stmt, function (e,r) {
 		if(e) {
@@ -345,7 +349,7 @@ exports.assign_cookie = function (user, obj, func_name) {
  */ 
 exports.check_cookie = function (user,cookie, obj, func_name) {
 		util.log("CHECK_COOKIE - Opening");
-		var stmt = "SELECT user FROM test WHERE user= " + user + " AND cookie= " + cookie;
+		var stmt = "SELECT user FROM test WHERE user= \"" + user + "\" AND cookie= \"" + cookie+"\"";
 		var flag = 0;
 		db.each(stmt, function (e,r) {
 		if(e) {
@@ -377,7 +381,7 @@ exports.create_ID = function (user) {
 
 /**
  * \detail 16 - valid_article function change the status of an article which is on wait(0) to OK  (1) 
- * Test OK le 05/05
+ * Test OK le 06/05
  * @param (string) articleID
  * @param (object) this
  * @param (string) func_name
@@ -385,7 +389,7 @@ exports.create_ID = function (user) {
  */ 
 exports.valid_article = function (articleID, obj, func_name) {
 		util.log("VALID_ARTICLE - Opening");
-		var stmt = "UPDATE test articleStatus = 1 WHERE articleID ="+articleID;
+		var stmt = "UPDATE test articleStatus = 1 WHERE articleID =\""+articleID+"\"";
 		var flag = 0;
 		db.each(stmt, function (e,r) {
 		if(e) {
@@ -400,7 +404,7 @@ exports.valid_article = function (articleID, obj, func_name) {
 };
 
 /**
- * \detail 16 - log_out function is called when the user log out the web site.
+ * \detail 17 - log_out function is called when the user log out the web site.
  * it's change the current cookie by 0. 
  * Test OK le 06/05
  * @param (string) articleID
@@ -422,4 +426,29 @@ exports.log_out = function(user, obj, func_name) {
 			obj[func_name](flag);
 		});
 	util.log("LOG_OUT - Closing");
+};
+
+/**
+ * \detail 18 - modif_pw modify the password of the user in the DB 
+ * Test OK le 06/05
+ * @param (string) user
+ * @param (string) pw
+ * @param (object) this
+ * @param (string) func_name
+ * @callback (boolean) calls the callback with a boolean argument
+ */ 
+exports.modif_pw = function(user, pw, obj, func_name) {
+	util.log("MODIF_PW - Opening");
+	var stmt = "UPDATE test password = \""+pw+"\" WHERE user = \""+user+"\"";
+	var flag = 0;
+			db.each(stmt, function (e,r) {
+			if(e) {
+				util.log("ERROR - SQL - MODIF_PW function: " + e);
+				} else {
+					util.inspect(r);
+				}
+			}, function () {
+				obj[func_name](flag);
+			});
+		util.log("MODIF_PW - Closing");
 };

@@ -15,7 +15,7 @@ exports.router = function (req, resp) {
 };
 
 /**
- * This is the parametred constructor of a srouter
+ * This is the parameted constructor of a srouter
  * @param req (Object) the request object 
  * @param resp (Object) the response object
  */
@@ -65,27 +65,72 @@ post_method:
         });
     },
 
+/**
+ * This function feeds the action functions with any event 
+ * @param b (String) : 
+ * @return (Str) : "Service not found"
+ */
 go_post:
     function (b) {
         b = JSON.parse(b);
 		this.resp.writeHead(200, {"Content-Type": "application/json"});
-		if (b.action == "login") {
-			db.checkLogs(b.login, b.pass, this, "check_log_cb");
+		if (b.action == "log in") {
+			var returnCheckLog = checkLog (b.login, b.pw, this, "cb_checkLog");
+		} else if (b.action == "register") {
+			var returnRegister = subscribe (b.login, b.pw, this, "cb_subscribe");
+		} else if (b.action == "submitArticle") {
+			var returnSubmitArticle = submitArticle (b.articleStatus, this, "cb_submitArticle");
 		} else {
 			this.resp.write(JSON.stringify({resp: "Service not found"}));
-			this.resp.end();
 		}
+        this.resp.end();
     },
 	
-check_log_cb = function (f) {
-	if (f) {
-		this.resp.write(JSON.stringify({resp: "ok"}));
-	} else {
-		this.resp.write(JSON.stringify({resp: "ko"}));
-	}
-	this.resp.end();
-},
+/**
+ * This function replies to the log in event
+ * @param f (Int) : flag of registration succeeding 1 or 0
+ * @return (Str) : "ok" or "ko"
+ */
+cb_login:
+	function (f) {
+		if (f) {
+			this.resp.write(JSON.stringify({resp: "ok"}));
+		} else {
+			this.resp.write(JSON.stringify({resp: "ko"}));
+		}
+		this.resp.end();
+	},
 
+/**
+ * This function replies to the registration event
+ * @param f (Int) : flag of registration succeeding 1 or 0
+ * @return (Str) : "ok" or "ko"
+ */
+cb_subscribe:
+	function (f) {
+		if (f) {
+			this.resp.write(JSON.stringify({resp: "ok"}));
+		} else {
+			this.resp.write(JSON.stringify({resp: "ko"}));
+		}
+		this.resp.end();
+	},
+	
+/**
+ * This function replies to the article submission event
+ * @param f (Int) : flag of registration succeeding 1 or 0
+ * @return (Str) : "ok" or "ko"
+ */
+cb_submitArticle:
+	function (f) {
+		if (f) {
+			this.resp.write(JSON.stringify({resp: "ok"}));
+		} else {
+			this.resp.write(JSON.stringify({resp: "ko"}));
+		}
+		this.resp.end();
+	},
+	
 get_method:
     function () {
         var u = url.parse(this.req.url, true, true);
@@ -94,14 +139,14 @@ get_method:
         this.pathname = this.pathname.splice(1, this.pathname.length - 1);
         this.filetype = this.pathname[this.pathname.length - 1].split(".");
 		this.filetype = this.filetype[this.filetype.length - 1];
-        this.path = ".." + u.path; //the website is one directory upper than the node server
+        this.path = ".." + u.path; //the website is one directory upper the node server
         this.read_file();
     },
 
 read_file:
     function () {
         if (!this.pathname[0]) {
-            //util.log("ALERT - Hack attempt, resquest on : " + util.inspect(this.pathname));
+            //util.log("ALERT - Hack attempt, request on : " + util.inspect(this.pathname));
             this.pathname = "../index.html";
             this.path = "../index.html";
             this.filetype = "html";

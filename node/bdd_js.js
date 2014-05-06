@@ -398,3 +398,28 @@ exports.valid_article = function (articleID, obj, func_name) {
 		});
 	util.log("VALID_ARTICLE - Closing");
 };
+
+/**
+ * \detail 16 - log_out function is called when the user log out the web site.
+ * it's change the current cookie by 0. 
+ * Test OK le 06/05
+ * @param (string) articleID
+ * @param (object) this
+ * @param (string) func_name
+ * @callback (boolean) calls the callback with a boolean argument
+ */ 
+exports.log_out = function(user, obj, func_name) {
+		util.log("LOG_OUT - Opening");
+		var stmt = "UPDATE test cookie = 0 WHERE user = \""+user+"\"";
+		var flag = 0;
+		db.each(stmt, function (e,r) {
+		if(e) {
+			util.log("ERROR - SQL - LOG_OUT function: " + e);
+			} else {
+				util.inspect(r);
+			}
+		}, function () {
+			obj[func_name](flag);
+		});
+	util.log("LOG_OUT - Closing");
+};

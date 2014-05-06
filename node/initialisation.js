@@ -1,9 +1,3 @@
-/**
- * @author Olivier ANTUNES
- *  
- *
- */
-
  /**
  * \author {Olivier ANTUNES, Loic PLARD, Jean GERVOSON}
  * \date may 2014
@@ -15,8 +9,8 @@
  * user TEXT PRIMARY KEY,
  * password TEXT,
  * email TEXT 
- * articleID INT,
- * articleStatus VARCHAR(10),
+ * articleID string,
+ * articleStatus INT,
  * cookie TEXT
  * right INT
  *  
@@ -37,6 +31,6 @@ var db_co = {};
  */
 db_co.create = function () {
 	util.log("CREATE - Opening"); //TODO: delete commentary in final version
-	db.run("CREATE TABLE test (user TEXT PRIMARY KEY, password TEXT, email TEXT, articleID INT, articleStatus VARCHAR(10), cookie TEXT, right INT)");
+	db.run("CREATE TABLE test (user TEXT PRIMARY KEY, password TEXT, email TEXT, articleID TEXT, articleStatus INT, cookie TEXT, right INT)");
 	util.log("CREATE - Closing");
 };

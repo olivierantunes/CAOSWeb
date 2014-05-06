@@ -19,7 +19,7 @@
  * 10 - change_right - Test OK
  * 11 - check_data - Test OK
  * 12 - delete_article - Test OK
- * 13 - assign_cookie - TEST OK => Voir avec LOIC et Maxime
+ * 13 - assign_cookie - Test OK 
  * 14 - check_cookie - Test OK
  * 15 - Create_ID - Test OK
  * 16 - valid_article - Test OK
@@ -27,9 +27,7 @@
  */
 
 
-//TODO: demander si les fonction renvoient un bool ou un objet de type fonction
 //TODO: verifier les lignes SQL avec insertion de variable
-//TODO: mettre tous les articleID en string 
 
 // !!! TODO Général : bien nommer la BDD avant la final version 
 
@@ -46,7 +44,12 @@ db_co.rand_max = 1000000000000000;
  * @return (string) new cookie if ok, 0 if we can't generate a cookie
  */
  //Test OK le 24/04
+ 
 exports.create_cookie = function (user) {
+	return create_cookie(user);
+};
+
+var create_cookie = function (user) {
 	if (user && typeof user == "string") {
 		var a = Math.random();
 		var b = user.substring(0,3);
@@ -105,7 +108,7 @@ exports.allRead = function(req, resp){
  * @param (string) pw
  * @param (object) this
  * @param (string) func_name
- * @return (boolean) true or false 
+ * @callback (boolean) calls the callback with a boolean argument
  */
 exports.check_log = function (log, pw, obj, func_name) {
 		util.log("CHECK_LOG - Opening");
@@ -133,11 +136,11 @@ exports.check_log = function (log, pw, obj, func_name) {
  * @param (INT) right
  * @param (object) this
  * @param (string) func_name 
- * @Return (boolean) true or false
+ * @callback (boolean) calls the callback with a boolean argument
  */
 exports.register = function (log, pw, right, obj, func_name) {
 		util.log("REGISTER - Opening");
-		var stmt = "INSERT INTO test (user, password, right) VALUES ( "+log+"," + pw + "," + right+")";
+		var stmt = "INSERT INTO test (user, password, right) VALUES ( \""+log+"\"," + pw + "," + right+")";
 		var flag = 0;
 		db.each(stmt, function (e, r) {
 			if(e) {
@@ -159,7 +162,7 @@ exports.register = function (log, pw, right, obj, func_name) {
  * @param (string) log
  * @param (object) this
  * @param (string) func_name
- * @return (boolean) true or false
+ * @callback (boolean) calls the callback with a boolean argument
  */
 exports.un_subscribe = function (log, obj, func_name) {
 		util.log("UN_SUBSCRIBE - Opening");
@@ -186,7 +189,7 @@ exports.un_subscribe = function (log, obj, func_name) {
  * @param (string)email
  * @param (object) this
  * @param (string) func_name
- * @return (boolean) true or false
+ * @callback (boolean) calls the callback with a boolean argument
  */ 
 exports.check_subscribe_log = function (log, email, obj, func_name) {
 		util.log("CHECK_SUBSCRIBE_LOG - Opening");
@@ -214,7 +217,7 @@ exports.check_subscribe_log = function (log, email, obj, func_name) {
  * @param (string) articleID
  * @param (object) this
  * @param (string) func_name
- * @return (boolean) true or false
+ * @callback (boolean) calls the callback with a boolean argument
  */ 
 exports.submit_article = function (articleID, obj, func_name) {
 		util.log("SUBMIT_ARTICLE - Opening");
@@ -239,7 +242,7 @@ exports.submit_article = function (articleID, obj, func_name) {
  * @param (INT) right: 1 = super Admin, 2= Admin, 3=moderator, 4=redactor, 5=basic user
  * @param (object) this
  * @param (string) func_name
- * @return (boolean) true or false
+ * @callback (boolean) calls the callback with a boolean argument
  */
 exports.change_right = function (user, right, obj, func_name) {
 		util.log("CHANGE_RIGHT - Opening");
@@ -264,7 +267,7 @@ exports.change_right = function (user, right, obj, func_name) {
  * @param (string) data is the data you want to compare in dbfield
  * @param (object) this
  * @param (string) func_name
- * @return (boolean) true or false
+ * @callback (boolean) calls the callback with a boolean argument
  */
 exports.check_data = function (dbfield, data, obj, func_name) {
 		util.log("CHECK_DATA - Opening");
@@ -285,10 +288,10 @@ exports.check_data = function (dbfield, data, obj, func_name) {
 /**
  * \detail 12 - delete_article function deletes an articleID
  * Test OK le 06/05
- * @param (INT) articleID
+ * @param (string) articleID
  * @param (object) this
  * @param (string) func_name
- * @return (boolean) true or false
+ * @callback (boolean) calls the callback with a boolean argument
  */ 
 exports.delete_article = function (articleID, obj, func_name) {
 		util.log("DELETE_ARTICLE - Opening");
@@ -308,16 +311,15 @@ exports.delete_article = function (articleID, obj, func_name) {
 
 /**
  * \detail 13 - Assign_Cookie function assigns a cookie to a user
- * Test NOK => pb avec le create cookie
+ * Test OK
  * @param (string) user
- * @param (string) cookie
  * @param (object) this
  * @param (string) func_name
- * @return (boolean) true or false
+ * @callback (boolean) calls the callback with a boolean argument
  */ 
-exports.assign_cookie = function (user,cookie, obj, func_name) {
+exports.assign_cookie = function (user, obj, func_name) {
 		util.log("ASSIGN_COOKIE - Opening");
-		// var cookie = create_cookie(user); // TODO demander si Maxime si avec le modele MVC on peut dire que Loic crée le cookie, et me l'envoie en input au lieu de la créer moi-même
+		var cookie = create_cookie(user);
 		var stmt = "UPDATE test SET cookie = "+cookie+" WHERE user ="+ user ;
 		var flag = 0;
 		db.each(stmt, function (e,r) {
@@ -339,7 +341,7 @@ exports.assign_cookie = function (user,cookie, obj, func_name) {
  * @param (string) cookie
  * @param (object) this
  * @param (string) func_name
- * @return (boolean) true or false
+ * @callback (boolean) calls the callback with a boolean argument
  */ 
 exports.check_cookie = function (user,cookie, obj, func_name) {
 		util.log("CHECK_COOKIE - Opening");
@@ -361,9 +363,8 @@ exports.check_cookie = function (user,cookie, obj, func_name) {
  * \detail 15 - Create a article ID
  * Test OK le 06/05
  * @param (string) username of the user
- * @return (string) new article_ID if ok, 0 if we can't generate a ID
+ * @callback (boolean) calls the callback with a boolean argument
  */
- //Test OK le 05/05
 exports.create_ID = function (user) {
 	if (user && typeof user == "string") {
 		var a = Math.random();
@@ -380,11 +381,11 @@ exports.create_ID = function (user) {
  * @param (string) articleID
  * @param (object) this
  * @param (string) func_name
- * @return (boolean) true or false
+ * @callback (boolean) calls the callback with a boolean argument
  */ 
 exports.valid_article = function (articleID, obj, func_name) {
 		util.log("VALID_ARTICLE - Opening");
-		var stmt = "UPDATE test articleID = 1 WHERE articleID ="+articleID;
+		var stmt = "UPDATE test articleStatus = 1 WHERE articleID ="+articleID;
 		var flag = 0;
 		db.each(stmt, function (e,r) {
 		if(e) {

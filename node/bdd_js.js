@@ -4,29 +4,34 @@
  * \version 1.0
  * \brief Functions relationned with DB
  *
- * \details This file include all the function in relationship with the DB, except the initialisation process (@see initialisation.js)
+ * \details This file includes all the function in relationship with the DB, except the initialisation process (@see initialisation.js)
  * 
  * List of functions :
  * 1 - create_cookie - TEST OK
  * 2 - insert - Ne pas utiliser
  * 3 - read - Ne pas utiliser
  * 4 - allRead - Ne pas utiliser - Fonction de Test uniquement
- * 5 - checkLog - Test OK
+ * 5 - check_log - Test OK
  * 6 - register - Test OK
- * 7 - unSubscribe - Test OK
- * 8 - checkSubscribeLog - Test OK
- * 9 - submitArticle - Test OK
- * 10 - changeRight - Test OK
- * 11 - checkData - Test NOK
+ * 7 - un_subscribe - Test OK
+ * 8 - check_subscribe_log - Test OK
+ * 9 - submit_article - Test OK
+ * 10 - change_right - Test OK
+ * 11 - check_data - Test OK
+ * 12 - delete_article - Test OK
+ * 13 - assign_cookie - TEST OK => Voir avec LOIC et Maxime
+ * 14 - check_cookie - Test OK
+ * 15 - Create_ID - Test OK
+ * 16 - valid_article - Test OK
  *
  */
 
 
-//TODO: fair une fonction check_cookie
-//TODO: fonction to genere l'ID de l'article
-// TODO: reflechir à comment insérer un article
-// TODO Général : bien nommer la BDD avant la final version 
-// TODO changer les insert into en update
+//TODO: demander si les fonction renvoient un bool ou un objet de type fonction
+//TODO: verifier les lignes SQL avec insertion de variable
+//TODO: mettre tous les articleID en string 
+
+// !!! TODO Général : bien nommer la BDD avant la final version 
 
 var sqlite3 = require("sqlite3").verbose();
 var db = new sqlite3.Database("./test.db");
@@ -94,23 +99,21 @@ exports.allRead = function(req, resp){
 
 
 /**
- * \brief 5 - checkLog function checks if the username & pswd puts in parameters are corrects
- * Test OK le 24/04
+ * \brief 5 - check_log function checks if the username & pswd puts in parameters are corrects
+ * Test OK le 06/05
  * @param (string) log
  * @param (string) pw
  * @param (object) this
  * @param (string) func_name
  * @return (boolean) true or false 
  */
-// TODO: ajouter cookie
-exports.checkLog = function (log, pw, obj, func_name) {
-		util.log("CHECKLOG - Opening");
-		var cookie = create_cookie(log);
+exports.check_log = function (log, pw, obj, func_name) {
+		util.log("CHECK_LOG - Opening");
 		var stmt = "SELECT user FROM test WHERE user=\"" + log + "\" AND password=\"" + pw +"\"";
 		var flag = 0;
 		db.each(stmt, function (e, r) {
 			if (e) {
-				util.log("ERROR - SQL - CHECKLOG function : " + e);
+				util.log("ERROR - SQL - CHECK_LOG function : " + e);
 			} else {
 				if (r) {
 					flag++;
@@ -119,12 +122,12 @@ exports.checkLog = function (log, pw, obj, func_name) {
 		}, function () {
 			obj[func_name](flag);
 		});
-	util.log("CHECKLOG - Closing");
+	util.log("CHECK_LOG - Closing");
 };
 
 /**
  * \brief 6 - Register functions will add a new user on the website DB
- * Test OK le 24/04
+ * Test OK le 06/05
  * @param (string) log
  * @param (string) pw
  * @param (INT) right
@@ -134,8 +137,7 @@ exports.checkLog = function (log, pw, obj, func_name) {
  */
 exports.register = function (log, pw, right, obj, func_name) {
 		util.log("REGISTER - Opening");
-		//TODO : Update here the name of the table "test" 
-		var stmt = "INSERT INTO test (user, password, right) VALUES (\"" + log + "\",\"" + pw + "\",\"" + right"\"")";
+		var stmt = "INSERT INTO test (user, password, right) VALUES ( "+log+"," + pw + "," + right+")";
 		var flag = 0;
 		db.each(stmt, function (e, r) {
 			if(e) {
@@ -152,21 +154,20 @@ exports.register = function (log, pw, right, obj, func_name) {
 };
 
 /**
- * 7 - UnSubscribe functions will delete an user from the website DB
- * Test OK le 24/04
+ * 7 - un_subscribe functions will delete an user from the website DB
+ * Test OK le 06/05
  * @param (string) log
  * @param (object) this
  * @param (string) func_name
  * @return (boolean) true or false
  */
-exports.unSubscribe = function (log, obj, func_name) {
-		util.log("UNSUBSCRIBE - Opening");
-		//TODO : Update here the name of the table "test" 
+exports.un_subscribe = function (log, obj, func_name) {
+		util.log("UN_SUBSCRIBE - Opening");
 		var stmt = "DELETE FROM test WHERE user =\""+log+"\"";
 		var flag = 0;
 		db.each(stmt, function (e,r) {
 			if(e) {
-				util.log("ERROR - SQL - UNSUBSCRIBE function : " + e);
+				util.log("ERROR - SQL - UN_SUBSCRIBE function : " + e);
 			} else {
 				if (r) { 
 					flag++;
@@ -175,26 +176,25 @@ exports.unSubscribe = function (log, obj, func_name) {
 		}, function () {
 			obj[func_name](flag);
 		});
-	util.log("UNSUBSCRIBE - Closing");
+	util.log("UN_SUBSCRIBE - Closing");
 };
 
 /**
- * \brief 8 - ChecksSubscribeLogs function checks if the username or the email is already insert in the website DB
- * Test OK le 24/04
+ * \brief 8 - check_subscribe_log function checks if the username or the email is already insert in the website DB
+ * Test OK le 06/05
  * @param (string) log
  * @param (string)email
  * @param (object) this
  * @param (string) func_name
  * @return (boolean) true or false
  */ 
-exports.checkSubscribeLog = function (log, email, obj, func_name) {
-		util.log("CHECKSUBSCRIBELOG - Opening");
-		//TODO : Update here the name of the table "test"
+exports.check_subscribe_log = function (log, email, obj, func_name) {
+		util.log("CHECK_SUBSCRIBE_LOG - Opening");
 		var stmt = "SELECT user FROM test WHERE user=\"" + log + "\" OR email=\"" + email + "\"";
 		var flag = 0;
 		db.each(stmt, function (e, r) {
 			if (e) {
-				util.log("ERROR - SQL - checksusbscribeLogs: " + e);
+				util.log("ERROR - SQL - CHECK_SUBSCRIBE_LOG: " + e);
 			} else {
 				if(r) {
 					flag++;			
@@ -203,136 +203,197 @@ exports.checkSubscribeLog = function (log, email, obj, func_name) {
 		}, function () {
 			obj[fun_name](flag);
 		});
-	util.log("CHECKSUBSCRIBELOG - Closing");
+	util.log("CHECK_SUBSCRIBE_LOG - Closing");
 };
 
 /**
- * \detail 9 - SubmitArticle function adds an articleID and is status in the DB
+ * \detail 9 - submit_article function adds an article in the DB
  * it's used to submit an article which has to be checked before publication
- * Test OK le 24/04 
- * @param (INT) articleID
- * @param (string) "OK", "NOK", or "WAIT"
+ * In default situation, the article has a status equal to 0, it's mean ths article is Waiting a validation. 
+ * Test OK le 06/05 
+ * @param (string) articleID
  * @param (object) this
  * @param (string) func_name
  * @return (boolean) true or false
  */ 
-exports.submitArticle = function (articleID, articleStatus, obj, func_name) {
-		util.log("SUBMITAARTICLE - Opening");
-		//TODO : Update here the name of the table "test" 
-		var stmt = "INSERT INTO test (articleID, articleStatus) VALUES (\""+articleID+"\",\""+articleStatus+"\")";
+exports.submit_article = function (articleID, obj, func_name) {
+		util.log("SUBMIT_ARTICLE - Opening");
+		var stmt = "INSERT INTO test (articleID, articleStatus) VALUES (\""+articleID+",0)";
 		var flag = 0;
 		db.each(stmt, function (e,r) {
 		if(e) {
-			util.log("ERROR - SQL - submitArticle function: " + e);
+			util.log("ERROR - SQL - SUBMIT_ARTICLE function: " + e);
 			} else {
 				util.inspect(r);
 			}
 		}, function () {
 			obj[func_name](flag);
 		});
-	util.log("SUBMITAARTICLE - Closing");
+	util.log("SUBMIT_ARTICLE - Closing");
 };
 
 /**
  * \detail 10 - This function changes the right of a user
- * TEST OK - 24/04
- * @param (string) log
+ * TEST OK - 06/05
+ * @param (string) user
  * @param (INT) right: 1 = super Admin, 2= Admin, 3=moderator, 4=redactor, 5=basic user
  * @param (object) this
  * @param (string) func_name
  * @return (boolean) true or false
  */
-exports.changeRight = function (log, right, obj, func_name) {
-		util.log("CHANGERIGHT - Opening");
-		//TODO : Update here the name of the table "test" 
-		var stmt = "INSERT INTO test (right) VALUES (\""+right+"\") WHERE user=\"" + log + "\"";
+exports.change_right = function (user, right, obj, func_name) {
+		util.log("CHANGE_RIGHT - Opening");
+		var stmt = "UPDATE test (right) VALUES (\""+right+"\") WHERE user=\"" + user + "\"";
 		var flag = 0;
 		db.each(stmt, function (e,r) {
 		if(e) {
-			util.log("ERROR - SQL - CHANGERIGHT function: " + e);
+			util.log("ERROR - SQL - CHANGE_RIGHT function: " + e);
 			} else {
 				util.inspect(r);
 			}
 		}, function () {
 			obj[func_name](flag);
 		});
-	util.log("CHANGERIGHT - Closing");
+	util.log("CHANGE_RIGHT - Closing");
 };
 
 /**
  * \detail 11 - check if this fields is inclued in the DB
- * NOT TESTED YET
- * @param (string) log
- * @param (INT) right: 1 = super Admin, 2= Admin, 3=moderator, 4=redactor, 5=basic user
+ * Test OK le 06/05
+ * @param (string) dbfield is the field in the DB you want to check with
+ * @param (string) data is the data you want to compare in dbfield
  * @param (object) this
  * @param (string) func_name
  * @return (boolean) true or false
  */
-exports.checkData = function (dbfield, data, obj, func_name) {
-		util.log("CHECKDATA - Opening");
-		//TODO : Update here the name of the table "test" 
-		var stmt = "SELECT "\""+dbfield+"\"FROM test WHERE ""\"+dbfield+"=\"" + data;
+exports.check_data = function (dbfield, data, obj, func_name) {
+		util.log("CHECK_DATA - Opening");
+		var stmt = "SELECT "+dbfield+" FROM test WHERE " +dbfield+ "=" + data;
 		var flag = 0;
 		db.each(stmt, function (e,r) {
 		if(e) {
-			util.log("ERROR - SQL - CHANGERIGHT function: " + e);
+			util.log("ERROR - SQL - CHANGE_DATA function: " + e);
 			} else {
 				util.inspect(r);
 			}
 		}, function () {
 			obj[func_name](flag);
 		});
-	util.log("CHECKDATA - Closing");
+	util.log("CHECK_DATA - Closing");
 };
 
 /**
- * \detail 12 - DeleteArticle function deletes an articleID
- * it's used to delete an article which has to be checked before publication
- * Test 
+ * \detail 12 - delete_article function deletes an articleID
+ * Test OK le 06/05
  * @param (INT) articleID
  * @param (object) this
  * @param (string) func_name
  * @return (boolean) true or false
  */ 
-exports.submitArticle = function (articleID, obj, func_name) {
-		util.log("DELETEARTICLE - Opening");
-		//TODO : Update here the name of the table "test" 
-		var stmt = "DELETE FROM test WHERE (articleID) VALUES (\""articleID"\")";
+exports.delete_article = function (articleID, obj, func_name) {
+		util.log("DELETE_ARTICLE - Opening");
+		var stmt = "DELETE FROM test WHERE (articleID) VALUES ("+articleID+")";
 		var flag = 0;
 		db.each(stmt, function (e,r) {
 		if(e) {
-			util.log("ERROR - SQL - deleteArticle function: " + e);
+			util.log("ERROR - SQL - DELETE_ARTICLE function: " + e);
 			} else {
 				util.inspect(r);
 			}
 		}, function () {
 			obj[func_name](flag);
 		});
-	util.log("DELETEARTICLE - Closing");
+	util.log("DELETE_ARTICLE - Closing");
 };
 
 /**
- * \detail 13 - AssignCookie function deletes an articleID
- * it's used to delete an article which has to be checked before publication
- * Test 
- * @param (INT) username
+ * \detail 13 - Assign_Cookie function assigns a cookie to a user
+ * Test NOK => pb avec le create cookie
+ * @param (string) user
+ * @param (string) cookie
  * @param (object) this
  * @param (string) func_name
  * @return (boolean) true or false
  */ 
-exports.assignCookie = function (user, obj, func_name) {
-		util.log("ASSIGNCOOKIE - Opening");
-		var cookie = create_cookie(log);
-		var stmt = "UPDATE test SET cookie = "+cookie+" WHERE user = user ";
+exports.assign_cookie = function (user,cookie, obj, func_name) {
+		util.log("ASSIGN_COOKIE - Opening");
+		// var cookie = create_cookie(user); // TODO demander si Maxime si avec le modele MVC on peut dire que Loic crée le cookie, et me l'envoie en input au lieu de la créer moi-même
+		var stmt = "UPDATE test SET cookie = "+cookie+" WHERE user ="+ user ;
 		var flag = 0;
 		db.each(stmt, function (e,r) {
 		if(e) {
-			util.log("ERROR - SQL - ASSIGNCOOKIE function: " + e);
+			util.log("ERROR - SQL - ASSIGN_COOKIE function: " + e);
 			} else {
 				util.inspect(r);
 			}
 		}, function () {
 			obj[func_name](flag);
 		});
-	util.log("ASSIGNCOOKIE - Closing");
+	util.log("ASSIGN_COOKIE - Closing");
+};
+
+/**
+ * \detail 14 - check_cookie function checks if the cookie inputs is equal with the cookie in DB
+ * Test OK le 06/05
+ * @param (string) user
+ * @param (string) cookie
+ * @param (object) this
+ * @param (string) func_name
+ * @return (boolean) true or false
+ */ 
+exports.check_cookie = function (user,cookie, obj, func_name) {
+		util.log("CHECK_COOKIE - Opening");
+		var stmt = "SELECT user FROM test WHERE user= " + user + " AND cookie= " + cookie;
+		var flag = 0;
+		db.each(stmt, function (e,r) {
+		if(e) {
+			util.log("ERROR - SQL - CHECK_COOKIE function: " + e);
+			} else {
+				util.inspect(r);
+			}
+		}, function () {
+			obj[func_name](flag);
+		});
+	util.log("CHECK_COOKIE - Closing");
+};
+
+/**
+ * \detail 15 - Create a article ID
+ * Test OK le 06/05
+ * @param (string) username of the user
+ * @return (string) new article_ID if ok, 0 if we can't generate a ID
+ */
+ //Test OK le 05/05
+exports.create_ID = function (user) {
+	if (user && typeof user == "string") {
+		var a = Math.random();
+		var b = user.substring(0,3);
+		a = b + Math.floor(a * db_co.rand_max);
+		return a;
+	}
+	return 0;
+};
+
+/**
+ * \detail 16 - valid_article function change the status of an article which is on wait(0) to OK  (1) 
+ * Test OK le 05/05
+ * @param (string) articleID
+ * @param (object) this
+ * @param (string) func_name
+ * @return (boolean) true or false
+ */ 
+exports.valid_article = function (articleID, obj, func_name) {
+		util.log("VALID_ARTICLE - Opening");
+		var stmt = "UPDATE test articleID = 1 WHERE articleID ="+articleID;
+		var flag = 0;
+		db.each(stmt, function (e,r) {
+		if(e) {
+			util.log("ERROR - SQL - VALID_ARTICLE function: " + e);
+			} else {
+				util.inspect(r);
+			}
+		}, function () {
+			obj[func_name](flag);
+		});
+	util.log("VALID_ARTICLE - Closing");
 };

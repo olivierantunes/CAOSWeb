@@ -19,17 +19,9 @@ site.on_click = function (ev){
 };
 site.cb_rights = function () {
 	//if (readystate) //TODO
-	var rights = {
-		rights: "1"
-	}
-	
-	var r = new Array();
-	r.push(rights);
-	
-	//ici
-	
+	var rights = 3;
 	var elt = document.getElementsByClassName("dynamic-rights")[0];
-	if (r=="1") {
+	if (rights == 1) {
 	elt.innerHTML +="<div class=\"container\">"+
 						"<ul class=\"nav nav-pills pull-left\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
@@ -47,10 +39,11 @@ site.cb_rights = function () {
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
+							"<li class=\"blog-nav-item active\"><a href=\"#\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
 	}
-	else if (a in r equals "2") {
+	else if (rights == 2) {
 	elt.innerHTML +="<div class=\"container\">"+
 						"<ul class=\"nav nav-pills pull-left\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
@@ -68,10 +61,11 @@ site.cb_rights = function () {
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
+							"<li class=\"blog-nav-item active\"><a href=\"#\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
 	}
-	else if (a in r equals "3") {
+	else if (rights == 3) {
 	elt.innerHTML +="<div class=\"container\">"+
 						"<ul class=\"nav nav-pills pull-left\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
@@ -82,10 +76,11 @@ site.cb_rights = function () {
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
+							"<li class=\"blog-nav-item active\"><a href=\"#\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
 	}
-	else if (a in r equals "4") {
+	else if (rights == 4) {
 	elt.innerHTML +="<div class=\"container\">"+
 						"<ul class=\"nav nav-pills pull-left\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
@@ -95,10 +90,11 @@ site.cb_rights = function () {
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
+							"<li class=\"blog-nav-item active\"><a href=\"#\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
 	}
-	else if (a in r equals "5") {
+	else if (rights == 5) {
 	elt.innerHTML +="<div class=\"container\">"+
 						"<ul class=\"nav nav-pills pull-left\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
@@ -107,6 +103,7 @@ site.cb_rights = function () {
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
+							"<li class=\"blog-nav-item active\"><a href=\"#\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
 	}
@@ -184,8 +181,8 @@ site.cb_info = function () {
 	var info = {
 		pseudo: "MmeMichu",
 		email: "a@b.c",
-		password: "mdp",
-		rights: "Administrator"
+		password: "**********",
+		rights: "Administrateur"
 	}
 	
 	var r = new Array();
@@ -204,9 +201,9 @@ site.cb_info = function () {
 
 window.onload = function () {
 	setTimeout(site.on_ready, 1);
-	setTimeout(site.cb_art, 1500);
-	setTimeout(site.cb_info, 1500);
-	setTimeout(site.cb_rights, 1000);
+	setTimeout(site.cb_rights, 1);
+	setTimeout(site.cb_art, 500);
+	setTimeout(site.cb_info, 500);
 };
 
 HTMLElement.prototype.has_class = function(s) {

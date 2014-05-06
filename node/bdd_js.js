@@ -1,6 +1,6 @@
 /**
  * \author {Olivier ANTUNES, Loic PLARD, Jean GERVOSON}
- * \date 23 april 2014
+ * \date april 2014
  * \version 1.0
  * \brief Functions relationned with DB
  *
@@ -29,7 +29,6 @@
  */
 
 
-//TODO: verifier les lignes SQL avec insertion de variable => TOUT VERIFIER et corriger !
 // TODO: peut on sécuriser les fichiers ?
 // !!! TODO Général : bien nommer la BDD avant la finale version
 
@@ -451,4 +450,29 @@ exports.modif_pw = function(user, pw, obj, func_name) {
 				obj[func_name](flag);
 			});
 		util.log("MODIF_PW - Closing");
+};
+
+/**
+ * \detail 19 - order_article function return the 5 last articles
+ * you have to input the status (articleStatus) of the article (1 or 0)
+ * Test OK le 06/05
+ * @param INT articleStatus
+ * @param (object) this
+ * @param (string) func_name
+ * @callback calls the callback with an array wich includes the 5 last articleID pus
+ */ 
+
+exports.order_article = function(articleStatus, obj, func_name) {
+	util.log("ORDER_ARTICLE - Opening");
+	var stmt = "SELECT articleID FROM test WHERE articleStatus=\""+articleStatus+"\"ORDER BY date DSC LIMIT 5" ;
+	var art = new Array();
+		db.each(stmt, function (e,r) {
+			if(e) {
+				util.log("ERROR - SQL - ORDER_ARTICLE function: " + e);
+			}
+				art.push(r.articleID);
+			}, function () {
+				obj[func_name](art);
+			});
+		util.log("ORDER_ARTICLE - Closing");
 };

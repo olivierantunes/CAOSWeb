@@ -85,7 +85,7 @@ go_post:
 		this.resp.writeHead(200, {"Content-Type": "application/json"});
 		if (b.action == "log in") {
 			util.log("registration ok");
-			var returnCheckLog = checkLog (b.login, b.pw, this, "cb_checkLog");
+			var returnCheckLog = check_log (b.login, b.pw, this, "check_log"); //TODO: check cb_checkLog
 		} else if (b.action == "register") {
 			//check_subscribe_log = function (log, email, obj, func_name)
 			var returnRegister = check_subscribe_log (b.login, b.pw, this, "check_subscribe_log");

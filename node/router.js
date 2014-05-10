@@ -47,8 +47,10 @@ run:
 rest_method:
     function () {
         if (this.req.method == "GET") {
-            this.get_method();
+            util.log("get call");
+			this.get_method();
 		} else if (this.req.method == "POST") {
+			util.log("post call");
 			this.post_method();
         } else {
             this.resp.writeHead(501, {"Content-Type": "application/json"});
@@ -69,6 +71,7 @@ post_method:
             buff += c;
         });
         this.req.on("end", function () {
+			util.log("post_method -> echangeur");
             _this.go_post(buff);
         });
     },
@@ -84,11 +87,13 @@ go_post:
         b = JSON.parse(b);
 		this.resp.writeHead(200, {"Content-Type": "application/json"});
 		if (b.action == "log in") {
-			util.log("registration ok");
+			util.log("log in: ok");
 			var returnCheckLog = check_log (b.login, b.pw, this, "check_log"); //TODO: check cb_checkLog
 		} else if (b.action == "register") {
 			//check_subscribe_log = function (log, email, obj, func_name)
-			var returnRegister = check_subscribe_log (b.login, b.pw, this, "check_subscribe_log");
+			util.log("register: ok");
+			this.resp.write(JSON.stringify({resp: "ok"}));
+			//var returnRegister = check_subscribe_log (b.login, b.pw, this, "check_subscribe_log");
 			if (1 == returnRegister) { //does not exist
 				//var data = {action: "submit", email: mail, password: pw, pseudo: p};
 				//tools.post(data, register.cb_sub);

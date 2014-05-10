@@ -1,16 +1,18 @@
 var register = {};
 
 register.on_ready = function () {
+	console.log("on_ready trigger event");
 	document.addEventListener("click", register.on_click);
 };
 
 register.on_click = function (ev){
 	var src = ev.target;
+	console.log("on_click avant l9");
 	
 	if (src.has_class("submit-register")){
+		console.log("on_click apres l12");
 		register.submit();
 	}
-
 };
 
 register.submit = function () {
@@ -40,16 +42,28 @@ register.submit = function () {
 		cpw.add_class("alert-success");
 	}
 	if (mail.value != cmail.value || !mail.value || pw.value != cpw.value || !pw.value){
-		var data = {action: "submit", email: mail, password: pw, pseudo: p};
+		var data = {action: "register", email: mail, password: pw, pseudo: p}; //submit -> register: last change
 		tools.post(data, register.cb_sub);
 	} 
 }
+
+//last add
+register.cb_sub.cb_sub = function () {
+	if (this.readyState == 4 && this.statusCode == 200) {
+		var r = JSON.parse(this.responseText);
+		if (r.resp == "ok") {
+			alert("registrationOperationLaunched");
+		} else {
+			alert("FAIL");
+		}
+	}
+};
 
 site.cb_sub = function () {
 	if (this.readyState == 4 && this.statusCode == 200) {
 		var r = JSON.parse(this.responseText);
 		if (r.resp == "ok") {
-			alert("article posté");
+			alert("ok");
 		} else {
 			alert("FAIL");
 		}

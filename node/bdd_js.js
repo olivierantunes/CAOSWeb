@@ -25,6 +25,7 @@
  * 16 - valid_article - Test OK
  * 17 - log_out - Test OK
  * 18 - modif_pw - TEST OK
+ * 19 - order_article - Test OK
  *
  */
 
@@ -455,7 +456,7 @@ exports.modif_pw = function(user, pw, obj, func_name) {
 /**
  * \detail 19 - order_article function return the 5 last articles
  * you have to input the status (articleStatus) of the article (1 or 0)
- * Test OK le 06/05
+ * Test OK le 10/05
  * @param INT articleStatus
  * @param (object) this
  * @param (string) func_name
@@ -470,7 +471,7 @@ exports.order_article = function(articleStatus, obj, func_name) {
 			if(e) {
 				util.log("ERROR - SQL - ORDER_ARTICLE function: " + e);
 			}
-				art.push(r.articleID);
+				art.push({articleID : "r.articleID", date : "r.date" });
 			}, function () {
 				obj[func_name](art);
 			});

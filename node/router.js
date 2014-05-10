@@ -84,6 +84,7 @@ go_post:
         b = JSON.parse(b);
 		this.resp.writeHead(200, {"Content-Type": "application/json"});
 		if (b.action == "log in") {
+			util.log("registration ok");
 			var returnCheckLog = checkLog (b.login, b.pw, this, "cb_checkLog");
 		} else if (b.action == "register") {
 			//check_subscribe_log = function (log, email, obj, func_name)
@@ -206,11 +207,13 @@ cb_submitArticle:
 		this.resp.end();
 	},
 	
+
 /**
  * This function loads every article //this function is called by the db articleStatus, object, functName
  * @param t (Array): TODO
  * @return (JSON object) : article = { title: 'title', author: 'author', date: 'date', content: 'content'} //array of json objects
  */
+ /*
 load_articles:
     function (articleIdArray) {
 		//-> db function returns: array (id1, id2, ...)
@@ -227,30 +230,7 @@ load_articles:
 			}
 		}
     },
-	
-/**
- * This function loads every article //this function is called by the db articleStatus, object, functName
- * @param t (Array): array of json objects = { articleId: 'articleId', date: 'date' }
- * @return (JSON object) : article = { title: 'title', author: 'author', date: 'date', content: 'content' } //array of json objects
- */
-load_articles:
-    function () {
-		//-> db function returns: array (id1, id2, ...)
-		var articleIdArray = new Array;
-		artcileIdArray = order_article (1, this, "order_article"); //articleStatus = 1, 
-		var articleArray = new Array;
-		for (id in articleIdArray) {
-			var articlePath = dirPath + '/' + id + '/' + id;
-			fs.readFile(articlePath, function (e, d) {
-				if (e) {
-					this.resp.write(JSON.stringify({resp: "error uploading file"}));
-				} else {
-					//JSON.stringify(file)
-					//push file to array
-				}
-			};
-		};
-    },	
+*/
 	
 get_method:
     function () {

@@ -460,7 +460,7 @@ exports.modif_pw = function(user, pw, obj, func_name) {
  * @param INT articleStatus
  * @param (object) this
  * @param (string) func_name
- * @callback calls the callback with an array wich includes the 5 last articleID pus
+ * @callback calls the callback with an array wich includes the 5 last articleID published and date of each them
  */ 
 
 exports.order_article = function(articleStatus, obj, func_name) {

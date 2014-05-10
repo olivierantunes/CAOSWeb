@@ -3,6 +3,8 @@ var url = require("url");
 var fs = require("fs");
 require("./styles.js").add_theme();
 
+var dirName = './article/';
+
 /**
  * This method is used to process the request
  * @param req (Object) the request object
@@ -39,6 +41,9 @@ run:
         this.rest_method();
     },
 
+/**
+ * This function selects the GET or POST methods to apply
+ */
 rest_method:
     function () {
         if (this.req.method == "GET") {
@@ -52,7 +57,10 @@ rest_method:
 			return;
         }
     },
-	
+
+/**
+ * This function feeds the exchanger with input data
+ */
 post_method:
     function () {
         var _this = this;
@@ -66,20 +74,29 @@ post_method:
     },
 
 /**
- * This function feeds the action functions with any event 
- * @param b (String) : 
+ * This function (exchanger) feeds the action functions with any event (= exchanger)
+ * @param b (String) : //TODO
  * @return (Str) : "Service not found"
  */
 go_post:
     function (b) {
+		var _this = this;
         b = JSON.parse(b);
 		this.resp.writeHead(200, {"Content-Type": "application/json"});
 		if (b.action == "log in") {
 			var returnCheckLog = checkLog (b.login, b.pw, this, "cb_checkLog");
 		} else if (b.action == "register") {
-			var returnRegister = subscribe (b.login, b.pw, this, "cb_subscribe");
-		} else if (b.action == "submitArticle") {
-			var returnSubmitArticle = submitArticle (b.articleStatus, this, "cb_submitArticle");
+			//check_subscribe_log = function (log, email, obj, func_name)
+			var returnRegister = check_subscribe_log (b.login, b.pw, this, "check_subscribe_log");
+			if (1 == returnRegister) { //does not exist
+				//var data = {action: "submit", email: mail, password: pw, pseudo: p};
+				//tools.post(data, register.cb_sub);
+				//var emailLinkContent = ;
+			} else {
+				this.resp.write(JSON.stringify({resp: "id already existing"}));
+			}
+		} else if (b.action == "submit article") {
+			_this.submitArticle(b);
 		} else {
 			this.resp.write(JSON.stringify({resp: "Service not found"}));
 		}
@@ -87,9 +104,67 @@ go_post:
     },
 	
 /**
+ * This function orders the operations to push an article in the db
+ * @param b (JSON object) : article data stream = { title: 'title', author: 'author', content: 'content'}
+ * @return (String) : "ok" or "ko"
+ */
+submit_article:
+	function (b) {
+		//Step 1: ask for articleID
+		//var articleID = create_article_id();
+		
+		//Step 2: if ok, push to db
+		//	
+	},
+	
+/**
+ * This function creates the article  environment and pushes images, videos and content
+ * @param articleID (String) : article identifier
+ * @param b (JSON object) : article data
+ * @return (String) : "ok" or "ko"
+ */
+push_article_db:
+	function (articleID, b) {
+		//path ok ?
+		var dirPath = dirName + articleID
+		fs.mkdirParent = function(dirPath, mode, callback) {
+			fs.mkdir(dirPath, mode, function(error) {
+				if (error && error.errno === 34) {
+					fs.mkdirParent(path.dirname(dirPath), mode, callback);
+					fs.mkdirParent(dirPath, mode, callback);
+				}
+				callback && callback(error);
+			});
+		};
+		//TODO: call functions to push videos, images and context
+		//push_content(dirPath, articleID, b);
+	},	
+	
+/**
+ * This function writes the content of the article in a text file
+ * @param dirPath (String) : article directory path
+ * @param articleID (String) : article identifier
+ * @param b (JSON object) : article data
+ * @return (String) : "ok" or "ko"
+ */
+push_content:
+	function (dirPath, articleID, b) {
+		var articlePath = dirPath + '/' + articleID +'.txt'
+		var data = '{ title: ' + b.title + ', author: ' + b.author + ', content: ' + b.content + '}';
+		fs.writeFile(articlePath, data, function(err) {
+			if(err) {
+				this.resp.write(JSON.stringify({resp: "error uploading file"}));
+			} else {
+				this.resp.write(JSON.stringify({resp: "file saved"}));
+			}
+		});
+		this.resp.end();
+	},
+	
+/**
  * This function replies to the log in event
  * @param f (Int) : flag of registration succeeding 1 or 0
- * @return (Str) : "ok" or "ko"
+ * @return (String) : "ok" or "ko"
  */
 cb_login:
 	function (f) {
@@ -104,7 +179,7 @@ cb_login:
 /**
  * This function replies to the registration event
  * @param f (Int) : flag of registration succeeding 1 or 0
- * @return (Str) : "ok" or "ko"
+ * @return (String) : "ok" or "ko"
  */
 cb_subscribe:
 	function (f) {
@@ -119,7 +194,7 @@ cb_subscribe:
 /**
  * This function replies to the article submission event
  * @param f (Int) : flag of registration succeeding 1 or 0
- * @return (Str) : "ok" or "ko"
+ * @return (String) : "ok" or "ko"
  */
 cb_submitArticle:
 	function (f) {
@@ -130,6 +205,52 @@ cb_submitArticle:
 		}
 		this.resp.end();
 	},
+	
+/**
+ * This function loads every article //this function is called by the db articleStatus, object, functName
+ * @param t (Array): TODO
+ * @return (JSON object) : article = { title: 'title', author: 'author', date: 'date', content: 'content'} //array of json objects
+ */
+load_articles:
+    function (articleIdArray) {
+		//-> db function returns: array (id1, id2, ...)
+		//var articleArray [];
+		for (id in articleIdArray) {
+			var articlePath = dirPath + '/' + id + '/' + id;
+			fs.readFile(articlePath, function (e, d) {
+				if (e) {
+					this.resp.write(JSON.stringify({resp: "error uploading file"}));
+				} else {
+					//JSON.stringify(file)
+					//push file to array
+				}
+			}
+		}
+    },
+	
+/**
+ * This function loads every article //this function is called by the db articleStatus, object, functName
+ * @param t (Array): array of json objects = { articleId: 'articleId', date: 'date' }
+ * @return (JSON object) : article = { title: 'title', author: 'author', date: 'date', content: 'content' } //array of json objects
+ */
+load_articles:
+    function () {
+		//-> db function returns: array (id1, id2, ...)
+		var articleIdArray = new Array;
+		artcileIdArray = order_article (1, this, "order_article"); //articleStatus = 1, 
+		var articleArray = new Array;
+		for (id in articleIdArray) {
+			var articlePath = dirPath + '/' + id + '/' + id;
+			fs.readFile(articlePath, function (e, d) {
+				if (e) {
+					this.resp.write(JSON.stringify({resp: "error uploading file"}));
+				} else {
+					//JSON.stringify(file)
+					//push file to array
+				}
+			};
+		};
+    },	
 	
 get_method:
     function () {
@@ -151,7 +272,6 @@ read_file:
             this.path = "../index.html";
             this.filetype = "html";
         }
-		
         this.load_file();
     },
 
@@ -165,9 +285,7 @@ load_file:
                         util.log("ERROR - Problem reading file : " + e);
                     } else {
                         _this.file = d;
-						
                         _this.file_processing();
-						
                     }
                 });
             } else {

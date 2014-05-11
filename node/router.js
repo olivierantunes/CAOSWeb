@@ -30,7 +30,7 @@ srouter = function (req, resp) {
         this.path = "";
 		this.image_file = "jpg png jpeg bmp gif";
     } else {
-        util.log("ERROR - A srouter object need a request and a response object");
+        util.log("ERROR - A srouter object needs a request and a response object");
         return;
     }
 };
@@ -78,7 +78,7 @@ post_method:
 
 /**
  * This function (exchanger) feeds the action functions with any event (= exchanger)
- * @param b (String) : //TODO
+ * @param b (String) : buffer
  * @return (Str) : "Service not found"
  */
 go_post:
@@ -87,15 +87,11 @@ go_post:
         b = JSON.parse(b);
 		this.resp.writeHead(200, {"Content-Type": "application/json"});
 		if (b.action == "log in") {
-			util.log("log in: ok");
-			var returnCheckLog = check_log (b.login, b.pw, this, "check_log"); //TODO: check cb_checkLog
+			var returnCheckLog = check_log (b.login, b.pw, this, "check_log"); //TODO: check cb_checkLog => the COOKIE thing
 		} else if (b.action == "register") {
-			//check_subscribe_log = function (log, email, obj, func_name)
-			util.log("register: ok");
-			this.resp.write(JSON.stringify({resp: "ok"}));
-			//var returnRegister = check_subscribe_log (b.login, b.pw, this, "check_subscribe_log");
-			if (1 == returnRegister) { //does not exist
-				//var data = {action: "submit", email: mail, password: pw, pseudo: p};
+			var returnRegister = check_subscribe_log (b.login, b.pw, this, "check_subscribe_log");
+			if (1 == returnRegister) {
+				//var data = {email: mail, password: pw, pseudo: p};//continue HEEEEEEEEEEEEEEEEEEEEEEEEEEEEERE !!!
 				//tools.post(data, register.cb_sub);
 				//var emailLinkContent = ;
 			} else {
@@ -103,6 +99,8 @@ go_post:
 			}
 		} else if (b.action == "submit article") {
 			_this.submitArticle(b);
+		} else if ("confirm_registration" == b.action) {
+			//TODO: call db functions -> push_user_to_db, new_website, log_in user (including push_rights), load_form_page
 		} else {
 			this.resp.write(JSON.stringify({resp: "Service not found"}));
 		}

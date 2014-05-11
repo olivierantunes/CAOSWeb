@@ -1,47 +1,45 @@
-var register = {};
+var confirmRegistration = {};
 
-register.on_ready = function () {
-	document.addEventListener("click", register.on_click);
+confirmRegistration.on_ready = function () {
+	document.addEventListener("click", confirmRegistration.on_click);
 };
 
-register.on_click = function (ev){
+confirmRegistration.on_click = function (ev){
 	var src = ev.target;
 	
 	if (src.has_class("submit-register")){
-		register.submit();
+		confirmRegistration.submit();
 	}
-
 };
 
-register.submit = function () {
-	var mail = document.getElementsByClassName("mail")[0];
-	var cmail = document.getElementsByClassName("cmail")[0];
-	var pw = document.getElementsByClassName("pw")[0];
-	var cpw = document.getElementsByClassName("cpw")[0];
-	var p = document.getElementsByClassName("pseudo")[0];
-	register.reset_class(mail);
-	register.reset_class(cmail);
-	register.reset_class(pw);
-	register.reset_class(cpw);
-	if (mail.value != cmail.value || !mail.value){
-		mail.add_class("alert-danger");
-		cmail.add_class("alert-danger");
+confirmRegistration.submit = function () {
+	var nameWebSite = document.getElementsByClassName("nameSite")[0];
+	confirmRegistration.reset_class(nameWebSite);
+	if (!nameWebSite.value){
+		nameWebSite.add_class("alert-danger");
 	} 
 	else {
-		mail.add_class("alert-success");
-		cmail.add_class("alert-success");
+		nameWebSite.add_class("alert-success");
 	}
-	if(pw.value != cpw.value || !pw.value){
-		pw.add_class("alert-danger");
-		cpw.add_class("alert-danger");
-	}
-	else{
-		pw.add_class("alert-success");
-		cpw.add_class("alert-success");
-	}
-	if (mail.value != cmail.value || !mail.value || pw.value != cpw.value || !pw.value){
-		var data = {action: "submit", email: mail, password: pw, pseudo: p};
-		tools.post(data, register.cb_sub);
+	//do not undersand this line \/ ---------------------------------------------------------------------------------------------
+	if (mail.value != cmail.value || !mail.value || pw.value != cpw.value || !pw.value) {
+		var param = function GetUrlValue("idUser"){
+			var SearchString = window.location.search.substring(1);
+			var VariableArray = SearchString.split('&');
+			for(var i = 0; i < VariableArray.length; i++){
+				var KeyValuePair = VariableArray[i].split('=');
+				if(KeyValuePair[0] == VarSearch){
+					return KeyValuePair[1];
+				}
+			}
+		}
+
+		if (param && "idUser" == param) {
+			var data = {action: "confirm_registration", nameWebSite: nameWebSite, temporaryCookie: param};
+			//tools.post(data, confirmRegistration.cb_sub); ----------------------------------------------------------------------
+		} else {
+			//TODO: alert message
+		}
 	} 
 }
 
@@ -49,21 +47,21 @@ site.cb_sub = function () {
 	if (this.readyState == 4 && this.statusCode == 200) {
 		var r = JSON.parse(this.responseText);
 		if (r.resp == "ok") {
-			alert("article posté");
+			alert("registration confirmed");
 		} else {
-			alert("FAIL");
+			alert("fail");
 		}
 	}
 };
 
-register.reset_class = function (e) {
+confirmRegistration.reset_class = function (e) {
 	e.remove_class("alert-danger");
 	e.remove_class("alert-success");
 };
 
 
 window.onload = function () {
-	setTimeout(register.on_ready, 1);
+	setTimeout(confirmRegistration.on_ready, 1);
 };
 
 HTMLElement.prototype.has_class = function(s) {

@@ -140,9 +140,9 @@ exports.check_log = function (log, pw, obj, func_name) {
  * @param (string) func_name 
  * @callback (boolean) calls the callback with a boolean argument
  */
-exports.register = function (log, pw, right, obj, func_name) {
+exports.register = function (log, pw, email, right, obj, func_name) {
 		util.log("REGISTER - Opening");
-		var stmt = "INSERT INTO test (user, password, right) VALUES ( \""+log+"\",\"" + pw + "\",\"" + right+"\")";
+		var stmt = "INSERT INTO test (user, password, email ,right) VALUES ( \""+log+"\",\"" + pw + "\",\"" + email + "\",\"" + right+"\")";
 		var flag = 0;
 		db.each(stmt, function (e, r) {
 			if(e) {
@@ -471,7 +471,7 @@ exports.order_article = function(articleStatus, obj, func_name) {
 			if(e) {
 				util.log("ERROR - SQL - ORDER_ARTICLE function: " + e);
 			}
-				art.push({articleID : "r.articleID", date : "r.date" });
+				art.push({articleID : r.articleID, date : r.date });
 			}, function () {
 				obj[func_name](art);
 			});

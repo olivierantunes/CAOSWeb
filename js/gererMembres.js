@@ -125,6 +125,14 @@ site.cb_rights = function () {
 	}
 };
 
+site.rights_match= function () {
+	0="Super-Administrateur",
+	1="Administrateur",
+	2="Modérateur",
+	3="Rédacteur",
+	4="Utilisateur"
+}
+
 site.cb_membres = function () {
 	//if (readystate) //TODO
 	var membre0 = {
@@ -170,7 +178,7 @@ site.cb_membres = function () {
 window.onload = function () {
 	setTimeout(site.on_ready, 1);
 	setTimeout(site.cb_rights, 1);
-	setTimeout(site.cb_membres, 2);
+	setTimeout(site.cb_membres, 500);
 };
 
 HTMLElement.prototype.has_class = function(s) {

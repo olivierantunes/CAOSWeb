@@ -1,18 +1,121 @@
 var register = {};
 
 register.on_ready = function () {
-	console.log("on_ready trigger event");
 	document.addEventListener("click", register.on_click);
+};
+
+site.cb_rights = function () {
+	//if (readystate) //TODO
+	var rights = 1;
+	var elt = document.getElementsByClassName("dynamic-rights")[0];
+	if (rights == 0) {
+	elt.innerHTML +="<div class=\"container\">"+
+						"<ul class=\"nav nav-pills pull-left\">"+
+							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
+							"<li class=\"blog-nav-item active\"><a href=\"contact.html\">Contacts</a></li>"+
+							"<li class=\"blog-nav-item active\"><a href=\"faq.html\">FAQ</a></li>"+
+							"<li class=\"blog-nav-item active\"><a href=\"RedigerArticle.html\">Publier</a></li>"+
+							"<li class=\"blog-nav-item active\"><a href=\"ValiderArticle.html\">Valider</a></li>"+
+							"<li class=\"dropdown blog-nav-item active\">"+
+								"<a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">Admin<b class=\"caret\"></b></a>"+
+								"<ul class=\"dropdown-menu\">"+
+									"<li><a href=\"gererMembres.html\">Gérer les utilisateurs</a></li>"+
+									"<li><a href=\"changerForme.html\">Changer la forme</a></li>"+
+								"</ul>"+
+							"</li>"+
+						"</ul>"+
+						"<ul class=\"nav nav-pills pull-right\">"+
+							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
+							"<li class=\"blog-nav-item active\"><a id=\"logout\">Se déconnecter</a></li>"+
+						"</ul>"+
+					"</div>";
+	}
+	else if (rights == 1) {
+	elt.innerHTML +="<div class=\"container\">"+
+						"<ul class=\"nav nav-pills pull-left\">"+
+							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
+							"<li class=\"blog-nav-item active\"><a href=\"contact.html\">Contacts</a></li>"+
+							"<li class=\"blog-nav-item active\"><a href=\"faq.html\">FAQ</a></li>"+
+							"<li class=\"blog-nav-item active\"><a href=\"RedigerArticle.html\">Publier</a></li>"+
+							"<li class=\"blog-nav-item active\"><a href=\"ValiderArticle.html\">Valider</a></li>"+
+							"<li class=\"dropdown blog-nav-item active\">"+
+								"<a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">Admin<b class=\"caret\"></b></a>"+
+								"<ul class=\"dropdown-menu\">"+
+									"<li><a href=\"gererMembres.html\">Gérer les utilisateurs</a></li>"+
+									"<li><a href=\"changerForme.html\">Changer la forme</a></li>"+
+								"</ul>"+
+							"</li>"+
+						"</ul>"+
+						"<ul class=\"nav nav-pills pull-right\">"+
+							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
+							"<li class=\"blog-nav-item active\"><a id=\"logout\">Se déconnecter</a></li>"+
+						"</ul>"+
+					"</div>";
+	}
+	else if (rights == 2) {
+	elt.innerHTML +="<div class=\"container\">"+
+						"<ul class=\"nav nav-pills pull-left\">"+
+							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
+							"<li class=\"blog-nav-item active\"><a href=\"contact.html\">Contacts</a></li>"+
+							"<li class=\"blog-nav-item active\"><a href=\"faq.html\">FAQ</a></li>"+
+							"<li class=\"blog-nav-item active\"><a href=\"RedigerArticle.html\">Publier</a></li>"+
+							"<li class=\"blog-nav-item active\"><a href=\"ValiderArticle.html\">Valider</a></li>"+
+						"</ul>"+
+						"<ul class=\"nav nav-pills pull-right\">"+
+							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
+							"<li class=\"blog-nav-item active\"><a id=\"logout\">Se déconnecter</a></li>"+
+						"</ul>"+
+					"</div>";
+	}
+	else if (rights == 3) {
+	elt.innerHTML +="<div class=\"container\">"+
+						"<ul class=\"nav nav-pills pull-left\">"+
+							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
+							"<li class=\"blog-nav-item active\"><a href=\"contact.html\">Contacts</a></li>"+
+							"<li class=\"blog-nav-item active\"><a href=\"faq.html\">FAQ</a></li>"+
+							"<li class=\"blog-nav-item active\"><a href=\"RedigerArticle.html\">Publier</a></li>"+
+						"</ul>"+
+						"<ul class=\"nav nav-pills pull-right\">"+
+							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
+							"<li class=\"blog-nav-item active\"><a id=\"logout\">Se déconnecter</a></li>"+
+						"</ul>"+
+					"</div>";
+	}
+	else if (rights == 4) {
+	elt.innerHTML +="<div class=\"container\">"+
+						"<ul class=\"nav nav-pills pull-left\">"+
+							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
+							"<li class=\"blog-nav-item active\"><a href=\"contact.html\">Contacts</a></li>"+
+							"<li class=\"blog-nav-item active\"><a href=\"faq.html\">FAQ</a></li>"+
+						"</ul>"+
+						"<ul class=\"nav nav-pills pull-right\">"+
+							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
+							"<li class=\"blog-nav-item active\"><a id=\"logout\">Se déconnecter</a></li>"+
+						"</ul>"+
+					"</div>";
+	}
+	else {
+	elt.innerHTML +="<div class=\"container\">"+
+						"<ul class=\"nav nav-pills pull-left\">"+
+							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
+							"<li class=\"blog-nav-item active\"><a href=\"contact.html\">Contacts</a></li>"+
+							"<li class=\"blog-nav-item active\"><a href=\"faq.html\">FAQ</a></li>"+
+						"</ul>"+
+						"<ul class=\"nav nav-pills pull-right\">"+
+							"<li class=\"blog-nav-item active\"><a href=\"Sinscrire.html\">S'incrire</a></li>"+
+							"<li class=\"blog-nav-item active\"><a href=\"SeConnecter.html\">Se connecter</a></li>"+
+						"</ul>"+
+					"</div>";
+	}
 };
 
 register.on_click = function (ev){
 	var src = ev.target;
-	console.log("on_click avant l9");
 	
 	if (src.has_class("submit-register")){
-		console.log("on_click apres l12");
 		register.submit();
 	}
+
 };
 
 register.submit = function () {
@@ -41,31 +144,17 @@ register.submit = function () {
 		pw.add_class("alert-success");
 		cpw.add_class("alert-success");
 	}
-	
-	//do not understand the following line
 	if (mail.value != cmail.value || !mail.value || pw.value != cpw.value || !pw.value){
-		var data = {action: "register", email: mail, password: pw, pseudo: p}; //submit -> register: last change
+		var data = {action: "submit", email: mail, password: pw, pseudo: p};
 		tools.post(data, register.cb_sub);
 	} 
 }
-
-//last addition
-register.cb_sub = function () {
-	if (this.readyState == 4 && this.statusCode == 200) {
-		var r = JSON.parse(this.responseText);
-		if (r.resp == "ok") {
-			alert("registrationOperationLaunched");
-		} else {
-			alert("fail");
-		}
-	}
-};
 
 site.cb_sub = function () {
 	if (this.readyState == 4 && this.statusCode == 200) {
 		var r = JSON.parse(this.responseText);
 		if (r.resp == "ok") {
-			alert("ok");
+			alert("article posté");
 		} else {
 			alert("FAIL");
 		}
@@ -80,6 +169,7 @@ register.reset_class = function (e) {
 
 window.onload = function () {
 	setTimeout(register.on_ready, 1);
+	setTimeout(site.cb_rights, 1);
 };
 
 HTMLElement.prototype.has_class = function(s) {

@@ -8,16 +8,6 @@ site.on_click = function (ev){
 	var src = ev.target;
 	
 	console.log("toc");
-	
-	if (src.has_class("go-top")){
-		window.scrollTo(0,0);
-	} else if (src.has_class("go-dec")) {
-		var t = document.getElementById("dec");
-		window.scrollTo(0, t.offsetTop);
-	} else if (src.has_class("submit-art")){
-	
-	}
-
 };
 
 site.cb_rights = function () {
@@ -125,13 +115,13 @@ site.cb_rights = function () {
 	}
 };
 
-site.rights_match= function () {
-	0="Super-Administrateur",
-	1="Administrateur",
-	2="Modérateur",
-	3="Rédacteur",
-	4="Utilisateur"
-}
+site.rights_match = {
+	0:"Super-Administrateur",
+	1:"Administrateur",
+	2:"Modérateur",
+	3:"Rédacteur",
+	4:"Utilisateur"
+};
 
 site.cb_membres = function () {
 	//if (readystate) //TODO
@@ -165,7 +155,7 @@ site.cb_membres = function () {
 			tac = "<button id=\"deletemember\" class=\"btn btn-danger\"><span class=\"glyphicon glyphicon-trash\"></span></button>";
 		}
 		
-		r[a].rights = rights_match[r[a].rights];
+		r[a].rights = site.rights_match[r[a].rights];
 	elt.innerHTML += 	"<tr>"+
 						"<td>"+r[a].pseudo+"</td>"+
 						"<td>"+r[a].mail+"</td>"+

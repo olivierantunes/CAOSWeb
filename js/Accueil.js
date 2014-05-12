@@ -4,9 +4,15 @@ site.on_ready = function () {
 	document.addEventListener("click", site.on_click);
 };
 
+site.ask_right = function() {
+    var data ={"action": "get_right"};
+	site.post(data, site.cb_rights);
+};
+
 site.cb_rights = function () {
 	//if (readystate) //TODO
-	var rights = 1;
+	var right = 1; //JSON.parse(this.responseText);
+	//rights=right.role;
 	var elt = document.getElementsByClassName("dynamic-rights")[0];
 	if (rights == 0) {
 	elt.innerHTML +="<div class=\"container\">"+
@@ -125,8 +131,15 @@ site.on_click = function (ev){
 
 };
 
+site.ask_article = function() {
+	var data ={"action": "get_article"};
+    //site.cb.art(data);
+	site.post(data, site.cb_art);
+};
+
 site.cb_art = function () {
 	//if (readystate) //TODO
+	//var r = JSON.parse(this.responseText);
 	var art = {
 		title: "Le titre de votre article le plus récent",
 		date: new Date(),

@@ -1,8 +1,8 @@
 var util = require("util");
 var nodemailer = require("nodemailer");
 
-var mailAuthor = "CAOsWeb <noreply.caosweb@gmail.com>"
-	mailAddressee = {
+//for testing
+var mailAddressee = {
 		mailAddress: "je545@hotmail.com",//je545@hotmail.comloic@plard.fr
 		login: "userLogin",
 		password: "userPw",
@@ -18,10 +18,10 @@ var smtpTransport = nodemailer.createTransport("SMTP", {
 	}
 );
 
-exports.mailRouter = function (author, addressee, addresseeLogin, addresseePassword, addresseeRegistrationTemporaryCookie) {
+exports.mailRouter = function (addressee, addresseeLogin, addresseePassword, addresseeRegistrationTemporaryCookie) {
 	var textLink = "file:///C:/Users/Soap/Documents/GitHub/CAOSWeb/site/ConfirmRegistration.html?idUser=" + addresseeRegistrationTemporaryCookie,
 		mailRegistration = {
-			from: author,
+			from: "CAOsWeb <noreply.caosweb@gmail.com>",
 			to: addressee,
 			subject: "Confirmation inscription : CAOsWeb",
 			html: "<b>Bonjour, Bienvenue sur CAOsWeb !</b><br>Nous vous remercions de votre inscription à CAOsWeb, site de création de blogs.<br><br>Votre login est : "
@@ -31,7 +31,7 @@ exports.mailRouter = function (author, addressee, addresseeLogin, addresseePassw
 					+ "<br><br><br>lien : " + textLink
 		}
 
-	smtpTransport.sendMail(mailRegistration, function(error, response){
+	smtpTransport.sendMail(mailRegistration, function (error, response){
 		if (error) {
 			util.log(error);
 		} else {
@@ -41,4 +41,5 @@ exports.mailRouter = function (author, addressee, addresseeLogin, addresseePassw
 	});
 }
 
-this.mailRouter (mailAuthor, mailAddressee.mailAddress, mailAddressee.login, mailAddressee.password, mailAddressee.registrationTemporaryCookie);
+//for testing
+this.mailRouter (mailAddressee.mailAddress, mailAddressee.login, mailAddressee.password, mailAddressee.registrationTemporaryCookie);

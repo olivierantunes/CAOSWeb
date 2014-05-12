@@ -87,25 +87,37 @@ go_post:
         b = JSON.parse(b);
 		this.resp.writeHead(200, {"Content-Type": "application/json"});
 		if (b.action == "log in") {
-			var returnCheckLog = check_log (b.login, b.pw, this, "check_log"); //TODO: check cb_checkLog => the COOKIE thing
-		} else if (b.action == "register") {
-			var returnRegister = check_subscribe_log (b.login, b.pw, this, "check_subscribe_log");
+			var returnCheckLog = check_log (b.pseudo, b.password, this, "check_log"); //TODO: check cb_checkLog => the COOKIE thing
+		} else if (b.action == "register-blog") {
+			var returnRegister = check_subscribe_log (b.pseudo, b.password, this, "check_subscribe_log");
 			if (1 == returnRegister) {
 				//sequence:
 				//1: get id
-				//var userTemporaryId = create_id ();
+				var userTemporaryId = create_ID (b.pseudo);
 				
 				//2: push temporary user + id to db
-				//push_temporary_user (userTemporaryId, b.login, b.pw);
+				register (b.pseudo, b.password, b.email, userTemporaryId, right, this, "register");
 				
 				//3: send mail
-				//reach for mailAddressee object (in nodeMailer)
-				//this.mailRouter (mailAuthor, b.address, b.login, b.pw, userTemporaryId);
+				mailRouter (b.email, b.pseudo, b.password, userTemporaryId);
 				//stop
+			} else {
+				this.resp.write(JSON.stringify({resp: "id already existing"})); //TODO: comment retourner une donnee a la page web ?
+			}
+		} else if (b.action == "register-caosweb") {
+			var returnRegister = check_subscribe_log (b.pseudo, b.password, this, "check_subscribe_log");
+			if (1 == returnRegister) {
+				//sequence:
+				//1: get id
+				var userTemporaryId = create_ID (b.pseudo);
 				
-				//var data = {email: mail, password: pw, pseudo: p};
-				//tools.post(data, register.cb_sub);
-				//var emailLinkContent = ;
+				//2: push temporary user + id to db
+				register (b.pseudo, b.password, b.email, userTemporaryId, right, this, "register");
+				
+				//3: send mail
+				mailRouter (b.email, b.pseudo, b.password, userTemporaryId);
+				
+				//stop
 			} else {
 				this.resp.write(JSON.stringify({resp: "id already existing"})); //TODO: comment retourner une donnee a la page web ?
 			}

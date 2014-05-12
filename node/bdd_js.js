@@ -135,14 +135,16 @@ exports.check_log = function (log, pw, obj, func_name) {
  * Test OK le 06/05
  * @param (string) log
  * @param (string) pw
+ * @param (string) email
+ * @param (string) cookie_reg
  * @param (INT) right
  * @param (object) this
  * @param (string) func_name 
  * @callback (boolean) calls the callback with a boolean argument
  */
-exports.register = function (log, pw, email, right, obj, func_name) {
+exports.register = function (log, pw, email, cookie_reg, right, obj, func_name) {
 		util.log("REGISTER - Opening");
-		var stmt = "INSERT INTO test (user, password, email ,right) VALUES ( \""+log+"\",\"" + pw + "\",\"" + email + "\",\"" + right+"\")";
+		var stmt = "INSERT INTO test (user, password, email , cookie_reg, right) VALUES ( \""+log+"\",\"" + pw + "\",\"" + email + "\",\"" + cookie_reg + "\",\"" + right+"\")";
 		var flag = 0;
 		db.each(stmt, function (e, r) {
 			if(e) {

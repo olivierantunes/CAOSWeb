@@ -41,17 +41,36 @@ exports.submit_article = function (b) {
  * @return (String) : "ok" or "ko"
  */
 exports.push_article_db = function (articleID, b) {
-		//path ok ?
-		var dirPath = dirName + articleID
-		fs.mkdirParent = function(dirPath, mode, callback) {
-			fs.mkdir(dirPath, mode, function(error) {
-				if (error && error.errno === 34) {
-					fs.mkdirParent(path.dirname(dirPath), mode, callback);
-					fs.mkdirParent(dirPath, mode, callback);
+		var dirPath = dirName + articleID;
+		
+		fs.exists(dirPath, function(exists) {
+			util.log ("folder does not exist -> creation");
+			if (!exists) {
+				fs.mkdirParent = function(dirPath, mode, callback) {
+					fs.mkdir(dirPath, mode, function(error) {
+						if (error && error.errno === 34) {
+							fs.mkdirParent(path.dirname(dirPath), mode, callback);
+							fs.mkdirParent(dirPath, mode, callback);
+						}
+						callback && callback(error);
+					});
 				}
-				callback && callback(error);
-			});
-		};
+			} else {
+				util.log ("folder already exists");
+			};
+		});
+		
+		//for testing
+		//delete from here
+		fs.exists(dirPath, function(exists) {
+			if (exists) {
+				util.log ("folder successfully created");
+			} else {
+				util.log ("failed creating folder");
+			}
+		});
+		//to here
+		
 		//TODO: call function to push
 		this.push_content (dirPath, articleID, b);
 	},
@@ -66,13 +85,21 @@ exports.push_article_db = function (articleID, b) {
 exports.push_content = function (dirPath, articleID, b) {
 		var articlePath = dirPath + '/' + articleID;
 		var data = '{ title: ' + b.title + ', author: ' + b.author + ', content: ' + b.content + '}';
-		fs.writeFile(articlePath, data, function(err) {
-			if(err) {
-				//this.resp.write(JSON.stringify({resp: "error uploading file"})); //uncomment
-				util.log ("error creating file\n");
+		
+		fs.exists(articlePath, function(exists) {
+			if (!exists) {
+				util.log ("file does not exist -> creation");
+				fs.writeFile(articlePath, data, function(err) {
+					if(err) {
+						//this.resp.write(JSON.stringify({resp: "error uploading file"})); //uncomment
+						util.log ("error creating file\n");
+					} else {
+						//this.resp.write(JSON.stringify({resp: "file saved"})); //uncomment
+						util.log ("file saved");
+					}
+				});
 			} else {
-				//this.resp.write(JSON.stringify({resp: "file saved"})); //uncomment
-				util.log ("file saved");
+				util.log ("file already exists");
 			}
 		});
 		

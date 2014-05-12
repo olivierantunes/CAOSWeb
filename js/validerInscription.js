@@ -21,7 +21,7 @@ confirmRegistration.submit = function () {
 	else {
 		nameWebSite.add_class("alert-success");
 	}
-	//do not undersand this line \/ ---------------------------------------------------------------------------------------------
+	//do not undersand the following line ------------------------------------------------------------------------------------------------
 	if (mail.value != cmail.value || !mail.value || pw.value != cpw.value || !pw.value) {
 		var param = function GetUrlValue("idUser"){
 			var SearchString = window.location.search.substring(1);

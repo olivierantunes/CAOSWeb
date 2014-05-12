@@ -41,20 +41,22 @@ register.submit = function () {
 		pw.add_class("alert-success");
 		cpw.add_class("alert-success");
 	}
+	
+	//do not understand the following line
 	if (mail.value != cmail.value || !mail.value || pw.value != cpw.value || !pw.value){
 		var data = {action: "register", email: mail, password: pw, pseudo: p}; //submit -> register: last change
 		tools.post(data, register.cb_sub);
 	} 
 }
 
-//last add
-register.cb_sub.cb_sub = function () {
+//last addition
+register.cb_sub = function () {
 	if (this.readyState == 4 && this.statusCode == 200) {
 		var r = JSON.parse(this.responseText);
 		if (r.resp == "ok") {
 			alert("registrationOperationLaunched");
 		} else {
-			alert("FAIL");
+			alert("fail");
 		}
 	}
 };

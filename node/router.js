@@ -91,16 +91,29 @@ go_post:
 		} else if (b.action == "register") {
 			var returnRegister = check_subscribe_log (b.login, b.pw, this, "check_subscribe_log");
 			if (1 == returnRegister) {
-				//var data = {email: mail, password: pw, pseudo: p};//continue HEEEEEEEEEEEEEEEEEEEEEEEEEEEEERE !!!
+				//sequence:
+				//1: get id
+				//var userTemporaryId = create_id ();
+				
+				//2: push temporary user + id to db
+				//push_temporary_user (userTemporaryId, b.login, b.pw);
+				
+				//3: send mail
+				//reach for mailAddressee object (in nodeMailer)
+				//this.mailRouter (mailAuthor, b.address, b.login, b.pw, userTemporaryId);
+				//stop
+				
+				//var data = {email: mail, password: pw, pseudo: p};
 				//tools.post(data, register.cb_sub);
 				//var emailLinkContent = ;
 			} else {
-				this.resp.write(JSON.stringify({resp: "id already existing"}));
+				this.resp.write(JSON.stringify({resp: "id already existing"})); //TODO: comment retourner une donnee a la page web ?
 			}
 		} else if (b.action == "submit article") {
 			_this.submitArticle(b);
 		} else if ("confirm_registration" == b.action) {
-			//TODO: call db functions -> push_user_to_db, new_website, log_in user (including push_rights), load_form_page
+			//1: check if already existing website
+			//2: if not push user to caosweb db, then log in user, then push new website, then push user to new website, then push user as admin, then log in user, then load form change webpage
 		} else {
 			this.resp.write(JSON.stringify({resp: "Service not found"}));
 		}

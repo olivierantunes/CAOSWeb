@@ -26,10 +26,6 @@ exports.submit_article = function (b) {
 		//test data
 		var articleID = 666; //for testing
 		
-		//retesting
-		console.log ("\n\ninto function:\ntitle: " + b.title);
-		console.log ("content: " + b.title);
-		
 		//Step 2: push file then content
 		this.push_article_db (articleID, b);
 	},
@@ -44,17 +40,16 @@ exports.push_article_db = function (articleID, b) {
 		var dirPath = dirName + articleID;
 		
 		fs.exists(dirPath, function(exists) {
-			util.log ("folder does not exist -> creation");
 			if (!exists) {
-				fs.mkdirParent = function(dirPath, mode, callback) {
-					fs.mkdir(dirPath, mode, function(error) {
+				util.log ("folder does not exist -> creation");
+				fs.mkdir(dirPath, function() {
+					fs.mkdir(dirPath, function(error) {
 						if (error && error.errno === 34) {
 							fs.mkdirParent(path.dirname(dirPath), mode, callback);
 							fs.mkdirParent(dirPath, mode, callback);
 						}
-						callback && callback(error);
 					});
-				}
+				});
 			} else {
 				util.log ("folder already exists");
 			};

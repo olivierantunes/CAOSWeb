@@ -2,6 +2,7 @@ var util = require("util");
 var url = require("url");
 var fs = require("fs");
 require("./styles.js").add_theme();
+var db = require("./bdd_js.js");
 
 var dirName = './article/';
 
@@ -86,14 +87,14 @@ go_post:
 		var _this = this;
         b = JSON.parse(b);
 		this.resp.writeHead(200, {"Content-Type": "application/json"});
-		if (b.action == "log in") {
+		if (b.action == "log-in") {
 			var returnCheckLog = check_log (b.pseudo, b.password, this, "check_log"); //TODO: check cb_checkLog => the COOKIE thing
 		} else if (b.action == "register-blog") {
 			var returnRegister = check_subscribe_log (b.pseudo, b.password, this, "check_subscribe_log");
 			if (1 == returnRegister) {
 				//sequence:
 				//1: get id
-				var userTemporaryId = create_ID (b.pseudo);
+				var userTemporaryId = create_ID (b.pseudo); //or: var userTemporaryId = db.create_ID (b.pseudo);
 				
 				//2: push temporary user + id to db
 				register (b.pseudo, b.password, b.email, userTemporaryId, right, this, "register");
@@ -126,6 +127,20 @@ go_post:
 		} else if ("confirm_registration" == b.action) {
 			//1: check if already existing website
 			//2: if not push user to caosweb db, then log in user, then push new website, then push user to new website, then push user as admin, then log in user, then load form change webpage
+		} else if (b.action == "get-rights") {
+			//TODO
+		} else if (b.action == "get-article") {
+			//TODO
+		} else if (b.action == "get-validate") {
+			//TODO
+		} else if (b.action == "validation-article") {
+			//TODO
+		} else if (b.action == "delete-article") {
+			//TODO
+		} else if (b.action == "get-members") {
+			//TODO
+		} else if (b.action == "logout") {
+			//TODO
 		} else {
 			this.resp.write(JSON.stringify({resp: "Service not found"}));
 		}

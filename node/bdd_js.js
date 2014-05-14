@@ -26,11 +26,10 @@
  * 17 - log_out - Test OK
  * 18 - modif_pw - TEST OK
  * 19 - order_article - Test OK
+ * 20 - users_list - Test OK
  *
  */
 
-
-// TODO: peut on sécuriser les fichiers ?
 // !!! TODO Général : bien nommer la BDD avant la finale version
 
 var sqlite3 = require("sqlite3").verbose();
@@ -369,7 +368,7 @@ exports.check_cookie = function (user,cookie, obj, func_name) {
  * \detail 15 - Create a article ID
  * Test OK le 06/05
  * @param (string) username of the user
- * @callback (boolean) calls the callback with a boolean argument
+ * @callback (string) the ID or a "0" if the function does not work.
  */
 exports.create_ID = function (user) {
 	if (user && typeof user == "string") {
@@ -383,7 +382,8 @@ exports.create_ID = function (user) {
 
 /**
  * \detail 16 - valid_article function change the status of an article which is on wait(0) to OK  (1) 
- * Test OK le 06/05
+ * Furthermore, it update the date of the validation of the article 
+ * Test OK le 13/05
  * @param (string) articleID
  * @param (object) this
  * @param (string) func_name
@@ -391,7 +391,7 @@ exports.create_ID = function (user) {
  */ 
 exports.valid_article = function (articleID, obj, func_name) {
 		util.log("VALID_ARTICLE - Opening");
-		var stmt = "UPDATE test articleStatus = 1 WHERE articleID =\""+articleID+"\"";
+		var stmt = "UPDATE test articleStatus = 1, date = NOW() WHERE articleID =\""+articleID+"\"";
 		var flag = 0;
 		db.each(stmt, function (e,r) {
 		if(e) {
@@ -459,7 +459,7 @@ exports.modif_pw = function(user, pw, obj, func_name) {
  * \detail 19 - order_article function return the 5 last articles
  * you have to input the status (articleStatus) of the article (1 or 0)
  * Test OK le 10/05
- * @param INT articleStatus
+ * @param (INT) articleStatus
  * @param (object) this
  * @param (string) func_name
  * @callback calls the callback with an array wich includes the 5 last articleID published and date of each them
@@ -478,4 +478,27 @@ exports.order_article = function(articleStatus, obj, func_name) {
 				obj[func_name](art);
 			});
 		util.log("ORDER_ARTICLE - Closing");
+};
+
+/**
+ * \detail 20 - Users_list function gives you the list of all registered members 
+ * the functions gives you the result in a array of JSON object : user, email, right
+ * Test OK le 14/05
+ * @param (object) this
+ * @param (string) func_name
+ * @callback calls the callback with an array wich includes the list of users : user (STRING), email (STRING), right (INT)
+ */
+exports.users_list = function(obj, func_name) {
+	util.log("USERS_LIST - Opening");
+	var stmt = "SELECT * FROM test ORDER BY date DSC" ;
+	var art = new Array();
+		db.each(stmt, function (e,r) {
+			if(e) {
+				util.log("ERROR - SQL - USERS_LIST function: " + e);
+			}
+				art.push({user : r.user, email : r.email, right : r.right });
+			}, function () {
+				obj[func_name](art);
+			});
+		util.log("USERS_LIST - Closing");
 };

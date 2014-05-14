@@ -16,7 +16,8 @@ exports.register_blog:
 			
 			db.register (b.pseudo, b.password, b.email, userTemporaryId, right, this, "register");
 			
-			nodeMailer.mailRouter (b.email, b.pseudo, b.password, userTemporaryId);
+			//the prototype was modified
+			//nodeMailer.mailRouter (b.email, b.pseudo, b.password, userTemporaryId);
 		},
 		
 /**
@@ -27,4 +28,5 @@ exports.register_blog:
 exports.register_caosweb:
 		function (b) {
 			
-		},
+		};
+		

@@ -5,7 +5,8 @@ site.on_ready = function () {
 };
 
 site.cb_rights = function () {
-	//if (readystate) //TODO
+	//if (this.readyState == 4 && this.statusCode == 200) {
+	//var r = JSON.parse(this.responseText);
 	var rights = 1;
 	var elt = document.getElementsByClassName("dynamic-rights")[0];
 	if (rights == 0) {

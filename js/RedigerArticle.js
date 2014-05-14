@@ -4,9 +4,15 @@ site.on_ready = function () {
 	document.addEventListener("click", site.on_click);
 };
 
+site.ask_right = function() {
+    var data ={"action": "get_rights"};
+	site.post(data, site.cb_rights);
+};
+
 site.cb_rights = function () {
 	//if (readystate) //TODO
-	var rights = 1;
+	var right = 1; //JSON.parse(this.responseText);
+	//right=rights.role;
 	var elt = document.getElementsByClassName("dynamic-rights")[0];
 	if (rights == 0) {
 	elt.innerHTML +="<div class=\"container\">"+
@@ -111,25 +117,15 @@ site.cb_rights = function () {
 
 site.on_click = function (ev){
 	var src = ev.target;
-	
 	console.log("toc");
-	
-	if (src.has_class("go-top")){
-		window.scrollTo(0,0);
-	} else if (src.has_class("go-dec")) {
-		var t = document.getElementById("dec");
-		window.scrollTo(0, t.offsetTop);
-	} else if (src.has_class("submit-art")){
-	
+	if (src.has_class("submit-art")){
+	site.submit_arti();
 	}
-
 };
 site.submit_arti= function() {
 	var t = document.getElementsByClassName("title")[0];
-	var a= document.getElementsByClassName("author")[0];
 	var c= document.getElementsByClassName("content")[0];
-	
-	var data = {action: "submit-art", title: t, author: a, content: c};
+	var data = {action: "submit-art", title: t, content: c};
 	tools.post(data, site.cb_sub_art);
 };
 
@@ -138,8 +134,9 @@ site.cb_sub_art = function () {
 		var r = JSON.parse(this.responseText);
 		if (r.resp == "ok") {
 			alert("article posté");
+			location.reload(); 
 		} else {
-			alert("FAIL");
+			alert("Votre article n'a pu être posté. Veulliez ré-essayer ultérieurement s'il-vous-plait.");
 		}
 	}
 };

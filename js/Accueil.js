@@ -5,14 +5,14 @@ site.on_ready = function () {
 };
 
 site.ask_right = function() {
-    var data ={"action": "get_right"};
+    var data ={"action": "get_rights"};
 	site.post(data, site.cb_rights);
 };
 
 site.cb_rights = function () {
 	//if (readystate) //TODO
 	var right = 1; //JSON.parse(this.responseText);
-	//rights=right.role;
+	//right=rights.role;
 	var elt = document.getElementsByClassName("dynamic-rights")[0];
 	if (rights == 0) {
 	elt.innerHTML +="<div class=\"container\">"+
@@ -117,18 +117,7 @@ site.cb_rights = function () {
 
 site.on_click = function (ev){
 	var src = ev.target;
-	
 	console.log("toc");
-	
-	if (src.has_class("go-top")){
-		window.scrollTo(0,0);
-	} else if (src.has_class("go-dec")) {
-		var t = document.getElementById("dec");
-		window.scrollTo(0, t.offsetTop);
-	} else if (src.has_class("submit-art")){
-	
-	}
-
 };
 
 site.ask_article = function() {

@@ -5,9 +5,15 @@ console.log("on_ready trigger event");
 	document.addEventListener("click", register.on_click);
 };
 
+site.ask_right = function() {
+    var data ={"action": "get_rights"};
+	site.post(data, site.cb_rights);
+};
+
 site.cb_rights = function () {
 	//if (readystate) //TODO
-	var rights = 1;
+	var right = 1; //JSON.parse(this.responseText);
+	//right=rights.role;
 	var elt = document.getElementsByClassName("dynamic-rights")[0];
 	if (rights == 0) {
 	elt.innerHTML +="<div class=\"container\">"+
@@ -27,7 +33,7 @@ site.cb_rights = function () {
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
-							"<li class=\"blog-nav-item active\"><a id=\"logout\">Se déconnecter</a></li>"+
+							"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
 	}
@@ -49,7 +55,7 @@ site.cb_rights = function () {
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
-							"<li class=\"blog-nav-item active\"><a id=\"logout\">Se déconnecter</a></li>"+
+							"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
 	}
@@ -64,7 +70,7 @@ site.cb_rights = function () {
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
-							"<li class=\"blog-nav-item active\"><a id=\"logout\">Se déconnecter</a></li>"+
+							"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
 	}
@@ -78,7 +84,7 @@ site.cb_rights = function () {
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
-							"<li class=\"blog-nav-item active\"><a id=\"logout\">Se déconnecter</a></li>"+
+							"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
 	}
@@ -91,7 +97,7 @@ site.cb_rights = function () {
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
-							"<li class=\"blog-nav-item active\"><a id=\"logout\">Se déconnecter</a></li>"+
+							"<li class=\"blog-nav-item  logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
 	}
@@ -110,15 +116,33 @@ site.cb_rights = function () {
 	}
 };
 
+site.logout = function() {
+    var data ={"action": "logout"};
+	site.post(data, site.cb_logo);
+};
+
+site.cb_logo = function () {
+	if (this.readyState == 4 && this.statusCode == 200) {
+		var r = JSON.parse(this.responseText);
+		if (r.resp == "ok") {
+			alert("Vous êtes bien déconnecté");
+			location.assign("Accueil.html");
+		} else {
+			alert("Vous n'avez pas pu être déconnecté. Veulliez ré-essayer ultérieurement s'il-vous-plait.");
+		}
+	}
+};
+
 register.on_click = function (ev){
 	var src = ev.target;
 	console.log("on_click avant 19);
-	
 	if (src.has_class("submit-register")){
 		console.log("on_click apres 112");
 		register.submit();
 	}
-
+	if (src.has_class("logout")){
+	site.logout();
+	}
 };
 
 register.submit = function () {
@@ -148,19 +172,18 @@ register.submit = function () {
 		cpw.add_class("alert-success");
 	}
 	if (mail.value = cmail.value || mail.value || pw.value = cpw.value || pw.value){
-		var data = {action: "register", email: mail, password: pw, pseudo: p};
-		tools.post(data, register.cb_sub);
+		var data = {action: "register-blog", email: mail, password: pw, login: p};
+		tools.post(data, site.cb_reg_blog);
 	} 
 }
 
-site.cb_sub = function () {
+site.cd_reg_blog = function () {
 	if (this.readyState == 4 && this.statusCode == 200) {
 		var r = JSON.parse(this.responseText);
 		if (r.resp == "ok") {
-			alert("ok");
-			alert("article posté");
+			alert("Un mail vous a été envoyé pour pouvoir finir votre inscription.");
 		} else {
-			alert("FAIL");
+			alert("Votre inscription n'as pas pu être prise en compte, veuillez réessayer ultérieurement.");
 		}
 	}
 };

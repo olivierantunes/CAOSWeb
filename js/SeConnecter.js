@@ -4,10 +4,15 @@ site.on_ready = function () {
 	document.addEventListener("click", site.on_click);
 };
 
+site.ask_right = function() {
+    var data ={"action": "get_rights"};
+	site.post(data, site.cb_rights);
+};
+
 site.cb_rights = function () {
-	//if (this.readyState == 4 && this.statusCode == 200) {
-	//var r = JSON.parse(this.responseText);
-	var rights = 1;
+	//if (readystate) //TODO
+	var right = 1; //JSON.parse(this.responseText);
+	//right=rights.role;
 	var elt = document.getElementsByClassName("dynamic-rights")[0];
 	if (rights == 0) {
 	elt.innerHTML +="<div class=\"container\">"+
@@ -27,7 +32,7 @@ site.cb_rights = function () {
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
-							"<li class=\"blog-nav-item active\"><a id=\"logout\">Se déconnecter</a></li>"+
+							"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
 	}
@@ -49,7 +54,7 @@ site.cb_rights = function () {
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
-							"<li class=\"blog-nav-item active\"><a id=\"logout\">Se déconnecter</a></li>"+
+							"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
 	}
@@ -64,7 +69,7 @@ site.cb_rights = function () {
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
-							"<li class=\"blog-nav-item active\"><a id=\"logout\">Se déconnecter</a></li>"+
+							"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
 	}
@@ -78,7 +83,7 @@ site.cb_rights = function () {
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
-							"<li class=\"blog-nav-item active\"><a id=\"logout\">Se déconnecter</a></li>"+
+							"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
 	}
@@ -91,7 +96,7 @@ site.cb_rights = function () {
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
-							"<li class=\"blog-nav-item active\"><a id=\"logout\">Se déconnecter</a></li>"+
+							"<li class=\"blog-nav-item  logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
 	}
@@ -110,26 +115,37 @@ site.cb_rights = function () {
 	}
 };
 
+site.logout = function() {
+    var data ={"action": "logout"};
+	site.post(data, site.cb_logo);
+};
+
+site.cb_logo = function () {
+	if (this.readyState == 4 && this.statusCode == 200) {
+		var r = JSON.parse(this.responseText);
+		if (r.resp == "ok") {
+			alert("Vous êtes bien déconnecté");
+			location.assign("Accueil.html");
+		} else {
+			alert("Vous n'avez pas pu être déconnecté. Veulliez ré-essayer ultérieurement s'il-vous-plait.");
+		}
+	}
+};
+
 site.on_click = function (ev){
 	var src = ev.target;
-	
 	console.log("toc");
-	
-	if (src.has_class("go-top")){
-		window.scrollTo(0,0);
-	} else if (src.has_class("go-dec")) {
-		var t = document.getElementById("dec");
-		window.scrollTo(0, t.offsetTop);
-	} else if (src.has_class("submit-art")){
-	
+	if (src.has_class("check_log")){
+	site.check_login
 	}
-
+	if (src.has_class("logout")){
+	site.logout();
+	}
 };
-site.check_log= function() {
+site.check_login= function() {
 	var m = document.getElementsByClassName("email")[0];
 	var pw= document.getElementsByClassName("password")[0];
-	
-	var data = {action: "check_log", email: m, password: pw};
+	var data = {action: "login", mail: m, password: pw};
 	tools.post(data, site.cb_check_log);
 };
 
@@ -137,9 +153,10 @@ site.cb_check_log = function () {
 	if (this.readyState == 4 && this.statusCode == 200) {
 		var r = JSON.parse(this.responseText);
 		if (r.resp == "ok") {
-			alert("Bien connecté");
+			alert("Vous êtes bien connecté");
+			location.assign("Accueil.html");
 		} else {
-			alert("FAIL");
+			alert("Vous n'avez pas pu être connecté. Veuillez reessayer où vous inscrire d'abord.");
 		}
 	}
 };

@@ -6,13 +6,24 @@ site.on_ready = function () {
 
 site.on_click = function (ev){
 	var src = ev.target;
-	
 	console.log("toc");
+	if (src.has_class("delete-member")){
+	site.delete_member();
+	}
+	else if (src.has_class("logout")){
+	site.logout();
+	}
+};
+
+site.ask_right = function() {
+    var data ={"action": "get_rights"};
+	site.post(data, site.cb_rights);
 };
 
 site.cb_rights = function () {
 	//if (readystate) //TODO
-	var rights = 1;
+	var right = 1; //JSON.parse(this.responseText);
+	//right=rights.role;
 	var elt = document.getElementsByClassName("dynamic-rights")[0];
 	if (rights == 0) {
 	elt.innerHTML +="<div class=\"container\">"+
@@ -32,7 +43,7 @@ site.cb_rights = function () {
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
-							"<li class=\"blog-nav-item active\"><a id=\"logout\">Se déconnecter</a></li>"+
+							"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
 	}
@@ -54,7 +65,7 @@ site.cb_rights = function () {
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
-							"<li class=\"blog-nav-item active\"><a id=\"logout\">Se déconnecter</a></li>"+
+							"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
 	}
@@ -69,7 +80,7 @@ site.cb_rights = function () {
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
-							"<li class=\"blog-nav-item active\"><a id=\"logout\">Se déconnecter</a></li>"+
+							"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
 	}
@@ -83,7 +94,7 @@ site.cb_rights = function () {
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
-							"<li class=\"blog-nav-item active\"><a id=\"logout\">Se déconnecter</a></li>"+
+							"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
 	}
@@ -96,7 +107,7 @@ site.cb_rights = function () {
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
-							"<li class=\"blog-nav-item active\"><a id=\"logout\">Se déconnecter</a></li>"+
+							"<li class=\"blog-nav-item  logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
 	}
@@ -115,6 +126,11 @@ site.cb_rights = function () {
 	}
 };
 
+site.members = function() {
+    var data ={"action": "get_members"};
+	site.post(data, site.cb_members);
+};
+
 site.rights_match = {
 	0:"Super-Administrateur",
 	1:"Administrateur",
@@ -124,19 +140,20 @@ site.rights_match = {
 };
 
 site.cb_membres = function () {
-	//if (readystate) //TODO
+	//if (this.readyState == 4 && this.statusCode == 200) {
+	//var r = JSON.parse(this.responseText);
 	var membre0 = {
-		pseudo: "MmeMichu",
+		login: "MmeMichu",
 		mail: "a@b.c",
 		rights: 0,
 	}
 	var membre1 = {
-		pseudo: "MmeMichu1",
+		login: "MmeMichu1",
 		mail: "b@b.c",
 		rights: 1,
 	}
 	var membre2 = {
-		pseudo: "MmeMichu2",
+		login: "MmeMichu2",
 		mail: "c@b.c",
 		rights: 2,
 	}
@@ -152,12 +169,12 @@ site.cb_membres = function () {
 	for (a in r) {
 		var tac = "";
 		if (r[a].rights) {
-			tac = "<button id=\"deletemember\" class=\"btn btn-danger\"><span class=\"glyphicon glyphicon-trash\"></span></button>";
+			tac = "<button class=\"btn delete-member btn-danger\"><span class=\"glyphicon glyphicon-trash\"></span></button>";
 		}
 		
 		r[a].rights = site.rights_match[r[a].rights];
 	elt.innerHTML += 	"<tr>"+
-						"<td>"+r[a].pseudo+"</td>"+
+						"<td>"+r[a].login+"</td>"+
 						"<td>"+r[a].mail+"</td>"+
 						"<td>"+r[a].rights+"</td>"+
 						"<td>" + tac + "</td>"+
@@ -165,10 +182,45 @@ site.cb_membres = function () {
 	};
 };
 
+site.delete_member= function() {
+	var log = document.getElementsByClassName(r[a].login)[0];
+	var data = {action: "delete-member", login: log};
+	tools.post(data, site.cb_del_member);
+};
+
+site.cb_del_valid = function () {
+	if (this.readyState == 4 && this.statusCode == 200) {
+		var r = JSON.parse(this.responseText);
+		if (r.resp == "ok") {
+			alert("membre supprimé");
+			location.reload(); 
+		} else {
+			alert("Ce membre n'a pu être supprimé. Veulliez ré-essayer ultérieurement s'il-vous-plait.");
+		}
+	}
+};
+
+site.logout = function() {
+    var data ={"action": "logout"};
+	site.post(data, site.cb_logo);
+};
+
+site.cb_logo = function () {
+	if (this.readyState == 4 && this.statusCode == 200) {
+		var r = JSON.parse(this.responseText);
+		if (r.resp == "ok") {
+			alert("Vous êtes bien déconnecté");
+			location.assign("Accueil.html");
+		} else {
+			alert("Vous n'avez pas pu être déconnecté. Veulliez ré-essayer ultérieurement s'il-vous-plait.");
+		}
+	}
+};
+
 window.onload = function () {
 	setTimeout(site.on_ready, 1);
 	setTimeout(site.cb_rights, 1);
-	setTimeout(site.cb_membres, 500);
+	setTimeout(site.membres, 500);
 };
 
 HTMLElement.prototype.has_class = function(s) {

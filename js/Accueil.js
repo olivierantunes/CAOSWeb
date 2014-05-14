@@ -32,7 +32,7 @@ site.cb_rights = function () {
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
-							"<li class=\"blog-nav-item active\"><a id=\"logout\">Se déconnecter</a></li>"+
+							"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
 	}
@@ -54,7 +54,7 @@ site.cb_rights = function () {
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
-							"<li class=\"blog-nav-item active\"><a id=\"logout\">Se déconnecter</a></li>"+
+							"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
 	}
@@ -69,7 +69,7 @@ site.cb_rights = function () {
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
-							"<li class=\"blog-nav-item active\"><a id=\"logout\">Se déconnecter</a></li>"+
+							"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
 	}
@@ -83,7 +83,7 @@ site.cb_rights = function () {
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
-							"<li class=\"blog-nav-item active\"><a id=\"logout\">Se déconnecter</a></li>"+
+							"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
 	}
@@ -96,7 +96,7 @@ site.cb_rights = function () {
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
-							"<li class=\"blog-nav-item active\"><a id=\"logout\">Se déconnecter</a></li>"+
+							"<li class=\"blog-nav-item  logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
 	}
@@ -115,9 +115,29 @@ site.cb_rights = function () {
 	}
 };
 
+site.logout = function() {
+    var data ={"action": "logout"};
+	site.post(data, site.cb_logo);
+};
+
+site.cb_logo = function () {
+	if (this.readyState == 4 && this.statusCode == 200) {
+		var r = JSON.parse(this.responseText);
+		if (r.resp == "ok") {
+			alert("Vous êtes bien déconnecté");
+			location.assign("Accueil.html");
+		} else {
+			alert("Vous n'avez pas pu être déconnecté. Veulliez ré-essayer ultérieurement s'il-vous-plait.");
+		}
+	}
+};
+
 site.on_click = function (ev){
 	var src = ev.target;
 	console.log("toc");
+	if (src.has_class("logout")){
+	site.logout();
+	}
 };
 
 site.ask_article = function() {

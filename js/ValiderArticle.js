@@ -4,9 +4,15 @@ site.on_ready = function () {
 	document.addEventListener("click", site.on_click);
 };
 
+site.ask_right = function() {
+    var data ={"action": "get_rights"};
+	site.post(data, site.cb_rights);
+};
+
 site.cb_rights = function () {
 	//if (readystate) //TODO
-	var rights = 1;
+	var right = 1; //JSON.parse(this.responseText);
+	//right=rights.role;
 	var elt = document.getElementsByClassName("dynamic-rights")[0];
 	if (rights == 0) {
 	elt.innerHTML +="<div class=\"container\">"+
@@ -26,7 +32,7 @@ site.cb_rights = function () {
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
-							"<li class=\"blog-nav-item active\"><a id=\"logout\">Se déconnecter</a></li>"+
+							"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
 	}
@@ -48,7 +54,7 @@ site.cb_rights = function () {
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
-							"<li class=\"blog-nav-item active\"><a id=\"logout\">Se déconnecter</a></li>"+
+							"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
 	}
@@ -63,7 +69,7 @@ site.cb_rights = function () {
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
-							"<li class=\"blog-nav-item active\"><a id=\"logout\">Se déconnecter</a></li>"+
+							"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
 	}
@@ -77,7 +83,7 @@ site.cb_rights = function () {
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
-							"<li class=\"blog-nav-item active\"><a id=\"logout\">Se déconnecter</a></li>"+
+							"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
 	}
@@ -90,7 +96,7 @@ site.cb_rights = function () {
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
-							"<li class=\"blog-nav-item active\"><a id=\"logout\">Se déconnecter</a></li>"+
+							"<li class=\"blog-nav-item  logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
 	}
@@ -106,6 +112,23 @@ site.cb_rights = function () {
 							"<li class=\"blog-nav-item active\"><a href=\"SeConnecter.html\">Se connecter</a></li>"+
 						"</ul>"+
 					"</div>";
+	}
+};
+
+site.logout = function() {
+    var data ={"action": "logout"};
+	site.post(data, site.cb_logo);
+};
+
+site.cb_logo = function () {
+	if (this.readyState == 4 && this.statusCode == 200) {
+		var r = JSON.parse(this.responseText);
+		if (r.resp == "ok") {
+			alert("Vous êtes bien déconnecté");
+			location.assign("Accueil.html");
+		} else {
+			alert("Vous n'avez pas pu être déconnecté. Veulliez ré-essayer ultérieurement s'il-vous-plait.");
+		}
 	}
 };
 
@@ -185,8 +208,11 @@ site.on_click = function (ev){
 	if (src.has_class("valid_article")){
 	site.submit_arti();
 	}
-	else is (src.has_class'"delete_article")){
+	else if (src.has_class'"delete_article")){
 	site.delte_arti();
+	}
+	else if (src.has_class("logout")){
+	site.logout();
 	}
 };
 

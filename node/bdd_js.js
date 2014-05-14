@@ -26,12 +26,10 @@
  * 17 - log_out - Test OK
  * 18 - modif_pw - TEST OK
  * 19 - order_article - Test OK
+ * 20 - users_list - Test OK
  *
  */
 
-// TODO :  Pour LOIC lancer commande unix
-// TODO: fonction pour supprimer un article en attente (ou pas^^)
-// TODO: fzire une fonction qui renvoi ts les utilisateur: pseudo , mail,  droits 
 // !!! TODO Général : bien nommer la BDD avant la finale version
 
 var sqlite3 = require("sqlite3").verbose();
@@ -480,4 +478,27 @@ exports.order_article = function(articleStatus, obj, func_name) {
 				obj[func_name](art);
 			});
 		util.log("ORDER_ARTICLE - Closing");
+};
+
+/**
+ * \detail 20 - Users_list function gives you the list of all registered members 
+ * the functions gives you the result in a array of JSON object : user, email, right
+ * Test OK le 14/05
+ * @param (object) this
+ * @param (string) func_name
+ * @callback calls the callback with an array wich includes the list of users : user (STRING), email (STRING), right (INT)
+ */
+exports.users_list = function(obj, func_name) {
+	util.log("USERS_LIST - Opening");
+	var stmt = "SELECT * FROM test ORDER BY date DSC" ;
+	var art = new Array();
+		db.each(stmt, function (e,r) {
+			if(e) {
+				util.log("ERROR - SQL - USERS_LIST function: " + e);
+			}
+				art.push({user : r.user, email : r.email, right : r.right });
+			}, function () {
+				obj[func_name](art);
+			});
+		util.log("USERS_LIST - Closing");
 };

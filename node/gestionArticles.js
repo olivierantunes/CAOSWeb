@@ -1,9 +1,10 @@
 var util = require("util");
 var fs = require("fs");
+//var db = require("./bdd_js.js");
 
 var dirName = './article/';
 
-/*testing data
+//testing data
 var b = {
 	title: "titreArticle",
 	author: "cestMoiLAuteur",
@@ -13,7 +14,6 @@ var b = {
 //var b = JSON.stringify(bob);
 console.log ("title: " + b.title);
 console.log ("content: " + b.content);
-*/
 
 /**
  * This function orders the operations to push an article in the db
@@ -21,9 +21,9 @@ console.log ("content: " + b.content);
  * @return (String) : "ok" or "ko"
  */
 exports.submit_article = function (b) {
-		var articleID = db.create_article_id();
-		
-		this.push_article_db (articleID, b);
+		//var articleID = db.create_article_id(); uncomment for run
+		var articleID = 11111;
+		push_article_db (articleID, b);
 	},
 	
 /**
@@ -47,23 +47,11 @@ push_article_db = function (articleID, b) {
 					});
 				});
 			} else {
-				//util.log ("folder already exists");
-				this.resp.write(JSON.stringify({resp: "folder already existing"}));
+				//this.resp.write(JSON.stringify({resp: "folder already existing"})); uncomment - > if the folder already exists, then do not stop the process
+				util.log("folder already existing");//delete
 			};
 		});
 		
-		//for testing
-		//delete from here
-		fs.exists(dirPath, function(exists) {
-			if (exists) {
-				util.log ("folder successfully created");
-			} else {
-				util.log ("failed creating folder");
-			}
-		});
-		//to here
-		
-		//TODO: call function to push
 		this.push_content (dirPath, articleID, b);
 	},
 	
@@ -76,55 +64,75 @@ push_article_db = function (articleID, b) {
  */
 push_content = function (dirPath, articleID, b) {
 		var articlePath = dirPath + '/' + articleID;
-		var data = '{ title: ' + b.title + ', author: ' + b.author + ', content: ' + b.content + '}';
+		var data = '{title: ' + b.title + ', author: ' + b.author + ', content: ' + b.content + '}';
 		
 		fs.exists(articlePath, function(exists) {
 			if (!exists) {
 				util.log ("file does not exist -> creation");
 				fs.writeFile(articlePath, data, function(err) {
 					if(err) {
-						//this.resp.write(JSON.stringify({resp: "error uploading file"})); //uncomment
-						util.log ("error creating file\n");
+						//this.resp.write(JSON.stringify({resp: "error uploading file"})); uncomment - > if the file already exists, then do not stop the process
+						util.log ("error creating file\n");//delete
 					} else {
-						//this.resp.write(JSON.stringify({resp: "file saved"})); //uncomment
+						//this.resp.write(JSON.stringify({resp: "file saved"}));uncomment
 						util.log ("file saved");
 					}
 				});
 			} else {
-				//util.log ("file already exists");
-				this.resp.write(JSON.stringify({resp: "file already existing"}));
+				//this.resp.write(JSON.stringify({resp: "file already existing"}));uncomment
+				util.log ("file already exists");//delete
 			}
 		});
 		
-		//delete
-		//from here
-		fs.readFile(articlePath, function (err, data) {
-			if (err) util.log ("error (articlePath = " + articlePath + ")\n"); //throw err;
-			console.log("data: " + data);
-		});
-		//to here
-		
-		//this.resp.end(); //uncomment
+		//this.resp.end();uncomment
 	},
 	
 /**
- * This function loads every article //this function is called by the db articleStatus, object, functName
- * @param t (Array): TODO
- * @return (JSON object): article = { title: 'title', author: 'author', date: 'date', content: 'content'} //array of json objects
+ * This function loads every article
+ * @param dirPath (Array): array of articles ids
+ * @return (array of JSON objects): article = [{title: 'title1', author: 'author1', date: 'date1', content: 'content1'}, {title: 'title2', author: 'author2', date: 'date2', content: 'content2'}, ...]
  */
-load_articles:
-    function (articleIdArray) {
-		//-> db function returns: array (id1, id2, ...)
-		//var articleArray [];
-		for (id in articleIdArray) {
-			var articlePath = dirPath + '/' + id + '/' + id;
-			fs.readFile(articlePath, function (e, d) {
-				if (e) {
-					this.resp.write(JSON.stringify({resp: "error uploading file"}));
-				} else {
-					//JSON.stringify(file)
-					//push file to array
-				}
-			}
+exports.load_articles = function (dirName) {
+		//articleIdArray = db.order_article (articleStatus, obj, func_name) {
+		var articleIdArray = new Array (),
+			articleIdArray = ["12", "666", "23456789"],
+			returnedArticles = new Array (),
+			flag = 0;
+			
+		if (!articleIdArray) {
+			//this.resp.write(JSON.stringify({resp: "articles array transmission failed"}));uncomment
+			util.log ("array transmission failed");//delete
+		} else {
+			for (id in articleIdArray) {
+				var articlePath = dirName + '/' + id + '/' + id;
+				fs.readFile(articlePath, function (err, data) {
+					if (err) {
+						flag = 1;
+						util.log("error loading article");//delete
+					} else {
+						returnedArticles.push(data);
+						util.log("article loaded\n");//delete
+					}
+				});
+			};
 		}
-    },
+		
+		if (!flag) {
+			//this.resp.write(JSON.stringify({resp: "ko"}));uncomment
+			util.log("load failed");
+		} else {
+			//this.resp.write(JSON.stringify(returnedArticles));uncomment
+			util.log("load successful");
+			this.test_load_articles (returnedArticles);//delete
+		}
+		//this.resp.end();uncomment
+    }
+//test function
+test_load_articles = function (tabJsonArt) {
+		for (id in articleIdArray) {
+			console.log(id + "\n");
+		};
+	},
+
+//this.submit_article (b);
+this.load_articles (dirName);

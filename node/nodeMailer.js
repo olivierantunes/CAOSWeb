@@ -1,37 +1,49 @@
+var url = require("url");
 var util = require("util");
 var nodemailer = require("nodemailer");
 
 //for testing
 var mailAddressee = {
-		mailAddress: "je545@hotmail.com",//je545@hotmail.comloic@plard.fr
+		mailAddress: "je545@hotmail.com",
 		login: "userLogin",
 		password: "userPw",
 		registrationTemporaryCookie: "666"
-	}
+	};
 
-var smtpTransport = nodemailer.createTransport("SMTP", {
-		service: "Gmail",
-		auth: {
-			user: "noreply.caosweb@gmail.com",
-			pass: "CAOsWebEsme2014"
-		}
-	}
-);
-
-exports.mailRouter = function (addressee, addresseeLogin, addresseePassword, addresseeRegistrationTemporaryCookie) {
-	var textLink = "file:///C:/Users/Soap/Documents/GitHub/CAOSWeb/site/ConfirmRegistration.html?idUser=" + addresseeRegistrationTemporaryCookie,
+/**
+ * This function extracts data from the url (n) to build the redirection link
+ * @param targetMail (String): target mail address
+ * @param senderMail (String): sender mail address
+ * @param nuserLogin (String): user login
+ * @param userPw (String): user password
+ * @param userId (String): user Id
+ * @param nameWebsite (String): url website
+ * @return null
+ */
+exports.mail_router = function (targetMail, senderMail, userLogin, userPw, userId, nameWebsite) {
+	//args: + service?, auth: password? //IL FAUT GENERER UNE ADRESSE MAIL POUR LE BLOG!!!
+	var domain = url.parse(nameWebsite).hostname,
+		textLink = domain + "/?id=" + userId,//"http://www." + 
+		smtpTransport = nodemailer.createTransport ("SMTP", {
+			service: "Gmail", //default?
+			auth: {
+				user: SenderMail,
+				pass: "CAOsWebEsme2014"
+			}
+		}),
 		mailRegistration = {
-			from: "CAOsWeb <noreply.caosweb@gmail.com>",
-			to: addressee,
-			subject: "Confirmation inscription : CAOsWeb",
-			html: "<b>Bonjour, Bienvenue sur CAOsWeb !</b><br>Nous vous remercions de votre inscription à CAOsWeb, site de création de blogs.<br><br>Votre login est : "
-					+ addresseeLogin
-					+ "<br>Votre mot de passe est : " + addresseePassword
-					+ "<br>Cliquez sur " + '<a href=\"'+ textLink.toString() + '\">ce</a>' + " lien pour confirmer votre inscription et continuer la création de votre blog"
+			from: smtpTransport.auth[0],
+			to: targetMail,
+			subject: "Confirmation inscription à " + domain,
+			html: "<b>Bonjour, Bienvenue sur " + domain + " !</b><br>Nous vous remercions de votre inscription.<br>"
+					+ "<br>Votre login est : " + userLogin
+					+ "<br>Votre mot de passe est : " + userPw
+					+ "<br>Cliquez sur " + '<a href=\"'+ textLink.toString() + '\">ce</a>' + " lien pour terminer votre inscription à " + domain + "."
+					+ "<br><br>Bon surf."
 					+ "<br><br><br>lien : " + textLink
-		}
+		},
 
-	smtpTransport.sendMail(mailRegistration, function (error, response){
+	smtpTransport.sendMail(mailRegistration, function (error, response) {
 		if (error) {
 			util.log(error);
 		} else {
@@ -42,4 +54,4 @@ exports.mailRouter = function (addressee, addresseeLogin, addresseePassword, add
 }
 
 //for testing
-this.mailRouter (mailAddressee.mailAddress, mailAddressee.login, mailAddressee.password, mailAddressee.registrationTemporaryCookie);
+this.mail_router (mailAddressee.mailAddress, "noreply.caosweb@gmail.com", mailAddressee.login, mailAddressee.password, mailAddressee.registrationTemporaryCookie, "http://domain.com:3000/path/to/something?query=string#fragment");

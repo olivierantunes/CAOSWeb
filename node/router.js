@@ -3,6 +3,8 @@ var url = require("url");
 var fs = require("fs");
 require("./styles.js").add_theme();
 var db = require("./bdd_js.js");
+var artManage = require("./gestionArticles.js");
+var regFcts = require("./registerFunctions.js");
 
 var dirName = './article/';
 
@@ -63,6 +65,7 @@ rest_method:
 
 /**
  * This function feeds the exchanger with input data
+ * @return null
  */
 post_method:
     function () {
@@ -88,39 +91,20 @@ go_post:
         b = JSON.parse(b);
 		this.resp.writeHead(200, {"Content-Type": "application/json"});
 		if (b.action == "log-in") {
-			var returnCheckLog = check_log (b.pseudo, b.password, this, "check_log"); //TODO: check cb_checkLog => the COOKIE thing
+			var returnCheckLog = db.check_log (b.pseudo, b.password, this, "check_log"); //TODO: check cb_checkLog => the COOKIE thing
 		} else if (b.action == "register-blog") {
-			var returnRegister = check_subscribe_log (b.pseudo, b.password, this, "check_subscribe_log");
+			var returnRegister = db.check_subscribe_log (b.pseudo, b.password, this, "check_subscribe_log");
 			if (1 == returnRegister) {
-				//sequence:
-				//1: get id
-				var userTemporaryId = create_ID (b.pseudo); //or: var userTemporaryId = db.create_ID (b.pseudo);
-				
-				//2: push temporary user + id to db
-				register (b.pseudo, b.password, b.email, userTemporaryId, right, this, "register");
-				
-				//3: send mail
-				mailRouter (b.email, b.pseudo, b.password, userTemporaryId);
-				//stop
+				regFunctions.register_blog (b);
 			} else {
-				this.resp.write(JSON.stringify({resp: "id already existing"})); //TODO: comment retourner une donnee a la page web ?
+				this.resp.write(JSON.stringify({resp: "ko"}));
 			}
 		} else if (b.action == "register-caosweb") {
 			var returnRegister = check_subscribe_log (b.pseudo, b.password, this, "check_subscribe_log");
 			if (1 == returnRegister) {
-				//sequence:
-				//1: get id
-				var userTemporaryId = create_ID (b.pseudo);
-				
-				//2: push temporary user + id to db
-				register (b.pseudo, b.password, b.email, userTemporaryId, right, this, "register");
-				
-				//3: send mail
-				mailRouter (b.email, b.pseudo, b.password, userTemporaryId);
-				
-				//stop
+				regFunctions.register_caosweb (b);
 			} else {
-				this.resp.write(JSON.stringify({resp: "id already existing"})); //TODO: comment retourner une donnee a la page web ?
+				this.resp.write(JSON.stringify({resp: "ko"}));
 			}
 		} else if (b.action == "submit article") {
 			_this.submitArticle(b);
@@ -148,67 +132,9 @@ go_post:
     },
 	
 /**
- * This function orders the operations to push an article in the db
- * @param b (JSON object) : article data stream = { title: 'title', author: 'author', content: 'content'}
- * @return (String) : "ok" or "ko"
- */
-submit_article:
-	function (b) {
-		//Step 1: ask for articleID
-		//var articleID = create_article_id();
-		
-		//Step 2: if ok, push to db
-		//	
-	},
-	
-/**
- * This function creates the article  environment and pushes images, videos and content
- * @param articleID (String) : article identifier
- * @param b (JSON object) : article data
- * @return (String) : "ok" or "ko"
- */
-push_article_db:
-	function (articleID, b) {
-		//path ok ?
-		var dirPath = dirName + articleID
-		fs.mkdirParent = function(dirPath, mode, callback) {
-			fs.mkdir(dirPath, mode, function(error) {
-				if (error && error.errno === 34) {
-					fs.mkdirParent(path.dirname(dirPath), mode, callback);
-					fs.mkdirParent(dirPath, mode, callback);
-				}
-				callback && callback(error);
-			});
-		};
-		//TODO: call functions to push videos, images and context
-		//push_content(dirPath, articleID, b);
-	},	
-	
-/**
- * This function writes the content of the article in a text file
- * @param dirPath (String) : article directory path
- * @param articleID (String) : article identifier
- * @param b (JSON object) : article data
- * @return (String) : "ok" or "ko"
- */
-push_content:
-	function (dirPath, articleID, b) {
-		var articlePath = dirPath + '/' + articleID +'.txt'
-		var data = '{ title: ' + b.title + ', author: ' + b.author + ', content: ' + b.content + '}';
-		fs.writeFile(articlePath, data, function(err) {
-			if(err) {
-				this.resp.write(JSON.stringify({resp: "error uploading file"}));
-			} else {
-				this.resp.write(JSON.stringify({resp: "file saved"}));
-			}
-		});
-		this.resp.end();
-	},
-	
-/**
  * This function replies to the log in event
- * @param f (Int) : flag of registration succeeding 1 or 0
- * @return (String) : "ok" or "ko"
+ * @param f (Int): flag of registration succeeding 1 or 0
+ * @return (String): "ok" or "ko"
  */
 cb_login:
 	function (f) {
@@ -222,8 +148,8 @@ cb_login:
 
 /**
  * This function replies to the registration event
- * @param f (Int) : flag of registration succeeding 1 or 0
- * @return (String) : "ok" or "ko"
+ * @param f (Int): flag of registration succeeding 1 or 0
+ * @return (String): "ok" or "ko"
  */
 cb_subscribe:
 	function (f) {
@@ -237,8 +163,8 @@ cb_subscribe:
 	
 /**
  * This function replies to the article submission event
- * @param f (Int) : flag of registration succeeding 1 or 0
- * @return (String) : "ok" or "ko"
+ * @param f (Int): flag of registration succeeding 1 or 0
+ * @return (String): "ok" or "ko"
  */
 cb_submitArticle:
 	function (f) {
@@ -249,31 +175,6 @@ cb_submitArticle:
 		}
 		this.resp.end();
 	},
-	
-
-/**
- * This function loads every article //this function is called by the db articleStatus, object, functName
- * @param t (Array): TODO
- * @return (JSON object) : article = { title: 'title', author: 'author', date: 'date', content: 'content'} //array of json objects
- */
- /*
-load_articles:
-    function (articleIdArray) {
-		//-> db function returns: array (id1, id2, ...)
-		//var articleArray [];
-		for (id in articleIdArray) {
-			var articlePath = dirPath + '/' + id + '/' + id;
-			fs.readFile(articlePath, function (e, d) {
-				if (e) {
-					this.resp.write(JSON.stringify({resp: "error uploading file"}));
-				} else {
-					//JSON.stringify(file)
-					//push file to array
-				}
-			}
-		}
-    },
-*/
 	
 get_method:
     function () {

@@ -8,25 +8,23 @@
  * 
  * List of functions :
  * 1 - create_cookie - TEST OK
- * 2 - insert - Ne pas utiliser
- * 3 - read - Ne pas utiliser
- * 4 - allRead - Ne pas utiliser - Fonction de Test uniquement
- * 5 - check_log - Test OK
- * 6 - register - Test OK
- * 7 - unsubscribe - Test OK
- * 8 - check_subscribe_log - Test OK
- * 9 - submit_article - Test OK
- * 10 - change_right - Test OK
- * 11 - check_data - Test OK
- * 12 - delete_article - Test OK
- * 13 - assign_cookie - Test OK 
- * 14 - check_cookie - Test OK
- * 15 - Create_ID - Test OK
- * 16 - valid_article - Test OK
- * 17 - log_out - Test OK
- * 18 - modif_pw - TEST OK
- * 19 - order_article - Test OK
- * 20 - users_list - Test OK
+ * 2 - check_log - Test OK
+ * 3 - register - Test OK
+ * 4 - unsubscribe - Test OK
+ * 5 - check_subscribe_log - Test OK
+ * 6 - submit_article - Test OK
+ * 7 - change_right - Test OK
+ * 8 - check_data - Test OK
+ * 9 - delete_article - Test OK
+ * 10 - assign_cookie - Test OK 
+ * 11 - check_cookie - Test OK
+ * 12 - Create_ID - Test OK
+ * 13 - valid_article - Test OK
+ * 14 - log_out - Test OK
+ * 15 - modif_pw - TEST OK
+ * 16 - order_article - Test OK
+ * 27 - users_list - Test OK
+ * 99 - 
  *
  */
 
@@ -40,12 +38,11 @@ var db_co = {};
 db_co.rand_max = 1000000000000000;
 
 /**
- * 1 - Create a near unique cookie
+ * \brief 1 - Create a near unique cookie
+ * Test OK le 24/04
  * @param (string) username of the user
  * @return (string) new cookie if ok, 0 if we can't generate a cookie
  */
- //Test OK le 24/04
- 
 exports.create_cookie = function (user) {
 	return create_cookie(user);
 };
@@ -61,49 +58,7 @@ var create_cookie = function (user) {
 };
 
 /**
- * 2 - This function 
- * 
- */
-// TEST function, is used for ??? TO delete if not it's not used
-// Test NOK le 24/04 => Ne pas utiliser
-exports.insert = function () {
-    db.serialize( function () {
-        var stmt = db.prepare("INSERT INTO test VALUES (?)");
-        for (var a = 0;  a < 10; a++)  {
-            stmt.run("" + a);
-        }
-        stmt.finalize();
-    });
-};
-
-/**
- * 3 - This function read all the content of the DB
- * 
- */
- //DEBUG: delete it ?
-exports.read = function () {
-	var stmt = "SELECT * FROM test";
-    db.each(stmt, function (e, r) {
-        console.log(util.inspect(r));
-    });
-};
-
-/**
-* 4 - Test Function
-*/
-// Fonction de test => ne pas utiliser
-exports.allRead = function(req, resp){
-	util.log("***** Debut du Test *****");
-	db_co.subscribe("olivier", "bob", this, "susbscribe"); // 2 - Insertion d'un user 
-	//db_co.checkLog("blabla","iciCaDoitDireFaux"); // 3 - Controle du couple login/pass
-	//db_co.submitArticle(12345, "WAIT");
-	
-	util.log("***** Fin du test *****");
-};
-
-
-/**
- * \brief 5 - check_log function checks if the username & pswd puts in parameters are corrects
+ * \brief 2 - check_log function checks if the username & pswd puts in parameters are corrects
  * Test OK le 06/05
  * @param (string) log
  * @param (string) pw
@@ -130,7 +85,7 @@ exports.check_log = function (log, pw, obj, func_name) {
 };
 
 /**
- * \brief 6 - Register functions will add a new user on the website DB
+ * \brief 3 - Register functions will add a new user on the website DB
  * Test OK le 06/05
  * @param (string) log
  * @param (string) pw
@@ -160,7 +115,7 @@ exports.register = function (log, pw, email, cookie_reg, right, obj, func_name) 
 };
 
 /**
- * 7 - unsubscribe functions will delete an user from the website DB
+ * \brief 4 - unsubscribe functions will delete an user from the website DB
  * Test OK le 06/05
  * @param (string) log
  * @param (object) this
@@ -186,7 +141,7 @@ exports.unsubscribe = function (log, obj, func_name) {
 };
 
 /**
- * \brief 8 - check_subscribe_log function checks if the username or the email is already insert in the website DB
+ * \brief 5 - check_subscribe_log function checks if the username or the email is already insert in the website DB
  * Test OK le 06/05
  * @param (string) log
  * @param (string)email
@@ -213,7 +168,7 @@ exports.check_subscribe_log = function (log, email, obj, func_name) {
 };
 
 /**
- * \detail 9 - submit_article function adds an article in the DB
+ * \brief 6 - submit_article function adds an article in the DB
  * it's used to submit an article which has to be checked before publication
  * In default situation, the article has a status equal to 0, it's mean ths article is Waiting a validation.
  * The current date is automaticly insert in the row  
@@ -241,7 +196,7 @@ exports.submit_article = function (articleID, author, obj, func_name) {
 };
 
 /**
- * \detail 10 - This function changes the right of a user
+ * \brief 7 - This function changes the right of a user
  * TEST OK - 06/05
  * @param (string) user
  * @param (INT) right: 1 = super Admin, 2= Admin, 3=moderator, 4=redactor, 5=basic user
@@ -266,7 +221,7 @@ exports.change_right = function (user, right, obj, func_name) {
 };
 
 /**
- * \detail 11 - check if this fields is inclued in the DB
+ * \brief 8 - check if this fields is inclued in the DB
  * Test OK le 06/05
  * @param (string) dbfield is the field in the DB you want to check with
  * @param (string) data is the data you want to compare in dbfield
@@ -291,7 +246,7 @@ exports.check_data = function (dbfield, data, obj, func_name) {
 };
 
 /**
- * \detail 12 - delete_article function deletes an articleID
+ * \brief 9 - delete_article function deletes an articleID
  * Test OK le 06/05
  * @param (string) articleID
  * @param (object) this
@@ -315,7 +270,7 @@ exports.delete_article = function (articleID, obj, func_name) {
 };
 
 /**
- * \detail 13 - Assign_Cookie function assigns a cookie to a user
+ * \brief 10 - Assign_Cookie function assigns a cookie to a user
  * Test OK
  * @param (string) user
  * @param (object) this
@@ -340,7 +295,7 @@ exports.assign_cookie = function (user, obj, func_name) {
 };
 
 /**
- * \detail 14 - check_cookie function checks if the cookie inputs is equal with the cookie in DB
+ * \brief 11 - check_cookie function checks if the cookie inputs is equal with the cookie in DB
  * Test OK le 06/05
  * @param (string) user
  * @param (string) cookie
@@ -365,7 +320,7 @@ exports.check_cookie = function (user,cookie, obj, func_name) {
 };
 
 /**
- * \detail 15 - Create a article ID
+ * \brief 12 - Create a article ID
  * Test OK le 06/05
  * @param (string) username of the user
  * @callback (string) the ID or a "0" if the function does not work.
@@ -381,7 +336,7 @@ exports.create_ID = function (user) {
 };
 
 /**
- * \detail 16 - valid_article function change the status of an article which is on wait(0) to OK  (1) 
+ * \brief 13 - valid_article function change the status of an article which is on wait(0) to OK  (1) 
  * Furthermore, it update the date of the validation of the article 
  * Test OK le 13/05
  * @param (string) articleID
@@ -406,7 +361,7 @@ exports.valid_article = function (articleID, obj, func_name) {
 };
 
 /**
- * \detail 17 - log_out function is called when the user log out the web site.
+ * \brief 14 - log_out function is called when the user log out the web site.
  * it's change the current cookie by 0. 
  * Test OK le 06/05
  * @param (string) articleID
@@ -431,7 +386,7 @@ exports.log_out = function(user, obj, func_name) {
 };
 
 /**
- * \detail 18 - modif_pw modify the password of the user in the DB 
+ * \brief 15 - modif_pw modify the password of the user in the DB 
  * Test OK le 06/05
  * @param (string) user
  * @param (string) pw
@@ -456,7 +411,7 @@ exports.modif_pw = function(user, pw, obj, func_name) {
 };
 
 /**
- * \detail 19 - order_article function return the 5 last articles
+ * \brief 16 - order_article function return the 5 last articles
  * you have to input the status (articleStatus) of the article (1 or 0)
  * Test OK le 10/05
  * @param (INT) articleStatus
@@ -481,7 +436,7 @@ exports.order_article = function(articleStatus, obj, func_name) {
 };
 
 /**
- * \detail 20 - Users_list function gives you the list of all registered members 
+ * \brief 17 - Users_list function gives you the list of all registered members 
  * the functions gives you the result in a array of JSON object : user, email, right
  * Test OK le 14/05
  * @param (object) this
@@ -501,4 +456,16 @@ exports.users_list = function(obj, func_name) {
 				obj[func_name](art);
 			});
 		util.log("USERS_LIST - Closing");
+};
+
+/**
+ * \brief 99 - DEBUG fonction 
+ * 
+ * 
+ */
+exports.read = function () {
+	var stmt = "SELECT * FROM test";
+    db.each(stmt, function (e, r) {
+        console.log(util.inspect(r));
+    });
 };

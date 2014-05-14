@@ -3,7 +3,7 @@ var fs = require("fs");
 
 var dirName = './article/';
 
-//testing data
+/*testing data
 var b = {
 	title: "titreArticle",
 	author: "cestMoiLAuteur",
@@ -13,6 +13,7 @@ var b = {
 //var b = JSON.stringify(bob);
 console.log ("title: " + b.title);
 console.log ("content: " + b.content);
+*/
 
 /**
  * This function orders the operations to push an article in the db
@@ -20,13 +21,8 @@ console.log ("content: " + b.content);
  * @return (String) : "ok" or "ko"
  */
 exports.submit_article = function (b) {
-		//Step 1: ask for articleID
-		//var articleID = create_article_id();
+		var articleID = db.create_article_id();
 		
-		//test data
-		var articleID = 666; //for testing
-		
-		//Step 2: push file then content
 		this.push_article_db (articleID, b);
 	},
 	
@@ -36,7 +32,7 @@ exports.submit_article = function (b) {
  * @param b (JSON object) : article data
  * @return (String) : "ok" or "ko"
  */
-exports.push_article_db = function (articleID, b) {
+push_article_db = function (articleID, b) {
 		var dirPath = dirName + articleID;
 		
 		fs.exists(dirPath, function(exists) {
@@ -51,7 +47,8 @@ exports.push_article_db = function (articleID, b) {
 					});
 				});
 			} else {
-				util.log ("folder already exists");
+				//util.log ("folder already exists");
+				this.resp.write(JSON.stringify({resp: "folder already existing"}));
 			};
 		});
 		
@@ -77,7 +74,7 @@ exports.push_article_db = function (articleID, b) {
  * @param b (JSON object) : article data
  * @return (String) : "ok" or "ko"
  */
-exports.push_content = function (dirPath, articleID, b) {
+push_content = function (dirPath, articleID, b) {
 		var articlePath = dirPath + '/' + articleID;
 		var data = '{ title: ' + b.title + ', author: ' + b.author + ', content: ' + b.content + '}';
 		
@@ -94,7 +91,8 @@ exports.push_content = function (dirPath, articleID, b) {
 					}
 				});
 			} else {
-				util.log ("file already exists");
+				//util.log ("file already exists");
+				this.resp.write(JSON.stringify({resp: "file already existing"}));
 			}
 		});
 		
@@ -109,4 +107,24 @@ exports.push_content = function (dirPath, articleID, b) {
 		//this.resp.end(); //uncomment
 	},
 	
-this.submit_article (b);
+/**
+ * This function loads every article //this function is called by the db articleStatus, object, functName
+ * @param t (Array): TODO
+ * @return (JSON object): article = { title: 'title', author: 'author', date: 'date', content: 'content'} //array of json objects
+ */
+load_articles:
+    function (articleIdArray) {
+		//-> db function returns: array (id1, id2, ...)
+		//var articleArray [];
+		for (id in articleIdArray) {
+			var articlePath = dirPath + '/' + id + '/' + id;
+			fs.readFile(articlePath, function (e, d) {
+				if (e) {
+					this.resp.write(JSON.stringify({resp: "error uploading file"}));
+				} else {
+					//JSON.stringify(file)
+					//push file to array
+				}
+			}
+		}
+    },

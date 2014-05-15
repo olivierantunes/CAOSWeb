@@ -1,15 +1,6 @@
-var site={};
+var confirmRegistration = {};
 
-site.on_ready = function () {
-	document.addEventListener("click", site.on_click);
-};
-
-site.ask_right = function() {
-    var data ={"action": "get_rights"};
-	site.post(data, site.cb_rights);
-};
-
-site.cb_rights = function () {
+confirmRegistration.cb_rights = function () {
 	//if (readystate) //TODO
 	var right = 1; //JSON.parse(this.responseText);
 	//right=rights.role;
@@ -115,73 +106,62 @@ site.cb_rights = function () {
 	}
 };
 
-site.logout = function() {
-    var data ={"action": "logout"};
-	site.post(data, site.cb_logo);
+confirmRegistration.on_ready = function () {
+	document.addEventListener("click", confirmRegistration.on_click);
 };
 
-site.cb_logo = function () {
+confirmRegistration.on_click = function (ev){
+	var src = ev.target;
+	if (src.has_class("go_site")){
+		confirmRegistration.gosite();
+	}
+};
+
+function getid(VarSearch){
+    var SearchString = window.location.search.substring(1);
+    var VariableArray = SearchString.split('&');
+    for(var i = 0; i < VariableArray.length; i++){
+        var KeyValuePair = VariableArray[i].split('=');
+        if(KeyValuePair[0] == VarSearch){
+            return KeyValuePair[1];
+        }
+    }
+}
+confirmRegistration.sendID=function () {
+	var idsite=getid();
+	var data = {action: "confirm-registration-blog", ID:idsite};
+	tools.post(data, site.cb_reg_blog);
+}
+
+site.cd_reg_blog = function () {
 	if (this.readyState == 4 && this.statusCode == 200) {
 		var r = JSON.parse(this.responseText);
 		if (r.resp == "ok") {
-			alert("Vous êtes bien déconnecté");
-			location.assign("Accueil.html");
-		} else {
-			alert("Vous n'avez pas pu être déconnecté. Veulliez ré-essayer ultérieurement s'il-vous-plait.");
+			has_class("go_site").add_href("www.caosweb.com/"+getid());// rajouter au bouton "go site" href du nom de domaine.
+		} 
+		else {
+			alert("Votre confirmation n'as pas pu être prise en compte, veuillez réessayer ultérieurement.");
 		}
 	}
 };
 
-site.on_click = function (ev){
-	var src = ev.target;
-	console.log("toc");
-	if (src.has_class("logout")){
-	site.logout();
-	}
-};
-
-site.ask_article = function() {
-	var s =1;
-	var data ={"action": "get_article", status : s};
-    //site.cb.art(data);
-	site.post(data, site.cb_art);
-};
-
-site.cb_art = function () {
-	//if (readystate) //TODO
-	//var r = JSON.parse(this.responseText);
-	var art = {
-		title: "Le titre de votre article le plus récent",
-		date: new Date(),
-		author: "azerty",
-		content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum suscipit lectus at metus consectetur egestas. Nulla ut eros orci. Fusce lobortis eros mi, non posuere leo hendrerit eu. Vivamus magna odio, mollis et vehicula suscipit, rutrum id sapien."
-	}
-	
-	var r = new Array();
-	r.push(art);
-	r.push(art);
-	r.push(art);
-	r.push(art);
-	
-	//ici
-	
-	var elt = document.getElementsByClassName("dynamic-art")[0];
-	for (a in r) {
-	elt.innerHTML += "<h3 class=\"blog-post-title\" id=\"jan\">" + r[a].title + " " + a + "</h3>" +
-					"<p class=\"blog-post-meta\">" + r[a].date + " par <a href=\"#\">" + r[a].author + "</a><button id=\"delete\" name=\"button1id\" class=\"btn btn-danger pull-right\"><span class=\"glyphicon glyphicon-trash\"></span></button></p>" +
-					"<blockquote>" +
-						"<p>" + r[a].content + "</p>" +
-					"</blockquote>";
-	};
-};
-
+confirmRegistration.gosite=function(){
+	add_href(getid());
+}
 
 window.onload = function () {
-	setTimeout(site.on_ready, 1);
-	setTimeout(site.cb_rights, 1);
-	setTimeout(site.cb_art, 500);
+	setTimeout(confirmRegistration.on_ready, 1);
 };
 
 HTMLElement.prototype.has_class = function(s) {
 	return (this.className.indexOf(s) >= 0);
+};
+
+HTMLElement.prototype.add_class = function(cl) {
+	this.className += " " + cl;
+};
+
+HTMLElement.prototype.remove_class = function (cl) {
+	var b = new RegExp(cl, "g");
+	this.className = this.className.replace(b, "");
 };

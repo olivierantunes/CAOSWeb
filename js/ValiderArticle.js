@@ -133,7 +133,8 @@ site.cb_logo = function () {
 };
 
 site.ask_validate = function() {
-	var data ={"action": "get_validate"};
+	var s=0;
+	var data ={"action": "get_validate", status : s};
     //site.cb.art(data);
 	site.post(data, site.cb_valid);
 };

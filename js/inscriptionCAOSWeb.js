@@ -7,7 +7,7 @@ console.log("on_ready trigger event");
 
 register.on_click = function (ev){
 	var src = ev.target;
-	console.log("on_click avant 19);
+	console.log("on_click avant 19");
 	if (src.has_class("registerCAOSWeb")){
 		console.log("on_click apres 112");
 		register.submit();
@@ -25,24 +25,26 @@ register.submit = function () {
 	register.reset_class(cmail);
 	register.reset_class(pw);
 	register.reset_class(cpw);
-	if (mail.value != cmail.value || !mail.value){
-		mail.add_class("alert-danger");
-		cmail.add_class("alert-danger");
-	} 
-	else {
-		mail.add_class("alert-success");
-		cmail.add_class("alert-success");
+	if (mail.value != cmail.value || !mail.value || pw.value != cpw.value || !pw.value){
+		if (mail.value != cmail.value || !mail.value){
+			mail.add_class("alert-danger");
+			cmail.add_class("alert-danger");
+		} 
+		else {
+			mail.add_class("alert-success");
+			cmail.add_class("alert-success");
+		}
+		if(pw.value != cpw.value || !pw.value){
+			pw.add_class("alert-danger");
+			cpw.add_class("alert-danger");
+		}
+		else{
+			pw.add_class("alert-success");
+			cpw.add_class("alert-success");
+		}
 	}
-	if(pw.value != cpw.value || !pw.value){
-		pw.add_class("alert-danger");
-		cpw.add_class("alert-danger");
-	}
-	else{
-		pw.add_class("alert-success");
-		cpw.add_class("alert-success");
-	}
-	if (mail.value = cmail.value || mail.value || pw.value = cpw.value || pw.value){
-		var data = {action: "register-blog", email: mail, password: pw, login: p, site-name: nom};
+	else if (mail.value = cmail.value || mail.value || pw.value = cpw.value || pw.value){
+		var data = {action: "register-CAOSWeb", email: mail, password: pw, login: p, site-name: nom};
 		tools.post(data, site.cb_reg_CAOSWeb);
 	} 
 }

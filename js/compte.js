@@ -122,6 +122,7 @@ site.on_click = function (ev){
 	} else if (src.has_class("submit-art")){
 	
 	}
+};
 
 site.cb_info = function () {
 	//if (readystate) //TODO
@@ -143,7 +144,7 @@ site.cb_info = function () {
 					"email :  " + r[a].email +" <br></br>" +
 					"password :  " + r[a].password + "<br></br>" +
 					"Vos droits :   " + r[a].rights;
-	};
+	}
 };
 
 site.cb_modify=function (){
@@ -155,8 +156,4 @@ window.onload = function () {
 	setTimeout(site.on_ready, 1);
 	setTimeout(site.cb_rights, 1);
 	setTimeout(site.cb_info, 500);
-};
-
-HTMLElement.prototype.has_class = function(s) {
-	return (this.className.indexOf(s) >= 0);
 };

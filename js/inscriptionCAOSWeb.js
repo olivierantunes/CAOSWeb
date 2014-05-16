@@ -71,9 +71,6 @@ window.onload = function () {
 	setTimeout(site.cb_rights, 1);
 };
 
-HTMLElement.prototype.has_class = function(s) {
-	return (this.className.indexOf(s) >= 0);
-};
 
 HTMLElement.prototype.add_class = function(cl) {
 	this.className += " " + cl;

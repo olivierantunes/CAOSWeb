@@ -1,5 +1,10 @@
 var site={};
 
+site.on_ready = function () {
+	document.addEventListener("click", site.on_click);
+	site.cb_rights();
+};
+
 site.on_click = function (ev){
 	var src = ev.target;
 	console.log("toc");
@@ -10,20 +15,18 @@ site.on_click = function (ev){
 
 site.ask_right = function() {
     var data ={"action": "get_rights"};
-	site.post(data, site.cb_rights);
+	tools.post(data, site.cb_rights);
 };
 
 site.cb_rights = function () {
 	//if (readystate) //TODO
-	var right = 1; //JSON.parse(this.responseText);
+	var rights = 1; //JSON.parse(this.responseText);
 	//right=rights.role;
 	var elt = document.getElementsByClassName("dynamic-rights")[0];
 	if (rights == 0) {
 	elt.innerHTML +="<div class=\"container\">"+
 						"<ul class=\"nav nav-pills pull-left\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"contact.html\">Contacts</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"faq.html\">FAQ</a></li>"+
 							"<li class=\"blog-nav-item active\"><a href=\"RedigerArticle.html\">Publier</a></li>"+
 							"<li class=\"blog-nav-item active\"><a href=\"ValiderArticle.html\">Valider</a></li>"+
 							"<li class=\"dropdown blog-nav-item active\">"+
@@ -35,7 +38,6 @@ site.cb_rights = function () {
 							"</li>"+
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
-							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
 							"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
@@ -44,8 +46,6 @@ site.cb_rights = function () {
 	elt.innerHTML +="<div class=\"container\">"+
 						"<ul class=\"nav nav-pills pull-left\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"contact.html\">Contacts</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"faq.html\">FAQ</a></li>"+
 							"<li class=\"blog-nav-item active\"><a href=\"RedigerArticle.html\">Publier</a></li>"+
 							"<li class=\"blog-nav-item active\"><a href=\"ValiderArticle.html\">Valider</a></li>"+
 							"<li class=\"dropdown blog-nav-item active\">"+
@@ -57,7 +57,6 @@ site.cb_rights = function () {
 							"</li>"+
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
-							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
 							"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
@@ -66,13 +65,10 @@ site.cb_rights = function () {
 	elt.innerHTML +="<div class=\"container\">"+
 						"<ul class=\"nav nav-pills pull-left\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"contact.html\">Contacts</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"faq.html\">FAQ</a></li>"+
 							"<li class=\"blog-nav-item active\"><a href=\"RedigerArticle.html\">Publier</a></li>"+
 							"<li class=\"blog-nav-item active\"><a href=\"ValiderArticle.html\">Valider</a></li>"+
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
-							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
 							"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
@@ -81,12 +77,9 @@ site.cb_rights = function () {
 	elt.innerHTML +="<div class=\"container\">"+
 						"<ul class=\"nav nav-pills pull-left\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"contact.html\">Contacts</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"faq.html\">FAQ</a></li>"+
 							"<li class=\"blog-nav-item active\"><a href=\"RedigerArticle.html\">Publier</a></li>"+
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
-							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
 							"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
@@ -95,11 +88,8 @@ site.cb_rights = function () {
 	elt.innerHTML +="<div class=\"container\">"+
 						"<ul class=\"nav nav-pills pull-left\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"contact.html\">Contacts</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"faq.html\">FAQ</a></li>"+
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
-							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
 							"<li class=\"blog-nav-item  logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
@@ -108,8 +98,6 @@ site.cb_rights = function () {
 	elt.innerHTML +="<div class=\"container\">"+
 						"<ul class=\"nav nav-pills pull-left\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"contact.html\">Contacts</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"faq.html\">FAQ</a></li>"+
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"Sinscrire.html\">S'incrire</a></li>"+
@@ -121,7 +109,7 @@ site.cb_rights = function () {
 
 site.logout = function() {
     var data ={"action": "logout"};
-	site.post(data, site.cb_logo);
+	tools.post(data, site.cb_logo);
 };
 
 site.cb_logo = function () {
@@ -137,9 +125,5 @@ site.cb_logo = function () {
 };
 
 window.onload = function () {
-	setTimeout(site.cb_rights, 1);
-};
-
-HTMLElement.prototype.has_class = function(s) {
-	return (this.className.indexOf(s) >= 0);
+	setTimeout(site.on_ready, 1);
 };

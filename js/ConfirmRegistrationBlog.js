@@ -2,15 +2,13 @@ var confirmRegistration = {};
 
 confirmRegistration.cb_rights = function () {
 	//if (readystate) //TODO
-	var right = 1; //JSON.parse(this.responseText);
+	var rights = 1; //JSON.parse(this.responseText);
 	//right=rights.role;
 	var elt = document.getElementsByClassName("dynamic-rights")[0];
 	if (rights == 0) {
 	elt.innerHTML +="<div class=\"container\">"+
 						"<ul class=\"nav nav-pills pull-left\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"contact.html\">Contacts</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"faq.html\">FAQ</a></li>"+
 							"<li class=\"blog-nav-item active\"><a href=\"RedigerArticle.html\">Publier</a></li>"+
 							"<li class=\"blog-nav-item active\"><a href=\"ValiderArticle.html\">Valider</a></li>"+
 							"<li class=\"dropdown blog-nav-item active\">"+
@@ -22,7 +20,6 @@ confirmRegistration.cb_rights = function () {
 							"</li>"+
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
-							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
 							"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
@@ -31,8 +28,6 @@ confirmRegistration.cb_rights = function () {
 	elt.innerHTML +="<div class=\"container\">"+
 						"<ul class=\"nav nav-pills pull-left\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"contact.html\">Contacts</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"faq.html\">FAQ</a></li>"+
 							"<li class=\"blog-nav-item active\"><a href=\"RedigerArticle.html\">Publier</a></li>"+
 							"<li class=\"blog-nav-item active\"><a href=\"ValiderArticle.html\">Valider</a></li>"+
 							"<li class=\"dropdown blog-nav-item active\">"+
@@ -44,7 +39,6 @@ confirmRegistration.cb_rights = function () {
 							"</li>"+
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
-							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
 							"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
@@ -53,13 +47,10 @@ confirmRegistration.cb_rights = function () {
 	elt.innerHTML +="<div class=\"container\">"+
 						"<ul class=\"nav nav-pills pull-left\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"contact.html\">Contacts</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"faq.html\">FAQ</a></li>"+
 							"<li class=\"blog-nav-item active\"><a href=\"RedigerArticle.html\">Publier</a></li>"+
 							"<li class=\"blog-nav-item active\"><a href=\"ValiderArticle.html\">Valider</a></li>"+
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
-							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
 							"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
@@ -68,12 +59,9 @@ confirmRegistration.cb_rights = function () {
 	elt.innerHTML +="<div class=\"container\">"+
 						"<ul class=\"nav nav-pills pull-left\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"contact.html\">Contacts</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"faq.html\">FAQ</a></li>"+
 							"<li class=\"blog-nav-item active\"><a href=\"RedigerArticle.html\">Publier</a></li>"+
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
-							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
 							"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
@@ -82,11 +70,8 @@ confirmRegistration.cb_rights = function () {
 	elt.innerHTML +="<div class=\"container\">"+
 						"<ul class=\"nav nav-pills pull-left\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"contact.html\">Contacts</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"faq.html\">FAQ</a></li>"+
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
-							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
 							"<li class=\"blog-nav-item  logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
@@ -95,8 +80,6 @@ confirmRegistration.cb_rights = function () {
 	elt.innerHTML +="<div class=\"container\">"+
 						"<ul class=\"nav nav-pills pull-left\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"contact.html\">Contacts</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"faq.html\">FAQ</a></li>"+
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"Sinscrire.html\">S'incrire</a></li>"+
@@ -108,6 +91,7 @@ confirmRegistration.cb_rights = function () {
 
 confirmRegistration.on_ready = function () {
 	document.addEventListener("click", confirmRegistration.on_click);
+	confirmRegistration.cb_rights();
 };
 
 confirmRegistration.on_click = function (ev){
@@ -117,27 +101,22 @@ confirmRegistration.on_click = function (ev){
 	}
 };
 
-function getid(VarSearch){
-    var SearchString = window.location.search.substring(1);
-    var VariableArray = SearchString.split('&');
-    for(var i = 0; i < VariableArray.length; i++){
-        var KeyValuePair = VariableArray[i].split('=');
-        if(KeyValuePair[0] == VarSearch){
-            return KeyValuePair[1];
-        }
-    }
-}
-confirmRegistration.sendID=function () {
-	var idsite=getid();
-	var data = {action: "confirm-registration-blog", ID:idsite};
-	tools.post(data, site.cb_reg_blog);
-}
+var getid = function (cb){
+	var data = {action: "get_id"};
+	tools.post(data, cb);
+};
 
-site.cd_reg_blog = function () {
+confirmRegistration.sendID=function () {
+	//RESPONSE TEXT
+	var data = {action: "confirm-registration-CAOSWeb", ID: idsite};
+	tools.post(data, site.cb_reg_blog);
+};
+
+confirmRegistration.cd_reg_blog = function () {
 	if (this.readyState == 4 && this.statusCode == 200) {
 		var r = JSON.parse(this.responseText);
 		if (r.resp == "ok") {
-			has_class("go_site").add_href("www.caosweb.com/"+getid());// rajouter au bouton "go site" href du nom de domaine.
+			has_class("go_site").add_href("localhost:" + r.id_site);// rajouter au bouton "go site" href du nom de domaine.
 		} 
 		else {
 			alert("Votre confirmation n'as pas pu être prise en compte, veuillez réessayer ultérieurement.");
@@ -147,14 +126,10 @@ site.cd_reg_blog = function () {
 
 confirmRegistration.gosite=function(){
 	add_href(getid());
-}
+};
 
 window.onload = function () {
 	setTimeout(confirmRegistration.on_ready, 1);
-};
-
-HTMLElement.prototype.has_class = function(s) {
-	return (this.className.indexOf(s) >= 0);
 };
 
 HTMLElement.prototype.add_class = function(cl) {

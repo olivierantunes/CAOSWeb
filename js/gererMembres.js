@@ -2,6 +2,8 @@ var site={};
 
 site.on_ready = function () {
 	document.addEventListener("click", site.on_click);
+	site.cb_rights();
+	site.cb_membres();
 };
 
 site.on_click = function (ev){
@@ -10,6 +12,9 @@ site.on_click = function (ev){
 	if (src.has_class("delete-member")){
 	site.delete_member();
 	}
+	else if (src.has_class("validate-new-right")){
+	site.modify_r();
+	}
 	else if (src.has_class("logout")){
 	site.logout();
 	}
@@ -17,20 +22,18 @@ site.on_click = function (ev){
 
 site.ask_right = function() {
     var data ={"action": "get_rights"};
-	site.post(data, site.cb_rights);
+	tools.post(data, site.cb_rights);
 };
 
 site.cb_rights = function () {
 	//if (readystate) //TODO
-	var right = 1; //JSON.parse(this.responseText);
+	var rights = 1; //JSON.parse(this.responseText);
 	//right=rights.role;
 	var elt = document.getElementsByClassName("dynamic-rights")[0];
 	if (rights == 0) {
 	elt.innerHTML +="<div class=\"container\">"+
 						"<ul class=\"nav nav-pills pull-left\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"contact.html\">Contacts</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"faq.html\">FAQ</a></li>"+
 							"<li class=\"blog-nav-item active\"><a href=\"RedigerArticle.html\">Publier</a></li>"+
 							"<li class=\"blog-nav-item active\"><a href=\"ValiderArticle.html\">Valider</a></li>"+
 							"<li class=\"dropdown blog-nav-item active\">"+
@@ -42,7 +45,6 @@ site.cb_rights = function () {
 							"</li>"+
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
-							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
 							"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
@@ -51,8 +53,6 @@ site.cb_rights = function () {
 	elt.innerHTML +="<div class=\"container\">"+
 						"<ul class=\"nav nav-pills pull-left\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"contact.html\">Contacts</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"faq.html\">FAQ</a></li>"+
 							"<li class=\"blog-nav-item active\"><a href=\"RedigerArticle.html\">Publier</a></li>"+
 							"<li class=\"blog-nav-item active\"><a href=\"ValiderArticle.html\">Valider</a></li>"+
 							"<li class=\"dropdown blog-nav-item active\">"+
@@ -64,7 +64,6 @@ site.cb_rights = function () {
 							"</li>"+
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
-							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
 							"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
@@ -73,13 +72,10 @@ site.cb_rights = function () {
 	elt.innerHTML +="<div class=\"container\">"+
 						"<ul class=\"nav nav-pills pull-left\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"contact.html\">Contacts</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"faq.html\">FAQ</a></li>"+
 							"<li class=\"blog-nav-item active\"><a href=\"RedigerArticle.html\">Publier</a></li>"+
 							"<li class=\"blog-nav-item active\"><a href=\"ValiderArticle.html\">Valider</a></li>"+
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
-							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
 							"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
@@ -88,12 +84,9 @@ site.cb_rights = function () {
 	elt.innerHTML +="<div class=\"container\">"+
 						"<ul class=\"nav nav-pills pull-left\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"contact.html\">Contacts</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"faq.html\">FAQ</a></li>"+
 							"<li class=\"blog-nav-item active\"><a href=\"RedigerArticle.html\">Publier</a></li>"+
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
-							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
 							"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
@@ -102,11 +95,8 @@ site.cb_rights = function () {
 	elt.innerHTML +="<div class=\"container\">"+
 						"<ul class=\"nav nav-pills pull-left\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"contact.html\">Contacts</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"faq.html\">FAQ</a></li>"+
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
-							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
 							"<li class=\"blog-nav-item  logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
@@ -115,8 +105,6 @@ site.cb_rights = function () {
 	elt.innerHTML +="<div class=\"container\">"+
 						"<ul class=\"nav nav-pills pull-left\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"contact.html\">Contacts</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"faq.html\">FAQ</a></li>"+
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"Sinscrire.html\">S'incrire</a></li>"+
@@ -128,7 +116,7 @@ site.cb_rights = function () {
 
 site.members = function() {
     var data ={"action": "get_members"};
-	site.post(data, site.cb_members);
+	tools.post(data, site.cb_members);
 };
 
 site.rights_match = {
@@ -177,9 +165,30 @@ site.cb_membres = function () {
 						"<td>"+r[a].login+"</td>"+
 						"<td>"+r[a].mail+"</td>"+
 						"<td>"+r[a].rights+"</td>"+
+						"<td><select class=\"input-xlarge new_right\">"+
+						"<option> </option><option>1</option><option>2</option><option>3</option><option>4</option></select>"+
+						"<button class=\"btn validate-new-right btn-success\"><span class=\"glyphicon glyphicon-ok\"></span></button></td>"+
 						"<td>" + tac + "</td>"+
 						"</tr>";
 	};
+};
+
+site.modify_r= function () {
+	var new_r = document.getElementsByClassName(new_right)[0];
+	var data = {action: "modify-rights", right: new_r};
+	tools.post(data, site.cb_val_new_r);
+}
+
+site.cb_val_new_r = function () {
+	if (this.readyState == 4 && this.statusCode == 200) {
+		var r = JSON.parse(this.responseText);
+		if (r.resp == "ok") {
+			alert("droits du membres bien modifié");
+			location.reload(); 
+		} else {
+			alert("Les droits de ce membre n'a pas pu être modifié. Veulliez ré-essayer ultérieurement s'il-vous-plait.");
+		}
+	}
 };
 
 site.delete_member= function() {
@@ -219,10 +228,4 @@ site.cb_logo = function () {
 
 window.onload = function () {
 	setTimeout(site.on_ready, 1);
-	setTimeout(site.cb_rights, 1);
-	setTimeout(site.membres, 500);
-};
-
-HTMLElement.prototype.has_class = function(s) {
-	return (this.className.indexOf(s) >= 0);
 };

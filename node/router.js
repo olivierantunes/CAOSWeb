@@ -50,7 +50,6 @@ run:
 rest_method:
     function () {
         if (this.req.method == "GET") {
-            util.log("get call");
 			this.get_method();
 		} else if (this.req.method == "POST") {
 			util.log("post call");
@@ -87,93 +86,81 @@ post_method:
  */
 go_post:
     function (b) {
-		var _this = this;
+		var _this = this;		
         b = JSON.parse(b);
+		this.buffer = b;
 		this.resp.writeHead(200, {"Content-Type": "application/json"});
-		if (b.action == "log-in") {
-			var é = db.check_log (b.pseudo, b.password, this, "check_log"); //TODO: check cb_checkLog => the COOKIE thing
+		if (b.action == "login") {
+			db.check_log(b.pseudo, b.password, this, "cb_check_log");
+			this.resp.end();
 		} else if (b.action == "register-blog") {
-			var returnRegister = db.check_subscribe_log (b.pseudo, b.password, this, "check_subscribe_log");
-			if (1 == returnRegister) {
-				regFunctions.register_blog (b);
-			} else {
-				this.resp.write(JSON.stringify({resp: "ko"}));
-			}
+			db.check_subscribe_log (b.login, b.mail, this, "cb_check_subscribe_log");
+			this.resp.end();
 		} else if (b.action == "register-caosweb") {
-			var returnRegister = check_subscribe_log (b.pseudo, b.password, this, "check_subscribe_log");
-			if (1 == returnRegister) {
-				regFunctions.register_caosweb (b);
-			} else {
-				this.resp.write(JSON.stringify({resp: "ko"}));
-			}
+			this.resp.end();
 		} else if (b.action == "submit article") {
-			artManage.submit-article(b);//last addition
 			
+			this.resp.end();
 		} else if ("confirm-registration-caosweb" == b.action) {
-			//1: check if already existing website
-			//2: if not push user to caosweb db, then log in user, then push new website, then push user to new website, then push user as admin, then log in user, then load form change webpage
+		
 			
 		} else if (b.action == "confirm-registration-blog") {
-			//TODO
 			
+			this.resp.end();
 		} else if (b.action == "get-rights") {
-			//check_cookie = function (user,cookie, obj, func_name)
-			var flag = db.check_cookie (this, "check_cookie");
-			this.resp.write(JSON.stringify({resp: flag}));
 			
+			this.resp.end();
 		} else if (b.action == "get-article") {
-			//TODO
+			
+			this.resp.end();
 		} else if (b.action == "get-validate") {
-			//TODO
+			
+			this.resp.end();
 		} else if (b.action == "validation-article") {
-			//TODO
+			
+			this.resp.end();
 		} else if (b.action == "delete-article") {
-			//TODO
+			
+			this.resp.end();
 		} else if (b.action == "get-members") {
-			//TODO
+			
+			this.resp.end();
 		} else if (b.action == "logout") {
-			//TODO
+			
+			this.resp.end();
 		} else {
 			this.resp.write(JSON.stringify({resp: "Service not found"}));
+			this.resp.end();
 		}
-        this.resp.end();
     },
 	
-/**
- * This function replies to the log in event
- * @param f (Int): flag of registration succeeding 1 or 0
- * @return (String): "ok" or "ko"
- */
-cb_login:
-	function (f) {
-		if (f) {
-			this.resp.write(JSON.stringify({resp: "ok"}));
-		} else {
-			this.resp.write(JSON.stringify({resp: "ko"}));
-		}
+cb_check_log:
+	function (resCheckLog) {
+		if (resCheckLog) {
+				db.assign_cookie (b.pseudo, this, "cb_assign_cookie");
+			} else {
+				this.resp.write(JSON.stringify({resp: "ko"}));
+				this.resp.end();
+			}
+	},
+	
+cb_assign_cookie:
+	function (c) {
+		this.resp.writeHead(200,"ok",{"Context-Type": 'application/json', "Set-Cookie": c});
+		this.resp.write(JSON.stringify({resp: "ok"}));
 		this.resp.end();
 	},
 
-/**
- * This function replies to the registration event
- * @param f (Int): flag of registration succeeding 1 or 0
- * @return (String): "ok" or "ko"
- */
-cb_subscribe:
+cb_check_subscribe_log:
 	function (f) {
 		if (f) {
-			this.resp.write(JSON.stringify({resp: "ok"}));
+			db.register (this.b.login, this.b.pw, this.b.mail, cookie_reg, 0, obj, func_name) {
 		} else {
 			this.resp.write(JSON.stringify({resp: "ko"}));
 		}
 		this.resp.end();
 	},
 	
-/**
- * This function replies to the article submission event
- * @param f (Int): flag of registration succeeding 1 or 0
- * @return (String): "ok" or "ko"
- */
 cb_submitArticle:
 	function (f) {
 		if (f) {

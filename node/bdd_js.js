@@ -514,6 +514,17 @@ exports.get_date = function (articleID, obj, func_name) {
 };
 
 /**
+ * \brief 18 - Get and return username
+ * @param cookie (string) user cookie
+ * @return (string) calls the callback with username as parameter
+ */
+exports.get_user = function (cookie) {
+	
+	
+	return username;
+};
+
+/**
  * \brief 99 - DEBUG fonction 
  * 
  * 

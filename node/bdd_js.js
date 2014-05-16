@@ -283,15 +283,16 @@ exports.assign_cookie = function (user, obj, func_name) {
 		util.log("ASSIGN_COOKIE - Opening");
 		var cookie = create_cookie(user);
 		var stmt = "UPDATE test SET cookie = \""+cookie+"\" WHERE user =\""+ user +"\"" ;
-		var flag = 0;
+		var art = new Array();
 		db.each(stmt, function (e,r) {
 		if(e) {
 			util.log("ERROR - SQL - ASSIGN_COOKIE function: " + e);
 			} else {
 				util.inspect(r);
 			}
+			art.push = (cookie);
 		}, function () {
-			obj[func_name](flag);
+			obj[func_name](art);
 		});
 	util.log("ASSIGN_COOKIE - Closing");
 };

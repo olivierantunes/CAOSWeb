@@ -478,7 +478,7 @@ exports.get_user = function (cookie, obj, func_name) {
 			} else {
 				util.inspect(r);
 			}
-			art.push({user :r.user});
+			art.push(r);
 		}, function () {
 			obj[func_name](art);
 		});
@@ -503,7 +503,7 @@ exports.get_date = function (articleID, obj, func_name) {
 			} else {
 				util.inspect(r);
 			}
-			art.push({date :r.date});
+			art.push(r);
 		}, function () {
 			obj[func_name](art);
 		});

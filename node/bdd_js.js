@@ -460,28 +460,53 @@ exports.users_list = function(obj, func_name) {
 
 /**
  * \brief 18 - check_cookie gives you the user corresponding to the input cookie
- * Test NOK 
+ * Test OK le 16/05 
  * @param (string) cookie is the cookie of the user you want to identify
  * @param (object) this
  * @param (string) func_name
- * @callback (boolean) calls the callback with a boolean argument
+ * @callback (boolean) calls the callback with a JSON argument
  */
-exports.check_cookie = function (cookie, obj, func_name) {
+exports.get_user = function (cookie, obj, func_name) {
 		util.log("CHECK_COOKIE - Opening");
 		var stmt = "SELECT user FROM test WHERE cookie =\"" + cookie +"\"";
-		var flag = 0;
+		var art = new Array();
 		db.each(stmt, function (e,r) {
 		if(e) {
 			util.log("ERROR - SQL - CHECK_COOKIE function: " + e);
 			} else {
 				util.inspect(r);
 			}
+			art.push({user :r.user});
 		}, function () {
-			obj[func_name](flag);
+			obj[func_name](art);
 		});
 	util.log("CHECK_COOKIE - Closing");
 };
 
+/**
+ * \brief 19 - get_date gives you the date corresponding to an articleID 
+ * Test NOK 
+ * @param (string) articleID is the cookie of the user you want to identify
+ * @param (object) this
+ * @param (string) func_name
+ * @callback (boolean) calls the callback with a JSON argument
+ */
+exports.get_date = function (articleID, obj, func_name) {
+		util.log("CHECK_DATE - Opening");
+		var stmt = "SELECT date FROM test WHERE articleID =\"" + articleID +"\"";
+		var art = new Array();
+		db.each(stmt, function (e,r) {
+		if(e) {
+			util.log("ERROR - SQL - CHECK_DATE function: " + e);
+			} else {
+				util.inspect(r);
+			}
+			art.push({date :r.date});
+		}, function () {
+			obj[func_name](art);
+		});
+	util.log("CHECK_DATE - Closing");
+};
 
 /**
  * \brief 99 - DEBUG fonction 

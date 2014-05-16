@@ -95,7 +95,7 @@ exports.check_log = function (log, pw, obj, func_name) {
  * @param (INT) right
  * @param (object) this
  * @param (string) func_name 
- * @callback (boolean) calls the callback with a boolean argument
+ * @callback (boolean) calls the callback with a cookie value
  */
 exports.register = function (log, pw, email, right, obj, func_name) {
 		util.log("REGISTER - Opening");
@@ -175,15 +175,15 @@ exports.check_subscribe_log = function (log, email, obj, func_name) {
  * \brief 6 - submit_article function adds an article in the DB
  * it's used to submit an article which has to be checked before publication
  * In default situation, the article has a status equal to 0, it's mean ths article is Waiting a validation.
+ * The function call "create_cookie" function to create an articleID. Notice that create_cookie and create ID runs exactly in same way.
  * The current date is automaticly insert in the row  
  * Test OK le 06/05 
- * @param (string) articleID
  * @param (string) author
  * @param (object) this
  * @param (string) func_name
- * @callback (boolean) calls the callback with a boolean argument
+ * @callback (boolean) calls the callback with a an articleID
  */ 
-exports.submit_article = function (articleID, author, obj, func_name) {
+exports.submit_article = function (author, obj, func_name) {
 		util.log("SUBMIT_ARTICLE - Opening");
 		var articleID = create_cookie(author);
 		var stmt = "INSERT INTO test (articleID, articleStatus, author, date) VALUES (articleID,0,\""+author+"\", NOW() )";
@@ -278,10 +278,9 @@ exports.delete_article = function (articleID, obj, func_name) {
 /**
  * \brief 10 - Assign_Cookie function assigns a cookie to a user
  * Test OK
- * @param (string) user
  * @param (object) this
  * @param (string) func_name
- * @callback (boolean) calls the callback with a boolean argument
+ * @callback (boolean) calls the callback with the cookie
  */ 
 exports.assign_cookie = function (user, obj, func_name) {
 		util.log("ASSIGN_COOKIE - Opening");

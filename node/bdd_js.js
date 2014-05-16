@@ -185,16 +185,18 @@ exports.check_subscribe_log = function (log, email, obj, func_name) {
  */ 
 exports.submit_article = function (articleID, author, obj, func_name) {
 		util.log("SUBMIT_ARTICLE - Opening");
-		var stmt = "INSERT INTO test (articleID, articleStatus, author, date) VALUES (\""+articleID+"\",0,\""+author+"\", NOW() )";
-		var flag = 0;
+		var articleID = create_cookie(author);
+		var stmt = "INSERT INTO test (articleID, articleStatus, author, date) VALUES (articleID,0,\""+author+"\", NOW() )";
+		var art = new Array();
 		db.each(stmt, function (e,r) {
 		if(e) {
 			util.log("ERROR - SQL - SUBMIT_ARTICLE function: " + e);
 			} else {
 				util.inspect(r);
 			}
+			art.push(articleID);
 		}, function () {
-			obj[func_name](flag);
+			obj[func_name](art);
 		});
 	util.log("SUBMIT_ARTICLE - Closing");
 };

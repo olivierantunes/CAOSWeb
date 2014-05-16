@@ -4,15 +4,6 @@ var db = require("./bdd_js.js");
 
 var dirName = './article/';
 
-/*testing data
-var b = {
-	title: "titreArticle",
-	author: "cestMoiLAuteur",
-	content: "monContenu",
-	date: "laDate"
-};
-*/
-
 /**
  * This function orders the operations to push an article in the db
  * @param b (JSON object) : article data = { title: 'title', author: 'author', content: 'content'}
@@ -51,9 +42,9 @@ exports.submit_article = function (b) {
 
 /**
  * This function creates the article  environment and pushes content (images and videos if any | see later)
- * @param articleID (String) : article identifier
- * @param b (JSON object) : article data
- * @return (String) : "ok" or "ko"
+ * @param articleID (String): article identifier
+ * @param b (JSON object): article data
+ * @return (String): "ok" or "ko"
  */
 push_article_db = function (articleID, b) {
 	var dirPath = dirName + articleID;
@@ -68,12 +59,14 @@ push_article_db = function (articleID, b) {
 					}
 				});
 			});
+			this.push_content (dirPath, articleID, b);
 		} else {
 			this.resp.write(JSON.stringify({resp: "folder already existing"}));//if the folder already exists, then do not stop the process
+			this.resp.end();
 		};
 	});
 	
-	this.push_content (dirPath, articleID, b);
+	//this.push_content (dirPath, articleID, b);
 };
 	
 /**
@@ -92,17 +85,18 @@ push_content = function (dirPath, articleID, b) {
 			util.log ("file does not exist -> creation");
 			fs.writeFile(articlePath, data, function(err) {
 				if(err) {
-					this.resp.write(JSON.stringify({resp: "error uploading file"}));//if the file already exists, then do not stop the process -> images
+					this.resp.write(JSON.stringify({resp: "error uploading file"}));
+					this.resp.end();
 				} else {
-					this.resp.write(JSON.stringify({resp: "file saved"}));
+					this.resp.write(JSON.stringify({resp: "ok"}));
+					this.resp.end();
 				}
 			});
 		} else {
 			this.resp.write(JSON.stringify({resp: "file already existing"}));
+			this.resp.end();
 		}
 	});
-	
-	this.resp.end();
 };
 	
 /**
@@ -110,38 +104,53 @@ push_content = function (dirPath, articleID, b) {
  * @param dirPath (Array): array of article ids
  * @return (array of JSON objects): articles = [{title: 'title1', author: 'author1', date: 'date1', content: 'content1'}, {title: 'title2', author: 'author2', date: 'date2', content: 'content2'}, ...]
  */
-exports.load_articles = function (dirName) {
-	articleIdArray = db.order_article (articleStatus, obj, func_name);uncomment
-	var returnedArticles = new Array (),
-		flag = 0;
+load_articles = function (dirName, b) {//deleted the 'exports.'
+	articleIdArray = db.order_article (b.articleStatus, obj, func_name);//ERRRRRRROOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOR! ARTICLE STATUS || last addition b.articleStatus
+	var returnedArticles = new Array ();
 	
 	if (!articleIdArray) {
-		this.resp.write(JSON.stringify({resp: "articles array transmission failed"}));uncomment
+		this.resp.write(JSON.stringify({resp: "articles array transmission failed"}));
+		this.resp.end();
 	} else {
 		var i = 0;//delete
 		for (id in articleIdArray) {
 			var articlePath = dirName + articleIdArray [i] + '/' + articleIdArray [i];
 			fs.readFile(articlePath, function (err, data) {
 				if (err) {
-					flag = 1;
 					this.resp.write(JSON.stringify({resp: "ko"}));
+					this.resp.end();
 				} else {
 					returnedArticles.push(data);
 				}
 			});
+			i ++;//delete
 		};
-	}
-	
-	if (flag) {
-		this.resp.write(JSON.stringify({resp: "ko"}));
-	} else {
-		util.log("load successful\n");
+		//rebuild json object? w/ date added
 		this.resp.write(JSON.stringify(returnedArticles));
+		this.resp.end();
 	}
-	
-	this.resp.end();
 };
 
-
-//this.submit_article (b);
-
+/**
+ * This function deletes an article which id is given in parameter
+ * @param articleId (Int): article id
+ * @return (String): "ok" or "ko"
+ */
+delete_article = function (articleId) {
+	var articlePath = dirPath + articleId;//think about destroying the whole directory and its gatherings recursively
+	fs.exists(articlePath, function(exists) {
+		if (!exists) {
+			this.resp.write(JSON.stringify({resp: "did not exist"}));//big problem upcoming
+			this.resp.end();
+		} else {
+			fs.unlink('/tmp/hello', function (err) {
+				if (err) {
+					this.resp.write(JSON.stringify({resp: "ko"}));//big problem upcoming
+				} else {
+					this.resp.write(JSON.stringify({resp: "ok"}));
+				}
+			});
+			this.resp.end();
+		}
+	}
+};

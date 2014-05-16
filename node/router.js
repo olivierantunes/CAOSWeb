@@ -89,86 +89,128 @@ go_post:
 		var _this = this;		
         b = JSON.parse(b);
 		this.buffer = b;
-		this.resp.writeHead(200, {"Content-Type": "application/json"});
+		_this.resp.writeHead(200, {"Content-Type": "application/json"});
 		if (b.action == "login") {
-			db.check_log(b.pseudo, b.password, this, "cb_check_log");
-			this.resp.end();
-		} else if (b.action == "register-blog") {
-			db.check_subscribe_log (b.login, b.mail, this, "cb_check_subscribe_log");
-			this.resp.end();
-		} else if (b.action == "register-caosweb") {
-			this.resp.end();
+			db.check_log(b.pseudo, b.password, _this, "cb_check_log");
+			_this.resp.end();
+		} else if (b.action == "register-blog" || b.action == "register-caosweb") {
+			db.check_subscribe_log (b.login, b.mail, _this, "cb_check_subscribe_log");
+			_this.resp.end();
 		} else if (b.action == "submit article") {
-			
-			this.resp.end();
+			submit_article (b.author, _this, "cb_submit_article") {
+			_this.resp.end();
 		} else if ("confirm-registration-caosweb" == b.action) {
 		
-			
+			_this.resp.end();
 		} else if (b.action == "confirm-registration-blog") {
 			
-			this.resp.end();
+			_this.resp.end();
 		} else if (b.action == "get-rights") {
-			
-			this.resp.end();
+			db.get_rights (, _this, "cb_get_rights");
+			_this.resp.end();
 		} else if (b.action == "get-article") {
 			
-			this.resp.end();
+			_this.resp.end();
 		} else if (b.action == "get-validate") {
 			
-			this.resp.end();
+			_this.resp.end();
 		} else if (b.action == "validation-article") {
 			
-			this.resp.end();
+			_this.resp.end();
 		} else if (b.action == "delete-article") {
-			
-			this.resp.end();
+			db.delete_article (b.articleStatus, _this, "cb_delete_article");//check if b.articleStatus ok w/ Jean
+			_this.resp.end();
 		} else if (b.action == "get-members") {
 			
-			this.resp.end();
+			_this.resp.end();
 		} else if (b.action == "logout") {
-			
-			this.resp.end();
+			db.log_out (_this.req.headers.cookie;, _this, "cb_log_out");
+			_this.resp.end();
 		} else {
-			this.resp.write(JSON.stringify({resp: "Service not found"}));
-			this.resp.end();
+			_this.resp.write(JSON.stringify({resp: "Service not found"}));
+			_this.resp.end();
 		}
     },
 	
 cb_check_log:
 	function (resCheckLog) {
 		if (resCheckLog) {
-				db.assign_cookie (b.pseudo, this, "cb_assign_cookie");
+				db.assign_cookie (b.pseudo, _this, "cb_assign_cookie");
 			} else {
-				this.resp.write(JSON.stringify({resp: "ko"}));
-				this.resp.end();
+				_this.resp.write(JSON.stringify({resp: "ko"}));
+				_this.resp.end();
 			}
 	},
 	
 cb_assign_cookie:
 	function (c) {
-		this.resp.writeHead(200,"ok",{"Context-Type": 'application/json', "Set-Cookie": c});
-		this.resp.write(JSON.stringify({resp: "ok"}));
-		this.resp.end();
+		_this.resp.writeHead(200,"ok",{"Context-Type": 'application/json', "Set-Cookie": c});
+		_this.resp.write(JSON.stringify({resp: "ok"}));
+		_this.resp.end();
 	},
 
 cb_check_subscribe_log:
 	function (f) {
 		if (f) {
-			db.register (this.b.login, this.b.pw, this.b.mail, cookie_reg, 0, obj, func_name) {
+			db.register (_this.b.login, _this.b.pw, _this.b.mail, cookie_reg, 0, _this, "cb_register");
 		} else {
-			this.resp.write(JSON.stringify({resp: "ko"}));
+			_this.resp.write(JSON.stringify({resp: "ko"}));
 		}
-		this.resp.end();
+		_this.resp.end();
 	},
 	
-cb_submitArticle:
-	function (f) {
-		if (f) {
-			this.resp.write(JSON.stringify({resp: "ok"}));
+cb_register:
+	function (c) {
+		if (c) {
+			if (_this.b.nameWebsite) {
+				nodeMailer.mail_router (_this.b.mail, "noreply.caosweb@gmail.com", _this.b.login, _this.b.pw, c, "localhost:1337/ConfirmRegistration");
+			} else {
+				nodeMailer.mail_router (_this.b.mail, "noreply.caosweb@gmail.com", _this.b.login, _this.b.pw, c, "localhost:1337/ConfirmRegistration");
+			}
 		} else {
-			this.resp.write(JSON.stringify({resp: "ko"}));
+			_this.resp.write(JSON.stringify({resp: "ko"}));
 		}
-		this.resp.end();
+		_this.resp.end();
+	},
+	
+cb_submit_article:
+	function (id) {
+		if (id) {
+			gestionArticles.submit_article (id, _this.b);
+		} else {
+			_this.resp.write(JSON.stringify({resp: "ko"}));
+		}
+		_this.resp.end();
+	},
+	
+cb_get_rights:
+	function (r) {
+		if (r) {
+			_this.resp.write(JSON.stringify({"rights": r}));//check if '"' needed
+		} else {
+			_this.resp.write(JSON.stringify({resp: "ko"}));
+		}
+		_this.resp.end();
+	},
+	
+cb_delete_article:
+	function (ok) {
+		if (ok) {
+			gestionArticles.delete_article (_this.b.articleId);
+		} else {
+			_this.resp.write(JSON.stringify({resp: "ko"}));
+		}
+		_this.resp.end();
+	},
+	
+cb_log_out:
+	function (ok) {
+		if (ok) {
+			_this.resp.write(JSON.stringify({resp: "ok"}));
+		} else {
+			_this.resp.write(JSON.stringify({resp: "ko"}));
+		}
+		_this.resp.end();
 	},
 	
 get_method:

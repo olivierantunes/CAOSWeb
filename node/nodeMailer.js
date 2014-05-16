@@ -54,4 +54,4 @@ exports.mail_router = function (targetMail, senderMail, userLogin, userPw, userI
 }
 
 //for testing
-this.mail_router (mailAddressee.mailAddress, "noreply.caosweb@gmail.com", mailAddressee.login, mailAddressee.password, mailAddressee.registrationTemporaryCookie, "http://domain.com:3000/path/to/something?query=string#fragment");
+//this.mail_router (mailAddressee.mailAddress, "noreply.caosweb@gmail.com", mailAddressee.login, mailAddressee.password, mailAddressee.registrationTemporaryCookie, "http://domain.com:3000/path/to/something?query=string#fragment");

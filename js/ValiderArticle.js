@@ -2,24 +2,24 @@ var site={};
 
 site.on_ready = function () {
 	document.addEventListener("click", site.on_click);
+	site.cb_rights();
+	site.cb_valid();
 };
 
 site.ask_right = function() {
     var data ={"action": "get_rights"};
-	site.post(data, site.cb_rights);
+	tools.post(data, site.cb_rights);
 };
 
 site.cb_rights = function () {
 	//if (readystate) //TODO
-	var right = 1; //JSON.parse(this.responseText);
+	var rights = 1; //JSON.parse(this.responseText);
 	//right=rights.role;
 	var elt = document.getElementsByClassName("dynamic-rights")[0];
 	if (rights == 0) {
 	elt.innerHTML +="<div class=\"container\">"+
 						"<ul class=\"nav nav-pills pull-left\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"contact.html\">Contacts</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"faq.html\">FAQ</a></li>"+
 							"<li class=\"blog-nav-item active\"><a href=\"RedigerArticle.html\">Publier</a></li>"+
 							"<li class=\"blog-nav-item active\"><a href=\"ValiderArticle.html\">Valider</a></li>"+
 							"<li class=\"dropdown blog-nav-item active\">"+
@@ -31,7 +31,6 @@ site.cb_rights = function () {
 							"</li>"+
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
-							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
 							"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
@@ -40,8 +39,6 @@ site.cb_rights = function () {
 	elt.innerHTML +="<div class=\"container\">"+
 						"<ul class=\"nav nav-pills pull-left\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"contact.html\">Contacts</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"faq.html\">FAQ</a></li>"+
 							"<li class=\"blog-nav-item active\"><a href=\"RedigerArticle.html\">Publier</a></li>"+
 							"<li class=\"blog-nav-item active\"><a href=\"ValiderArticle.html\">Valider</a></li>"+
 							"<li class=\"dropdown blog-nav-item active\">"+
@@ -53,7 +50,6 @@ site.cb_rights = function () {
 							"</li>"+
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
-							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
 							"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
@@ -62,13 +58,10 @@ site.cb_rights = function () {
 	elt.innerHTML +="<div class=\"container\">"+
 						"<ul class=\"nav nav-pills pull-left\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"contact.html\">Contacts</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"faq.html\">FAQ</a></li>"+
 							"<li class=\"blog-nav-item active\"><a href=\"RedigerArticle.html\">Publier</a></li>"+
 							"<li class=\"blog-nav-item active\"><a href=\"ValiderArticle.html\">Valider</a></li>"+
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
-							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
 							"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
@@ -77,12 +70,9 @@ site.cb_rights = function () {
 	elt.innerHTML +="<div class=\"container\">"+
 						"<ul class=\"nav nav-pills pull-left\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"contact.html\">Contacts</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"faq.html\">FAQ</a></li>"+
 							"<li class=\"blog-nav-item active\"><a href=\"RedigerArticle.html\">Publier</a></li>"+
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
-							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
 							"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
@@ -91,11 +81,8 @@ site.cb_rights = function () {
 	elt.innerHTML +="<div class=\"container\">"+
 						"<ul class=\"nav nav-pills pull-left\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"contact.html\">Contacts</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"faq.html\">FAQ</a></li>"+
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
-							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
 							"<li class=\"blog-nav-item  logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
@@ -104,8 +91,6 @@ site.cb_rights = function () {
 	elt.innerHTML +="<div class=\"container\">"+
 						"<ul class=\"nav nav-pills pull-left\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"contact.html\">Contacts</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"faq.html\">FAQ</a></li>"+
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"Sinscrire.html\">S'incrire</a></li>"+
@@ -117,7 +102,7 @@ site.cb_rights = function () {
 
 site.logout = function() {
     var data ={"action": "logout"};
-	site.post(data, site.cb_logo);
+	tools.post(data, site.cb_logo);
 };
 
 site.cb_logo = function () {
@@ -136,7 +121,7 @@ site.ask_validate = function() {
 	var s=0;
 	var data ={"action": "get_validate", status : s};
     //site.cb.art(data);
-	site.post(data, site.cb_valid);
+	tools.post(data, site.cb_valid);
 };
 
 site.cb_valid = function () {
@@ -156,16 +141,18 @@ site.cb_valid = function () {
 	r.push(art);
 	
 	//ici
-	
+	var elt = document.getElementsByClassName("dynamic-valid")[0];
+	for (a in r) {
 	elt.innerHTML += "<h3 class=\"blog-post-title\" id=\"jan\">" + r[a].title + " " + a + "</h3>" +
 					"<p class=\"blog-post-meta\">" + r[a].date + " par <a href=\"#\">" + r[a].author+ "</a>"+
 					"<blockquote>" +
 						"<p>" + r[a].content + "</p>" +
 					"</blockquote>"+
-					"<p style=\"display:hide\" class= \"ID \">r[a].ID<p>"
+					"<p class= \"ID hidden\">r[a].ID<p>"
 					"<button class=\"btn btn-success valid_article\">Valider</button>"+" "+
 					"<button class=\"btn btn-danger delete_article\">Annuler</button>";
 	};
+};
 
 site.valid_arti= function() {
 	var art = document.getElementsByClassName("ID")[0];
@@ -209,7 +196,7 @@ site.on_click = function (ev){
 	if (src.has_class("valid_article")){
 	site.submit_arti();
 	}
-	else if (src.has_class'"delete_article")){
+	else if (src.has_class("delete_article")){
 	site.delte_arti();
 	}
 	else if (src.has_class("logout")){
@@ -219,10 +206,4 @@ site.on_click = function (ev){
 
 window.onload = function () {
 	setTimeout(site.on_ready, 1);
-	setTimeout(site.cb_rights, 1);
-	setTimeout(site.cb_valid, 500);
-};
-
-HTMLElement.prototype.has_class = function(s) {
-	return (this.className.indexOf(s) >= 0);
 };

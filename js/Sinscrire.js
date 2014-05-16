@@ -5,22 +5,20 @@ console.log("on_ready trigger event");
 	document.addEventListener("click", register.on_click);
 };
 
-site.ask_right = function() {
+register.ask_right = function() {
     var data ={"action": "get_rights"};
-	site.post(data, site.cb_rights);
+	tools.post(data, site.cb_rights);
 };
 
-site.cb_rights = function () {
+register.cb_rights = function () {
 	//if (readystate) //TODO
-	var right = 1; //JSON.parse(this.responseText);
+	var rights = 1; //JSON.parse(this.responseText);
 	//right=rights.role;
 	var elt = document.getElementsByClassName("dynamic-rights")[0];
 	if (rights == 0) {
 	elt.innerHTML +="<div class=\"container\">"+
 						"<ul class=\"nav nav-pills pull-left\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"contact.html\">Contacts</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"faq.html\">FAQ</a></li>"+
 							"<li class=\"blog-nav-item active\"><a href=\"RedigerArticle.html\">Publier</a></li>"+
 							"<li class=\"blog-nav-item active\"><a href=\"ValiderArticle.html\">Valider</a></li>"+
 							"<li class=\"dropdown blog-nav-item active\">"+
@@ -32,7 +30,6 @@ site.cb_rights = function () {
 							"</li>"+
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
-							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
 							"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
@@ -41,8 +38,6 @@ site.cb_rights = function () {
 	elt.innerHTML +="<div class=\"container\">"+
 						"<ul class=\"nav nav-pills pull-left\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"contact.html\">Contacts</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"faq.html\">FAQ</a></li>"+
 							"<li class=\"blog-nav-item active\"><a href=\"RedigerArticle.html\">Publier</a></li>"+
 							"<li class=\"blog-nav-item active\"><a href=\"ValiderArticle.html\">Valider</a></li>"+
 							"<li class=\"dropdown blog-nav-item active\">"+
@@ -54,7 +49,6 @@ site.cb_rights = function () {
 							"</li>"+
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
-							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
 							"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
@@ -63,13 +57,10 @@ site.cb_rights = function () {
 	elt.innerHTML +="<div class=\"container\">"+
 						"<ul class=\"nav nav-pills pull-left\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"contact.html\">Contacts</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"faq.html\">FAQ</a></li>"+
 							"<li class=\"blog-nav-item active\"><a href=\"RedigerArticle.html\">Publier</a></li>"+
 							"<li class=\"blog-nav-item active\"><a href=\"ValiderArticle.html\">Valider</a></li>"+
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
-							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
 							"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
@@ -78,12 +69,9 @@ site.cb_rights = function () {
 	elt.innerHTML +="<div class=\"container\">"+
 						"<ul class=\"nav nav-pills pull-left\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"contact.html\">Contacts</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"faq.html\">FAQ</a></li>"+
 							"<li class=\"blog-nav-item active\"><a href=\"RedigerArticle.html\">Publier</a></li>"+
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
-							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
 							"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
@@ -92,11 +80,8 @@ site.cb_rights = function () {
 	elt.innerHTML +="<div class=\"container\">"+
 						"<ul class=\"nav nav-pills pull-left\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"contact.html\">Contacts</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"faq.html\">FAQ</a></li>"+
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
-							"<li class=\"blog-nav-item active\"><a href=\"compte.html\">Compte</a></li>"+
 							"<li class=\"blog-nav-item  logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 						"</ul>"+
 					"</div>";
@@ -105,8 +90,6 @@ site.cb_rights = function () {
 	elt.innerHTML +="<div class=\"container\">"+
 						"<ul class=\"nav nav-pills pull-left\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"contact.html\">Contacts</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"faq.html\">FAQ</a></li>"+
 						"</ul>"+
 						"<ul class=\"nav nav-pills pull-right\">"+
 							"<li class=\"blog-nav-item active\"><a href=\"Sinscrire.html\">S'incrire</a></li>"+
@@ -116,12 +99,12 @@ site.cb_rights = function () {
 	}
 };
 
-site.logout = function() {
+register.logout = function() {
     var data ={"action": "logout"};
-	site.post(data, site.cb_logo);
+	tools.post(data, register.cb_logo);
 };
 
-site.cb_logo = function () {
+register.cb_logo = function () {
 	if (this.readyState == 4 && this.statusCode == 200) {
 		var r = JSON.parse(this.responseText);
 		if (r.resp == "ok") {
@@ -141,7 +124,7 @@ register.on_click = function (ev){
 		register.submit();
 	}
 	if (src.has_class("logout")){
-	site.logout();
+	register.logout();
 	}
 };
 
@@ -175,11 +158,11 @@ register.submit = function () {
 	}
 	else if (mail.value = cmail.value || mail.value || pw.value = cpw.value || pw.value){
 		var data = {action: "register-blog", email: mail, password: pw, login: p};
-		tools.post(data, site.cb_reg_blog);
+		tools.post(data, register.cb_reg_blog);
 	} 
 }
 
-site.cd_reg_blog = function () {
+register.cd_reg_blog = function () {
 	if (this.readyState == 4 && this.statusCode == 200) {
 		var r = JSON.parse(this.responseText);
 		if (r.resp == "ok") {
@@ -198,11 +181,7 @@ register.reset_class = function (e) {
 
 window.onload = function () {
 	setTimeout(register.on_ready, 1);
-	setTimeout(site.cb_rights, 1);
-};
-
-HTMLElement.prototype.has_class = function(s) {
-	return (this.className.indexOf(s) >= 0);
+	setTimeout(register.cb_rights, 1);
 };
 
 HTMLElement.prototype.add_class = function(cl) {

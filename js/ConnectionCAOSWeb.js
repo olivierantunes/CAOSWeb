@@ -32,7 +32,3 @@ site.cb_check_logCAOSWeb = function () {
 window.onload = function () {
 	setTimeout(site.on_ready, 1);
 };
-
-HTMLElement.prototype.has_class = function(s) {
-	return (this.className.indexOf(s) >= 0);
-};

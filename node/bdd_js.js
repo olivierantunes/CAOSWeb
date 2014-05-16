@@ -23,8 +23,10 @@
  * 14 - log_out - Test OK
  * 15 - modif_pw - TEST OK
  * 16 - order_article - Test OK
- * 27 - users_list - Test OK
- * 99 - 
+ * 17 - users_list - Test OK
+ * 18 - get_user - Test OK
+ * 19 - get_date - Test OK
+ * 99 - test function Not used
  *
  */
 
@@ -459,7 +461,7 @@ exports.users_list = function(obj, func_name) {
 };
 
 /**
- * \brief 18 - check_cookie gives you the user corresponding to the input cookie
+ * \brief 18 - get_user gives you the user corresponding to the input cookie
  * Test OK le 16/05 
  * @param (string) cookie is the cookie of the user you want to identify
  * @param (object) this

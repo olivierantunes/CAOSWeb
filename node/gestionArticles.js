@@ -11,18 +11,14 @@ var b = {
 	content: "monContenu"
 };
 
-//var b = JSON.stringify(bob);
-console.log ("title: " + b.title);
-console.log ("content: " + b.content);
-
 /**
  * This function orders the operations to push an article in the db
  * @param b (JSON object) : article data = { title: 'title', author: 'author', content: 'content'}
  * @return (String) : "ok" or "ko"
  */
 exports.submit_article = function (b) {
-		//var articleID = db.create_article_id(); uncomment for run
-		var articleID = 11111;
+		//var articleID = db.create_article_id();uncomment
+		var articleID = 444;
 		push_article_db (articleID, b);
 	},
 	
@@ -88,17 +84,24 @@ push_content = function (dirPath, articleID, b) {
 	},
 	
 /**
- * This function loads every article
+ * This function loads every article of which ids in param
  * @param dirPath (Array): array of articles ids
- * @return (array of JSON objects): article = [{title: 'title1', author: 'author1', date: 'date1', content: 'content1'}, {title: 'title2', author: 'author2', date: 'date2', content: 'content2'}, ...]
+ * @return (array of JSON objects): articles = [{title: 'title1', author: 'author1', date: 'date1', content: 'content1'}, {title: 'title2', author: 'author2', date: 'date2', content: 'content2'}, ...]
  */
 exports.load_articles = function (dirName) {
-		//articleIdArray = db.order_article (articleStatus, obj, func_name) {
-		var articleIdArray = new Array (),
-			articleIdArray = ["12", "666", "23456789"],
+		//articleIdArray = db.order_article (articleStatus, obj, func_name);uncomment
+		var articleIdArray = new Array (),//delete
+			articleIdArray = ["12", "444", "666"],//delete
 			returnedArticles = new Array (),
 			flag = 0;
-			
+		
+		//delete from here
+		console.log(articleIdArray [0]);
+		console.log(articleIdArray [1]);
+		console.log(articleIdArray [2]);
+		console.log("\n");
+		//to here
+		
 		if (!articleIdArray) {
 			//this.resp.write(JSON.stringify({resp: "articles array transmission failed"}));uncomment
 			util.log ("array transmission failed");//delete
@@ -117,6 +120,19 @@ exports.load_articles = function (dirName) {
 			};
 		}
 		
+		//delete from here
+		console.log("flag = " + flag + "\n");
+		if (flag) {
+			//do nothing
+		} else {
+			console.log("test\n");
+			for (id in returnedArticles) {
+				util.log(returnedArticles [id]);//empty
+			};
+		}
+		console.log("\n");
+		//to here
+		
 		if (!flag) {
 			//this.resp.write(JSON.stringify({resp: "ko"}));uncomment
 			util.log("load failed");
@@ -125,11 +141,12 @@ exports.load_articles = function (dirName) {
 			util.log("load successful");
 			this.test_load_articles (returnedArticles);//delete
 		}
+		test_load_articles (returnedArticles);//delete
 		//this.resp.end();uncomment
     }
-//test function
+//test function: display operations results
 test_load_articles = function (tabJsonArt) {
-		for (id in articleIdArray) {
+		for (id in tabJsonArt) {
 			console.log(id + "\n");
 		};
 	},

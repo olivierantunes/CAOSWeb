@@ -91,7 +91,7 @@ go_post:
         b = JSON.parse(b);
 		this.resp.writeHead(200, {"Content-Type": "application/json"});
 		if (b.action == "log-in") {
-			var returnCheckLog = db.check_log (b.pseudo, b.password, this, "check_log"); //TODO: check cb_checkLog => the COOKIE thing
+			var é = db.check_log (b.pseudo, b.password, this, "check_log"); //TODO: check cb_checkLog => the COOKIE thing
 		} else if (b.action == "register-blog") {
 			var returnRegister = db.check_subscribe_log (b.pseudo, b.password, this, "check_subscribe_log");
 			if (1 == returnRegister) {
@@ -107,12 +107,20 @@ go_post:
 				this.resp.write(JSON.stringify({resp: "ko"}));
 			}
 		} else if (b.action == "submit article") {
-			_this.submitArticle(b);
-		} else if ("confirm_registration" == b.action) {
+			artManage.submit-article(b);//last addition
+			
+		} else if ("confirm-registration-caosweb" == b.action) {
 			//1: check if already existing website
 			//2: if not push user to caosweb db, then log in user, then push new website, then push user to new website, then push user as admin, then log in user, then load form change webpage
-		} else if (b.action == "get-rights") {
+			
+		} else if (b.action == "confirm-registration-blog") {
 			//TODO
+			
+		} else if (b.action == "get-rights") {
+			//check_cookie = function (user,cookie, obj, func_name)
+			var flag = db.check_cookie (this, "check_cookie");
+			this.resp.write(JSON.stringify({resp: flag}));
+			
 		} else if (b.action == "get-article") {
 			//TODO
 		} else if (b.action == "get-validate") {

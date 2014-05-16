@@ -121,7 +121,7 @@ site.on_click = function (ev){
 	var src = ev.target;
 	console.log("toc");
 	if (src.has_class("check_log")){
-	site.check_login
+	site.check_login();
 	}
 	if (src.has_class("logout")){
 	site.logout();

@@ -23,8 +23,10 @@
  * 14 - log_out - Test OK
  * 15 - modif_pw - TEST OK
  * 16 - order_article - Test OK
- * 27 - users_list - Test OK
- * 99 - 
+ * 17 - users_list - Test OK
+ * 18 - get_user - Test OK
+ * 19 - get_date - Test OK
+ * 99 - test function Not used
  *
  */
 
@@ -90,16 +92,17 @@ exports.check_log = function (log, pw, obj, func_name) {
  * @param (string) log
  * @param (string) pw
  * @param (string) email
- * @param (string) cookie_reg
  * @param (INT) right
  * @param (object) this
  * @param (string) func_name 
  * @callback (boolean) calls the callback with a boolean argument
  */
-exports.register = function (log, pw, email, cookie_reg, right, obj, func_name) {
+exports.register = function (log, pw, email, right, obj, func_name) {
 		util.log("REGISTER - Opening");
+		var cookie_reg  = create_cookie(log);
 		var stmt = "INSERT INTO test (user, password, email , cookie_reg, right) VALUES ( \""+log+"\",\"" + pw + "\",\"" + email + "\",\"" + cookie_reg + "\",\"" + right+"\")";
-		var flag = 0;
+		var art = new Array();
+		
 		db.each(stmt, function (e, r) {
 			if(e) {
 				util.log("ERROR - SQL - REGISTER function: " + e);
@@ -108,8 +111,9 @@ exports.register = function (log, pw, email, cookie_reg, right, obj, func_name) 
 					flag++;
 				}
 			}
+			art.push(cookie_reg);
 		}, function() {
-			obj[func_name](flag);
+			obj[func_name](art);
 		});
 	util.log("REGISTER - Closing");
 };
@@ -281,15 +285,16 @@ exports.assign_cookie = function (user, obj, func_name) {
 		util.log("ASSIGN_COOKIE - Opening");
 		var cookie = create_cookie(user);
 		var stmt = "UPDATE test SET cookie = \""+cookie+"\" WHERE user =\""+ user +"\"" ;
-		var flag = 0;
+		var art = new Array();
 		db.each(stmt, function (e,r) {
 		if(e) {
 			util.log("ERROR - SQL - ASSIGN_COOKIE function: " + e);
 			} else {
 				util.inspect(r);
 			}
+			art.push = (cookie);
 		}, function () {
-			obj[func_name](flag);
+			obj[func_name](art);
 		});
 	util.log("ASSIGN_COOKIE - Closing");
 };
@@ -456,6 +461,67 @@ exports.users_list = function(obj, func_name) {
 				obj[func_name](art);
 			});
 		util.log("USERS_LIST - Closing");
+};
+
+/**
+ * \brief 18 - get_user gives you the user corresponding to the input cookie
+ * Test OK le 16/05 
+ * @param (string) cookie is the cookie of the user you want to identify
+ * @param (object) this
+ * @param (string) func_name
+ * @callback (boolean) calls the callback with a JSON argument
+ */
+exports.get_user = function (cookie, obj, func_name) {
+		util.log("CHECK_COOKIE - Opening");
+		var stmt = "SELECT user FROM test WHERE cookie =\"" + cookie +"\"";
+		var art = new Array();
+		db.each(stmt, function (e,r) {
+		if(e) {
+			util.log("ERROR - SQL - CHECK_COOKIE function: " + e);
+			} else {
+				util.inspect(r);
+			}
+			art.push(r);
+		}, function () {
+			obj[func_name](art);
+		});
+	util.log("CHECK_COOKIE - Closing");
+};
+
+/**
+ * \brief 19 - get_date gives you the date corresponding to an articleID 
+ * Test NOK 
+ * @param (string) articleID is the cookie of the user you want to identify
+ * @param (object) this
+ * @param (string) func_name
+ * @callback (boolean) calls the callback with a JSON argument
+ */
+exports.get_date = function (articleID, obj, func_name) {
+		util.log("CHECK_DATE - Opening");
+		var stmt = "SELECT date FROM test WHERE articleID =\"" + articleID +"\"";
+		var art = new Array();
+		db.each(stmt, function (e,r) {
+		if(e) {
+			util.log("ERROR - SQL - CHECK_DATE function: " + e);
+			} else {
+				util.inspect(r);
+			}
+			art.push(r);
+		}, function () {
+			obj[func_name](art);
+		});
+	util.log("CHECK_DATE - Closing");
+};
+
+/**
+ * \brief 18 - Get and return username
+ * @param cookie (string) user cookie
+ * @return (string) calls the callback with username as parameter
+ */
+exports.get_user = function (cookie) {
+	
+	
+	return username;
 };
 
 /**

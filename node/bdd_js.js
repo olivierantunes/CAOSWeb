@@ -101,19 +101,16 @@ exports.register = function (log, pw, email, right, obj, func_name) {
 		util.log("REGISTER - Opening");
 		var cookie_reg  = create_cookie(log);
 		var stmt = "INSERT INTO test (user, password, email , cookie_reg, right) VALUES ( \""+log+"\",\"" + pw + "\",\"" + email + "\",\"" + cookie_reg + "\",\"" + right+"\")";
-		var art = new Array();
 		
 		db.each(stmt, function (e, r) {
 			if(e) {
 				util.log("ERROR - SQL - REGISTER function: " + e);
 			} else {
 				if (r) { 
-					flag++;
 				}
 			}
-			art.push(cookie_reg);
 		}, function() {
-			obj[func_name](art);
+			obj[func_name](cookie_reg);
 		});
 	util.log("REGISTER - Closing");
 };
@@ -187,16 +184,14 @@ exports.submit_article = function (author, obj, func_name) {
 		util.log("SUBMIT_ARTICLE - Opening");
 		var articleID = create_cookie(author);
 		var stmt = "INSERT INTO test (articleID, articleStatus, author, date) VALUES (articleID,0,\""+author+"\", NOW() )";
-		var art = new Array();
 		db.each(stmt, function (e,r) {
 		if(e) {
 			util.log("ERROR - SQL - SUBMIT_ARTICLE function: " + e);
 			} else {
 				util.inspect(r);
 			}
-			art.push(articleID);
 		}, function () {
-			obj[func_name](art);
+			obj[func_name](articleID);
 		});
 	util.log("SUBMIT_ARTICLE - Closing");
 };
@@ -278,6 +273,7 @@ exports.delete_article = function (articleID, obj, func_name) {
 /**
  * \brief 10 - Assign_Cookie function assigns a cookie to a user
  * Test OK
+ * @param (string) user
  * @param (object) this
  * @param (string) func_name
  * @callback (boolean) calls the callback with the cookie
@@ -285,17 +281,15 @@ exports.delete_article = function (articleID, obj, func_name) {
 exports.assign_cookie = function (user, obj, func_name) {
 		util.log("ASSIGN_COOKIE - Opening");
 		var cookie = create_cookie(user);
-		var stmt = "UPDATE test SET cookie = \""+cookie+"\" WHERE user =\""+ user +"\"" ;
-		var art = new Array();
+		var stmt = "UPDATE test SET cookie = cookie WHERE user =\""+ user +"\"" ;
 		db.each(stmt, function (e,r) {
 		if(e) {
 			util.log("ERROR - SQL - ASSIGN_COOKIE function: " + e);
 			} else {
 				util.inspect(r);
 			}
-			art.push = (cookie);
 		}, function () {
-			obj[func_name](art);
+			obj[func_name](cookie);
 		});
 	util.log("ASSIGN_COOKIE - Closing");
 };

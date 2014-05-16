@@ -459,6 +459,31 @@ exports.users_list = function(obj, func_name) {
 };
 
 /**
+ * \brief 18 - check_cookie gives you the user corresponding to the input cookie
+ * Test NOK 
+ * @param (string) cookie is the cookie of the user you want to identify
+ * @param (object) this
+ * @param (string) func_name
+ * @callback (boolean) calls the callback with a boolean argument
+ */
+exports.check_cookie = function (cookie, obj, func_name) {
+		util.log("CHECK_COOKIE - Opening");
+		var stmt = "SELECT user FROM test WHERE cookie =\"" + cookie +"\"";
+		var flag = 0;
+		db.each(stmt, function (e,r) {
+		if(e) {
+			util.log("ERROR - SQL - CHECK_COOKIE function: " + e);
+			} else {
+				util.inspect(r);
+			}
+		}, function () {
+			obj[func_name](flag);
+		});
+	util.log("CHECK_COOKIE - Closing");
+};
+
+
+/**
  * \brief 99 - DEBUG fonction 
  * 
  * 

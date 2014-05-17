@@ -102,23 +102,24 @@ go_post:
 		} else if ("confirm-registration-caosweb" == b.action) {
 		
 			_this.resp.end();
-		} else if (b.action == "confirm-registration-blog") {
+		} else if ("confirm-registration-blog" == b.action) {
 			
 			_this.resp.end();
 		} else if (b.action == "get-rights") {
-			db.get_rights (, _this, "cb_get_rights");
+			db.get_rights (_this.req.headers.cookie, _this, "cb_get_rights");
 			_this.resp.end();
 		} else if (b.action == "get-article") {
-			
+			db.order_article (1, _this, "cb_order_article");//capture the sense of '0' or '1' for display validated articles | change name db and db functions to get_articles
 			_this.resp.end();
 		} else if (b.action == "get-validate") {
-			
+			db.order_article (0, _this, "cb_order_article");//capture the sense of '0' or '1' for display in wait of validation articles  | change name db and db functions to get_articles
 			_this.resp.end();
 		} else if (b.action == "validation-article") {
-			
+			//db function to be done
+			db.update_article_status ();
 			_this.resp.end();
 		} else if (b.action == "delete-article") {
-			db.delete_article (b.articleStatus, _this, "cb_delete_article");//check if b.articleStatus ok w/ Jean
+			db.delete_article (b.articleId, _this, "cb_delete_article");//check if b.articleId ok w/ Jean
 			_this.resp.end();
 		} else if (b.action == "get-members") {
 			
@@ -207,6 +208,16 @@ cb_log_out:
 	function (ok) {
 		if (ok) {
 			_this.resp.write(JSON.stringify({resp: "ok"}));
+		} else {
+			_this.resp.write(JSON.stringify({resp: "ko"}));
+		}
+		_this.resp.end();
+	},
+	
+cb_order_article:
+	function (ok) {
+		if (ok) {
+			//rebuild json object for each article (after fetching them)
 		} else {
 			_this.resp.write(JSON.stringify({resp: "ko"}));
 		}

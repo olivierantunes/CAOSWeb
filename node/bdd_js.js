@@ -27,6 +27,7 @@
  * 18 - get_user - Test OK
  * 19 - get_date - Test OK
  * 20 - get_right - TEST OK
+ * 21 - get_user_reg - TEST OK
  * 99 - test function Not used
  *
  */
@@ -490,7 +491,7 @@ exports.get_user = function (cookie, obj, func_name) {
  * @param (string) articleID is the cookie of the user you want to identify
  * @param (object) this
  * @param (string) func_name
- * @callback (boolean) calls the callback with a JSON argument
+ * @callback (boolean) calls the callback with an array
  */
 exports.get_date = function (articleID, obj, func_name) {
 		util.log("GET_DATE - Opening");
@@ -515,7 +516,7 @@ exports.get_date = function (articleID, obj, func_name) {
  * @param (string) cookie is the cookie of the user you want to know the right
  * @param (object) this
  * @param (string) func_name
- * @callback (boolean) calls the callback with a JSON argument
+ * @callback (boolean) calls the callback with an array with only one object
  */
 exports.get_right = function (cookie, obj, func_name) {
 		util.log("GET_RIGHT - Opening");
@@ -535,12 +536,12 @@ exports.get_right = function (cookie, obj, func_name) {
 };
 
 /**
- * \brief 21 - get_user_reg gives you the user corresponding to the input cookie
- * Test OK le 16/05 
- * @param (string) cookie is the cookie of the user you want to identify
+ * \brief 21 - get_user_reg gives you the user corresponding to the input cookie_reg
+ * Test OK le 17/05 
+ * @param (string) cookie_reg is the temporary cookie of registration of  the user you want to identify
  * @param (object) this
  * @param (string) func_name
- * @callback (boolean) calls the callback with a JSON argument
+ * @callback (boolean) calls the callback with array with only one object
  */
 exports.get_user_reg = function (cookie_reg, obj, func_name) {
 		util.log("GET_USER_REG - Opening");

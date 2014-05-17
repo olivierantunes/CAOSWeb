@@ -26,6 +26,7 @@
  * 17 - users_list - Test OK
  * 18 - get_user - Test OK
  * 19 - get_date - Test OK
+ * 20 - get_right
  * 99 - test function Not used
  *
  */
@@ -485,7 +486,7 @@ exports.get_user = function (cookie, obj, func_name) {
 
 /**
  * \brief 19 - get_date gives you the date corresponding to an articleID 
- * Test NOK 
+ * test OK le 17/05
  * @param (string) articleID is the cookie of the user you want to identify
  * @param (object) this
  * @param (string) func_name
@@ -509,14 +510,28 @@ exports.get_date = function (articleID, obj, func_name) {
 };
 
 /**
- * \brief 18 - Get and return username
- * @param cookie (string) user cookie
- * @return (string) calls the callback with username as parameter
+ * \brief 20 - get_right gives you the user right corresponding to the cookie inputs 
+ * Test OK le  17/05 
+ * @param (string) cookie is the cookie of the user you want to know the right
+ * @param (object) this
+ * @param (string) func_name
+ * @callback (boolean) calls the callback with a JSON argument
  */
-exports.get_user = function (cookie) {
-	
-	
-	return username;
+exports.get_right = function (cookie, obj, func_name) {
+		util.log("GET COOKIE - Opening");
+		var stmt = "SELECT right FROM test WHERE cookie =\"" + cookie +"\"";
+		var art = new Array();
+		db.each(stmt, function (e,r) {
+		if(e) {
+			util.log("ERROR - SQL - GET COOKIE function: " + e);
+			} else {
+				util.inspect(r);
+			}
+			art.push(r);
+		}, function () {
+			obj[func_name](art);
+		});
+	util.log("GET COOKIE - Closing");
 };
 
 /**

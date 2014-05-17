@@ -9,7 +9,7 @@
  * List of functions :
  * 1 - create_cookie - TEST OK
  * 2 - check_log - Test OK
- * 3 - register - Test OK
+ * 3 - register_blog - Test OK
  * 4 - unsubscribe - Test OK
  * 5 - check_subscribe_log - Test OK
  * 6 - submit_article - Test OK
@@ -28,7 +28,7 @@
  * 19 - get_date - Test OK
  * 20 - get_right - TEST OK
  * 21 - get_user_reg - TEST OK
- * 22 - Register_blog - Test OK
+ * 22 - Register - Test OK
  *
  * 99 - test function Not used
  *
@@ -91,7 +91,7 @@ exports.check_log = function (log, pw, obj, func_name) {
 };
 
 /**
- * \brief 3 - Register functions will add a new user on the website DB
+ * \brief 3 - Register_blog functions will add a new user on the website DB
  * Test OK le 06/05
  * @param (string) log
  * @param (string) pw
@@ -101,13 +101,13 @@ exports.check_log = function (log, pw, obj, func_name) {
  * @param (string) func_name 
  * @callback (boolean) calls the callback with a cookie value
  */
-exports.register = function (log, pw, email, right, obj, func_name) {
-		util.log("REGISTER - Opening");
+exports.register_blog = function (log, pw, email, right, obj, func_name) {
+		util.log("REGISTER_BLOG - Opening");
 		var cookie_reg  = create_cookie(log);
 		var stmt = "INSERT INTO test (user, password, email , cookie_reg, right, site) VALUES ( \""+log+"\",\"" + pw + "\",\"" + email + "\",\"" + cookie_reg + "\",\"" + right+"\")";		
 		db.each(stmt, function (e, r) {
 			if(e) {
-				util.log("ERROR - SQL - REGISTER function: " + e);
+				util.log("ERROR - SQL - REGISTER_BLOG function: " + e);
 			} else {
 				if (r) { 
 				}
@@ -115,7 +115,7 @@ exports.register = function (log, pw, email, right, obj, func_name) {
 		}, function() {
 			obj[func_name](cookie_reg);
 		});
-	util.log("REGISTER - Closing");
+	util.log("REGISTER_BLOG - Closing");
 };
 
 /**
@@ -573,13 +573,13 @@ exports.get_user_reg = function (cookie_reg, obj, func_name) {
  * @param (string) func_name 
  * @callback (boolean) calls the callback with a cookie value
  */
-exports.register_blog = function (log, pw, email, right, site, obj, func_name) {
-		util.log("REGISTER_BLOG - Opening");
+exports.register = function (log, pw, email, right, site, obj, func_name) {
+		util.log("REGISTER - Opening");
 		var cookie_reg  = create_cookie(log);
 		var stmt = "INSERT INTO test (user, password, email , cookie_reg, right, site) VALUES ( \""+log+"\",\"" + pw + "\",\"" + email + "\",\"" + cookie_reg + "\",\"" + right+ "\",\"" + site +"\")";		
 		db.each(stmt, function (e, r) {
 			if(e) {
-				util.log("ERROR - SQL - REGISTER_BLOG function: " + e);
+				util.log("ERROR - SQL - REGISTER function: " + e);
 			} else {
 				if (r) { 
 				}
@@ -587,7 +587,7 @@ exports.register_blog = function (log, pw, email, right, site, obj, func_name) {
 		}, function() {
 			obj[func_name](cookie_reg);
 		});
-	util.log("REGISTER_BLOG - Closing");
+	util.log("REGISTER - Closing");
 };
 
 /**

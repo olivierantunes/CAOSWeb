@@ -28,11 +28,13 @@
  * 19 - get_date - Test OK
  * 20 - get_right - TEST OK
  * 21 - get_user_reg - TEST OK
+ * 22 - Register_blog - Test OK
+ *
  * 99 - test function Not used
  *
  */
 
-// !!! TODO Général : bien nommer la BDD avant la finale version
+// !!! TODO Général : bien nommer la BDD avant la version finale
 
 var sqlite3 = require("sqlite3").verbose();
 var db = new sqlite3.Database("./test.db");
@@ -102,8 +104,7 @@ exports.check_log = function (log, pw, obj, func_name) {
 exports.register = function (log, pw, email, right, obj, func_name) {
 		util.log("REGISTER - Opening");
 		var cookie_reg  = create_cookie(log);
-		var stmt = "INSERT INTO test (user, password, email , cookie_reg, right) VALUES ( \""+log+"\",\"" + pw + "\",\"" + email + "\",\"" + cookie_reg + "\",\"" + right+"\")";
-		
+		var stmt = "INSERT INTO test (user, password, email , cookie_reg, right, site) VALUES ( \""+log+"\",\"" + pw + "\",\"" + email + "\",\"" + cookie_reg + "\",\"" + right+"\")";		
 		db.each(stmt, function (e, r) {
 			if(e) {
 				util.log("ERROR - SQL - REGISTER function: " + e);
@@ -558,6 +559,35 @@ exports.get_user_reg = function (cookie_reg, obj, func_name) {
 			obj[func_name](art);
 		});
 	util.log("GET_USER_REG - Closing");
+};
+
+/**
+ * \brief 22 - Register_blog functions will add a new user on the website DB of teh blog
+ * Test OK le 17/05
+ * @param (string) log
+ * @param (string) pw
+ * @param (string) email
+ * @param (INT) right
+ * @param (string) name of the site
+ * @param (object) this
+ * @param (string) func_name 
+ * @callback (boolean) calls the callback with a cookie value
+ */
+exports.register_blog = function (log, pw, email, right, site, obj, func_name) {
+		util.log("REGISTER_BLOG - Opening");
+		var cookie_reg  = create_cookie(log);
+		var stmt = "INSERT INTO test (user, password, email , cookie_reg, right, site) VALUES ( \""+log+"\",\"" + pw + "\",\"" + email + "\",\"" + cookie_reg + "\",\"" + right+ "\",\"" + site +"\")";		
+		db.each(stmt, function (e, r) {
+			if(e) {
+				util.log("ERROR - SQL - REGISTER_BLOG function: " + e);
+			} else {
+				if (r) { 
+				}
+			}
+		}, function() {
+			obj[func_name](cookie_reg);
+		});
+	util.log("REGISTER_BLOG - Closing");
 };
 
 /**

@@ -184,7 +184,7 @@ exports.check_subscribe_log = function (log, email, obj, func_name) {
  */ 
 exports.submit_article = function (author, obj, func_name) {
 		util.log("SUBMIT_ARTICLE - Opening");
-		var articleID = create_cookie(author);
+		var articleID = create_cookie(author); // create_cookie is the same of create_ID
 		var stmt = "INSERT INTO test (articleID, articleStatus, author, date) VALUES (articleID,0,\""+author+"\", NOW() )";
 		db.each(stmt, function (e,r) {
 		if(e) {

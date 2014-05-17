@@ -19,14 +19,14 @@
  * 10 - assign_cookie - Test OK 
  * 11 - check_cookie - Test OK
  * 12 - Create_ID - Test OK
- * 13 - valid_article - Test OK
+ * 13 - update_article_status - Test OK
  * 14 - log_out - Test OK
  * 15 - modif_pw - TEST OK
  * 16 - order_article - Test OK
  * 17 - users_list - Test OK
  * 18 - get_user - Test OK
  * 19 - get_date - Test OK
- * 20 - get_right
+ * 20 - get_right - TEST OK
  * 99 - test function Not used
  *
  */
@@ -337,7 +337,7 @@ exports.create_ID = function (user) {
 };
 
 /**
- * \brief 13 - valid_article function change the status of an article which is on wait(0) to OK  (1) 
+ * \brief 13 - update_article_status function change the status of an article which is on wait(0) to OK  (1) 
  * Furthermore, it update the date of the validation of the article 
  * Test OK le 13/05
  * @param (string) articleID
@@ -345,34 +345,34 @@ exports.create_ID = function (user) {
  * @param (string) func_name
  * @callback (boolean) calls the callback with a boolean argument
  */ 
-exports.valid_article = function (articleID, obj, func_name) {
-		util.log("VALID_ARTICLE - Opening");
+exports.update_article_status = function (articleID, obj, func_name) {
+		util.log("UPDATE_ARTICLE - Opening");
 		var stmt = "UPDATE test articleStatus = 1, date = NOW() WHERE articleID =\""+articleID+"\"";
 		var flag = 0;
 		db.each(stmt, function (e,r) {
 		if(e) {
-			util.log("ERROR - SQL - VALID_ARTICLE function: " + e);
+			util.log("ERROR - SQL - UPDATE_ARTICLE function: " + e);
 			} else {
 				util.inspect(r);
 			}
 		}, function () {
 			obj[func_name](flag);
 		});
-	util.log("VALID_ARTICLE - Closing");
+	util.log("UPDATE_ARTICLE - Closing");
 };
 
 /**
  * \brief 14 - log_out function is called when the user log out the web site.
  * it's change the current cookie by 0. 
  * Test OK le 06/05
- * @param (string) articleID
+ * @param (string) cookie
  * @param (object) this
  * @param (string) func_name
  * @callback (boolean) calls the callback with a boolean argument
  */ 
-exports.log_out = function(user, obj, func_name) {
+exports.log_out = function(cookie, obj, func_name) {
 		util.log("LOG_OUT - Opening");
-		var stmt = "UPDATE test cookie = 0 WHERE user = \""+user+"\"";
+		var stmt = "UPDATE test cookie = 0 WHERE cookie = \""+cookie+"\"";
 		var flag = 0;
 		db.each(stmt, function (e,r) {
 		if(e) {

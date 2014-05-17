@@ -131,6 +131,7 @@ site.cb_valid = function () {
 		title: "Le titre de votre article le plus récent",
 		date: new Date(),
 		author: "azerty",
+		ID:"michu321",
 		content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum suscipit lectus at metus consectetur egestas. Nulla ut eros orci. Fusce lobortis eros mi, non posuere leo hendrerit eu. Vivamus magna odio, mollis et vehicula suscipit, rutrum id sapien."
 	}
 	
@@ -148,7 +149,7 @@ site.cb_valid = function () {
 					"<blockquote>" +
 						"<p>" + r[a].content + "</p>" +
 					"</blockquote>"+
-					"<p class= \"ID hidden\">r[a].ID<p>"
+					"<p class= \"ID hidden\">" + r[a].ID + "<p>"+
 					"<button class=\"btn btn-success valid_article\">Valider</button>"+" "+
 					"<button class=\"btn btn-danger delete_article\">Annuler</button>";
 	};

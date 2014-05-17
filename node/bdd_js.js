@@ -468,12 +468,12 @@ exports.users_list = function(obj, func_name) {
  * @callback (boolean) calls the callback with a JSON argument
  */
 exports.get_user = function (cookie, obj, func_name) {
-		util.log("CHECK_COOKIE - Opening");
+		util.log("GET_USER - Opening");
 		var stmt = "SELECT user FROM test WHERE cookie =\"" + cookie +"\"";
 		var art = new Array();
 		db.each(stmt, function (e,r) {
 		if(e) {
-			util.log("ERROR - SQL - CHECK_COOKIE function: " + e);
+			util.log("ERROR - SQL - GET_USER function: " + e);
 			} else {
 				util.inspect(r);
 			}
@@ -481,7 +481,7 @@ exports.get_user = function (cookie, obj, func_name) {
 		}, function () {
 			obj[func_name](art);
 		});
-	util.log("CHECK_COOKIE - Closing");
+	util.log("GET_USER - Closing");
 };
 
 /**
@@ -493,12 +493,12 @@ exports.get_user = function (cookie, obj, func_name) {
  * @callback (boolean) calls the callback with a JSON argument
  */
 exports.get_date = function (articleID, obj, func_name) {
-		util.log("CHECK_DATE - Opening");
+		util.log("GET_DATE - Opening");
 		var stmt = "SELECT date FROM test WHERE articleID =\"" + articleID +"\"";
 		var art = new Array();
 		db.each(stmt, function (e,r) {
 		if(e) {
-			util.log("ERROR - SQL - CHECK_DATE function: " + e);
+			util.log("ERROR - SQL - GET_DATE function: " + e);
 			} else {
 				util.inspect(r);
 			}
@@ -506,7 +506,7 @@ exports.get_date = function (articleID, obj, func_name) {
 		}, function () {
 			obj[func_name](art);
 		});
-	util.log("CHECK_DATE - Closing");
+	util.log("GET_DATE - Closing");
 };
 
 /**
@@ -518,12 +518,12 @@ exports.get_date = function (articleID, obj, func_name) {
  * @callback (boolean) calls the callback with a JSON argument
  */
 exports.get_right = function (cookie, obj, func_name) {
-		util.log("GET COOKIE - Opening");
+		util.log("GET_RIGHT - Opening");
 		var stmt = "SELECT right FROM test WHERE cookie =\"" + cookie +"\"";
 		var art = new Array();
 		db.each(stmt, function (e,r) {
 		if(e) {
-			util.log("ERROR - SQL - GET COOKIE function: " + e);
+			util.log("ERROR - SQL - GET_RIGHT function: " + e);
 			} else {
 				util.inspect(r);
 			}
@@ -531,7 +531,32 @@ exports.get_right = function (cookie, obj, func_name) {
 		}, function () {
 			obj[func_name](art);
 		});
-	util.log("GET COOKIE - Closing");
+	util.log("GET_RIGHT - Closing");
+};
+
+/**
+ * \brief 21 - get_user_reg gives you the user corresponding to the input cookie
+ * Test OK le 16/05 
+ * @param (string) cookie is the cookie of the user you want to identify
+ * @param (object) this
+ * @param (string) func_name
+ * @callback (boolean) calls the callback with a JSON argument
+ */
+exports.get_user_reg = function (cookie_reg, obj, func_name) {
+		util.log("GET_USER_REG - Opening");
+		var stmt = "SELECT user FROM test WHERE cookie_reg =\"" + cookie_reg +"\"";
+		var art = new Array();
+		db.each(stmt, function (e,r) {
+		if(e) {
+			util.log("ERROR - SQL - GET_USER_REG function: " + e);
+			} else {
+				util.inspect(r);
+			}
+			art.push(r);
+		}, function () {
+			obj[func_name](art);
+		});
+	util.log("GET_USER_REG - Closing");
 };
 
 /**

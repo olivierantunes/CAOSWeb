@@ -5,48 +5,12 @@ var db = require("./bdd_js.js");
 var dirName = './article/';
 
 /**
- * This function orders the operations to push an article in the db
- * @param b (JSON object) : article data = { title: 'title', author: 'author', content: 'content'}
- * @return (String) : "ok" or "ko"
- */
-exports.submit_article = function (b) {
-	//recreer un objet json avec (title, content) date en plus et action en moins
-	var articleID = db.create_ID (b.author);
-	push_article_db (articleID, b);
-};
-	
-/**
- * This function sets content data of the json object required to be sent to View
- * @param //TODO
- * @return (String) : "ok" or "ko"
- */
- recreate_json_object = function (b) {
-	/*title, author, content, date
-	var _date,
-		_author;
-	
-	
-	/*sequence:
-	1 check si utilisateur toujours connecte
-	2 set date, set author
-	3 build json object
-	4 return json object
-	//param: 
-	_date = db.get_date ();
-	//param: cookie
-	_author = db.get_user ();
-	
-	//db.submit_article (articleID, author, obj, func_name);
-	*/
-};
-
-/**
  * This function creates the article  environment and pushes content (images and videos if any | see later)
  * @param articleID (String): article identifier
  * @param b (JSON object): article data
  * @return (String): "ok" or "ko"
  */
-push_article_db = function (articleID, b) {
+push_article_db = function (articleID, b, funcName) {
 	var dirPath = dirName + articleID;
 	
 	fs.exists(dirPath, function(exists) {
@@ -59,14 +23,12 @@ push_article_db = function (articleID, b) {
 					}
 				});
 			});
-			this.push_content (dirPath, articleID, b);
+			b[funcName](dirPath, articleID, b);
 		} else {
 			this.resp.write(JSON.stringify({resp: "folder already existing"}));//if the folder already exists, then do not stop the process
 			this.resp.end();
 		};
 	});
-	
-	//this.push_content (dirPath, articleID, b);
 };
 	
 /**
@@ -76,10 +38,7 @@ push_article_db = function (articleID, b) {
  * @param b (JSON object) : article data
  * @return (String) : "ok" or "ko"
  */
-push_content = function (dirPath, articleID, b) {
-	//var articlePath = dirPath + '/' + articleID;
-	//var data = '{title: ' + b.title + ', author: ' + b.author + ', content: ' + b.content + ', date: ' + b.date + '}';
-	
+push_content = function (dirPath, articleID, obj, funcName) {//added funcName
 	fs.exists(articlePath, function(exists) {
 		if (!exists) {
 			util.log ("file does not exist -> creation");
@@ -88,8 +47,7 @@ push_content = function (dirPath, articleID, b) {
 					this.resp.write(JSON.stringify({resp: "error uploading file"}));
 					this.resp.end();
 				} else {
-					this.resp.write(JSON.stringify({resp: "ok"}));
-					this.resp.end();
+					obj[funcName](1);
 				}
 			});
 		} else {
@@ -102,32 +60,32 @@ push_content = function (dirPath, articleID, b) {
 /**
  * This function loads every article of which ids in param
  * @param dirPath (Array): array of article ids
- * @return (array of JSON objects): articles = [{title: 'title1', author: 'author1', date: 'date1', content: 'content1'}, {title: 'title2', author: 'author2', date: 'date2', content: 'content2'}, ...]
+ * @return (array of JSON objects): articles = [{title: 'title1', author: 'author1', date: 'date1', content: 'content1', idArticle: 'idArticle1'}, {title: 'title2', author: 'author2', date: 'date2', content: 'content2'}, ...]
  */
-load_articles = function (dirName, b) {//deleted the 'exports.'
-	articleIdArray = db.order_article (b.articleStatus, obj, func_name);//ERRRRRRROOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOR! ARTICLE STATUS || last addition b.articleStatus
+load_articles = function (arrayArticleIdAndDate, obj, nameFunc) {//deleted the 'exports.'
 	var returnedArticles = new Array ();
 	
-	if (!articleIdArray) {
+	if (!arrayArticleIdAndDate) {
 		this.resp.write(JSON.stringify({resp: "articles array transmission failed"}));
-		this.resp.end();
 	} else {
-		var i = 0;//delete
-		for (id in articleIdArray) {
-			var articlePath = dirName + articleIdArray [i] + '/' + articleIdArray [i];
+		for (var i = 0 ; i < arrayArticleIdAndDate.length ; i ++) {
+			var articlePath = dirName + arrayArticleIdAndDate[i].articleID + '/' + arrayArticleIdAndDate[i].articleID;
 			fs.readFile(articlePath, function (err, data) {
 				if (err) {
-					this.resp.write(JSON.stringify({resp: "ko"}));
+					this.resp.write(JSON.stringify({resp: "failed loading article"}));
 					this.resp.end();
 				} else {
+					var object = '{title: ' + data.title
+								+ ', author: ' + data.author
+								+ ', content: ' + data.content
+								+ ', date: ' + arrayArticleIdAndDate[i].date
+								+ ', articleId: ' + arrayArticleIdAndDate[i].articleId
+								+ '}';
 					returnedArticles.push(data);
 				}
 			});
-			i ++;//delete
 		};
-		//rebuild json object? w/ date added
-		this.resp.write(JSON.stringify(returnedArticles));
-		this.resp.end();
+		obj[funcName](returnedArticles);
 	}
 };
 
@@ -143,9 +101,9 @@ delete_article = function (articleId) {
 			this.resp.write(JSON.stringify({resp: "did not exist"}));//big problem upcoming
 			this.resp.end();
 		} else {
-			fs.unlink('/tmp/hello', function (err) {
+			fs.unlink(articlePath, function (err) {
 				if (err) {
-					this.resp.write(JSON.stringify({resp: "ko"}));//big problem upcoming
+					this.resp.write(JSON.stringify({resp: "ko"}));
 				} else {
 					this.resp.write(JSON.stringify({resp: "ok"}));
 				}

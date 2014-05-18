@@ -217,7 +217,10 @@ exports.change_right = function (user, right, obj, func_name) {
 		if(e) {
 			util.log("ERROR - SQL - CHANGE_RIGHT function: " + e);
 			} else {
-				util.inspect(r);
+				if (r) {
+					flag++;
+					util.inspect(r);
+				}
 			}
 		}, function () {
 			obj[func_name](flag);
@@ -242,7 +245,10 @@ exports.check_data = function (dbfield, data, obj, func_name) {
 		if(e) {
 			util.log("ERROR - SQL - CHANGE_DATA function: " + e);
 			} else {
-				util.inspect(r);
+				if (r) {
+					flag++;
+					util.inspect(r);
+				}
 			}
 		}, function () {
 			obj[func_name](flag);
@@ -266,7 +272,10 @@ exports.delete_article = function (articleID, obj, func_name) {
 		if(e) {
 			util.log("ERROR - SQL - DELETE_ARTICLE function: " + e);
 			} else {
-				util.inspect(r);
+				if (r) {
+					flag++;
+					util.inspect(r);
+				}
 			}
 		}, function () {
 			obj[func_name](flag);
@@ -315,7 +324,10 @@ exports.check_cookie = function (user,cookie, obj, func_name) {
 		if(e) {
 			util.log("ERROR - SQL - CHECK_COOKIE function: " + e);
 			} else {
-				util.inspect(r);
+				if (r) {
+					flag++;
+					util.inspect(r);
+				}
 			}
 		}, function () {
 			obj[func_name](flag);
@@ -356,7 +368,10 @@ exports.update_article_status = function (articleID, obj, func_name) {
 		if(e) {
 			util.log("ERROR - SQL - UPDATE_ARTICLE function: " + e);
 			} else {
-				util.inspect(r);
+				if (r) {
+					flag++;
+					util.inspect(r);
+				}
 			}
 		}, function () {
 			obj[func_name](flag);
@@ -381,7 +396,10 @@ exports.log_out = function(cookie, obj, func_name) {
 		if(e) {
 			util.log("ERROR - SQL - LOG_OUT function: " + e);
 			} else {
-				util.inspect(r);
+				if (r) {
+					flag++;
+					util.inspect(r);
+				}
 			}
 		}, function () {
 			obj[func_name](flag);
@@ -406,7 +424,10 @@ exports.modif_pw = function(user, pw, obj, func_name) {
 			if(e) {
 				util.log("ERROR - SQL - MODIF_PW function: " + e);
 				} else {
+					if (r) {
+					flag++;
 					util.inspect(r);
+					}
 				}
 			}, function () {
 				obj[func_name](flag);
@@ -543,27 +564,26 @@ exports.get_right = function (cookie, obj, func_name) {
  * @param (string) cookie_reg is the temporary cookie of registration of  the user you want to identify
  * @param (object) this
  * @param (string) func_name
- * @callback (boolean) calls the callback with array with only one object
+ * @callback (boolean) calls the callback with the object
  */
 exports.get_user_reg = function (cookie_reg, obj, func_name) {
 		util.log("GET_USER_REG - Opening");
 		var stmt = "SELECT user FROM test WHERE cookie_reg =\"" + cookie_reg +"\"";
-		var art = new Array();
+		//var art = new Array();
 		db.each(stmt, function (e,r) {
 		if(e) {
 			util.log("ERROR - SQL - GET_USER_REG function: " + e);
 			} else {
 				util.inspect(r);
 			}
-			art.push(r);
 		}, function () {
-			obj[func_name](art);
+			obj[func_name](r);
 		});
 	util.log("GET_USER_REG - Closing");
 };
 
 /**
- * \brief 22 - Register_blog functions will add a new user on the website DB of teh blog
+ * \brief 22 - Register functions will add a new user on the website DB
  * Test OK le 17/05
  * @param (string) log
  * @param (string) pw

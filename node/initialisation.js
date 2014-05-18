@@ -15,7 +15,8 @@
  * articleID string,
  * articleStatus INT,
  * author TEXT
- * date DATETIME  
+ * date DATETIME
+ * site TEXT 
  *
  */
 
@@ -32,6 +33,6 @@ var db_co = {};
  */
 db_co.create = function () {
 	util.log("CREATE - Opening"); //TODO: delete commentary in final version
-	db.run("CREATE TABLE test (user TEXT PRIMARY KEY, password TEXT, email TEXT, cookie TEXT, cookie_reg TEXT, right INT, articleID TEXT, articleStatus INT, author TEXT, date DATETIME)");
+	db.run("CREATE TABLE test (user TEXT PRIMARY KEY, password TEXT, email TEXT, cookie TEXT, cookie_reg TEXT, right INT, articleID TEXT, articleStatus INT, author TEXT, date DATETIME, site TEXT)");
 	util.log("CREATE - Closing");
 };

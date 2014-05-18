@@ -29,6 +29,7 @@
  * 20 - get_right - TEST OK
  * 21 - get_user_reg - TEST OK
  * 22 - Register - Test OK
+ * 23 - get_site - TEST OK
  *
  * 99 - test function Not used
  *
@@ -589,6 +590,32 @@ exports.register = function (log, pw, email, right, site, obj, func_name) {
 		});
 	util.log("REGISTER - Closing");
 };
+
+/**
+ * \brief 23 - get_site gives you the site corresponding to the input cookie
+ * Test OK le 17/05 
+ * @param (string) cookie is the temporary cookie of registration of  the user you want to identify
+ * @param (object) this
+ * @param (string) func_name
+ * @callback (boolean) calls the callback with the name of the site
+ */
+exports.get_site = function (cookie_reg, obj, func_name) {
+		util.log("GET_SITE - Opening");
+		var stmt = "SELECT site FROM test WHERE cookie_reg =\"" + cookie_reg +"\"";
+		var art = new Array();
+		db.each(stmt, function (e,r) {
+		if(e) {
+			util.log("ERROR - SQL - GET_SITE function: " + e);
+			} else {
+				util.inspect(r);
+			}
+			art.push(r);
+		}, function () {
+			obj[func_name](art);
+		});
+	util.log("GET_SITE - Closing");
+};
+
 
 /**
  * \brief 99 - DEBUG fonction 

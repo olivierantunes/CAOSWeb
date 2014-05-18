@@ -622,16 +622,14 @@ exports.register = function (log, pw, email, right, site, obj, func_name) {
 exports.get_site = function (cookie_reg, obj, func_name) {
 		util.log("GET_SITE - Opening");
 		var stmt = "SELECT site FROM test WHERE cookie_reg =\"" + cookie_reg +"\"";
-		var art = new Array();
 		db.each(stmt, function (e,r) {
 		if(e) {
 			util.log("ERROR - SQL - GET_SITE function: " + e);
 			} else {
 				util.inspect(r);
 			}
-			art.push(r);
 		}, function () {
-			obj[func_name](art);
+			obj[func_name](r);
 		});
 	util.log("GET_SITE - Closing");
 };

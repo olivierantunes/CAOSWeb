@@ -90,43 +90,43 @@ go_post:
         b = JSON.parse(b);
 		this.buffer = b;
 		_this.resp.writeHead(200, {"Content-Type": "application/json"});
-		if (b.action == "login") {//checked
+		if (b.action == "login") {
 			db.check_log(b.pseudo, b.password, _this, "cb_check_log");
 			_this.resp.end();
-		} else if (b.action == "register-blog") {//checked
+		} else if (b.action == "register-blog") {
 			db.check_subscribe_log (b.login, b.mail, _this, "cb_check_subscribe_log_blog");
 			_this.resp.end();
-		} else if (b.action == "register-caosweb") {//checked
+		} else if (b.action == "register-caosweb") {
 			db.check_subscribe_log (b.login, b.mail, _this, "cb_check_subscribe_log_caosweb");
 			_this.resp.end();
-		}else if (b.action == "submit article") {//checked
+		}else if (b.action == "submit article") {
 			db.submit_article (b.author, _this, "cb_submit_article");
 			_this.resp.end();
 		} else if ("confirm-registration-caosweb" == b.action) {
 			db.get_user_reg(b.id, _this, "cb_confirm_registration_caosweb");
 			_this.resp.end();
-		} else if ("confirm-registration-blog" == b.action) {//checked
+		} else if ("confirm-registration-blog" == b.action) {
 			db.get_user_reg(b.id, _this, "cb_confirm_registration_blog");
 			_this.resp.end();
-		} else if (b.action == "get-rights") {//checked
+		} else if (b.action == "get-rights") {
 			db.get_right (_this.req.headers.cookie, _this, "cb_get_rights");
 			_this.resp.end();
-		} else if (b.action == "get-article") {//checked
+		} else if (b.action == "get-article") {
 			db.order_article (1, _this, "cb_order_article");
 			_this.resp.end();
-		} else if (b.action == "get-validate") {//checked
+		} else if (b.action == "get-validate") {
 			db.order_article (0, _this, "cb_order_article");
 			_this.resp.end();
-		} else if (b.action == "validation-article") {//checked
+		} else if (b.action == "validation-article") {
 			db.update_article_status (b.articleId, _this, "cb_update_article_status");
 			_this.resp.end();
-		} else if (b.action == "delete-article") {//checked
+		} else if (b.action == "delete-article") {
 			db.delete_article (b.articleId, _this, "cb_delete_article");
 			_this.resp.end();
-		} else if (b.action == "get-members") {//checked
+		} else if (b.action == "get-members") {
 			db.users_list (_this, "cb_users_list") {
 			_this.resp.end();
-		} else if (b.action == "logout") {//checked
+		} else if (b.action == "logout") {
 			db.log_out (_this.req.headers.cookie, _this, "cb_log_out");
 			_this.resp.end();
 		} else {

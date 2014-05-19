@@ -138,7 +138,7 @@ go_post:
 cb_check_log:
 	function (resCheckLog) {
 		if (resCheckLog) {
-				db.assign_cookie (b.pseudo, _this, "cb_assign_cookie");
+				db.assign_cookie (_this.buffer.pseudo, _this, "cb_assign_cookie");
 			} else {
 				_this.resp.write(JSON.stringify({resp: "ko"}));
 				_this.resp.end();
@@ -156,7 +156,7 @@ cb_assign_cookie:
 cb_check_subscribe_log_blog:
 	function (ko) {
 		if (ko) {
-			db.register_blog (_this.b.login, _this.b.pw, _this.b.mail, 0, _this, "cb_register");
+			db.register_blog (_this.buffer.login, _this.buffer..pw, _this.buffer.mail, 0, _this, "cb_register");
 		} else {
 			_this.resp.write(JSON.stringify({resp: "ko"}));
 		}
@@ -166,7 +166,7 @@ cb_check_subscribe_log_blog:
 cb_check_subscribe_log_caosweb:
 	function (ko) {
 		if (ko) {
-			db.register (_this.b.login, _this.b.pw, _this.b.mail, 0, _this.siteName, _this, "cb_register");
+			db.register (_this.buffer.login, _this.buffer.pw, _this.buffer.mail, 0, _this.buffer.siteName, _this, "cb_register");
 		} else {
 			_this.resp.write(JSON.stringify({resp: "ko"}));
 		}
@@ -177,9 +177,9 @@ cb_register:
 	function (c_r) {
 		if (c_r) {
 			if (_this.b.nameWebsite) {
-				nodeMailer.mail_router (_this.b.mail, "noreply.caosweb@gmail.com", _this.b.login, _this.b.pw, c_r, "localhost:1337/ConfirmRegistrationCaos");
+				nodeMailer.mail_router (_this.buffer.mail, "noreply.caosweb@gmail.com", _this.buffer.login, _this.buffer.pw, c_r, "localhost:1337/ConfirmRegistrationCaos");
 			} else {
-				nodeMailer.mail_router (_this.b.mail, "noreply.caosweb@gmail.com", _this.b.login, _this.b.pw, c_r, "localhost:1337/ConfirmRegistration");
+				nodeMailer.mail_router (_this.buffer.mail, "noreply.caosweb@gmail.com", _this.buffer.login, _this.buffer.pw, c_r, "localhost:1337/ConfirmRegistration");
 			}
 		} else {
 			_this.resp.write(JSON.stringify({resp: "ko"}));
@@ -211,7 +211,7 @@ cb_confirm_registration_blog:
 cb_submit_article:
 	function (id) {
 		if (id) {
-			gestionArticles.push_article_db(id, _this.b, "cb_push_article_db");
+			gestionArticles.push_article_db(id, _this.buffer, "cb_push_article_db");
 		} else {
 			_this.resp.write(JSON.stringify({resp: "ko"}));
 		}

@@ -614,14 +614,14 @@ exports.register = function (log, pw, email, right, site, obj, func_name) {
 /**
  * \brief 23 - get_site gives you the site corresponding to the input cookie
  * Test OK le 17/05 
- * @param (string) cookie is the temporary cookie of registration of  the user you want to identify
+ * @param (string) user owner of the site you want to identify
  * @param (object) this
  * @param (string) func_name
  * @callback (boolean) calls the callback with the name of the site
  */
-exports.get_site = function (cookie_reg, obj, func_name) {
+exports.get_site = function (user, obj, func_name) {
 		util.log("GET_SITE - Opening");
-		var stmt = "SELECT site FROM test WHERE cookie_reg =\"" + cookie_reg +"\"";
+		var stmt = "SELECT site FROM test WHERE user =\"" + user +"\"";
 		db.each(stmt, function (e,r) {
 		if(e) {
 			util.log("ERROR - SQL - GET_SITE function: " + e);

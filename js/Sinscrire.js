@@ -1,8 +1,9 @@
 var register = {};
 
 register.on_ready = function () {
-console.log("on_ready trigger event");
+	console.log("on_ready trigger event");
 	document.addEventListener("click", register.on_click);
+	register.ask_right();
 };
 
 register.ask_right = function() {

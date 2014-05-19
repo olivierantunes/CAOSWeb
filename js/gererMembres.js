@@ -2,8 +2,8 @@ var site={};
 
 site.on_ready = function () {
 	document.addEventListener("click", site.on_click);
-	site.cb_rights();
-	site.cb_membres();
+	site.ask_right();
+	site.members();
 };
 
 site.on_click = function (ev){

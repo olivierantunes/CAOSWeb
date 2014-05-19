@@ -2,7 +2,7 @@ var site={};
 
 site.on_ready = function () {
 	document.addEventListener("click", site.on_click);
-	site.cb_rights();
+	site.ask_right();
 };
 
 site.ask_right = function() {

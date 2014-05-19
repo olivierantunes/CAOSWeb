@@ -100,7 +100,7 @@ site.cb_rights = function () {
 
 confirmRegistration.on_ready = function () {
 	document.addEventListener("click", confirmRegistration.on_click);
-	confirmRegistration.cb_rights();
+	confirmRegistration.ask_right();
 };
 
 confirmRegistration.on_click = function (ev){

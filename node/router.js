@@ -156,7 +156,7 @@ cb_assign_cookie:
 cb_check_subscribe_log_blog:
 	function (ko) {
 		if (ko) {
-			db.register_blog (this.buffer.login, this.buffer..pw, this.buffer.mail, 0, this, "cb_register");
+			db.register_blog (this.buffer.login, this.buffer.pw, this.buffer.mail, 0, this, "cb_register");
 		} else {
 			_this.resp.write(JSON.stringify({resp: "ko"}));
 		}
@@ -177,7 +177,7 @@ cb_register:
 	function (c_r) {
 		if (c_r) {
 			if (_this.b.nameWebsite) {
-				nodeMailer.mail_router (this.buffer.mail, "noreply.caosweb@gmail.com", this.buffer.login, this.buffer.pw, c_r, "localhost:1337/ConfirmRegistrationCaos");
+				nodeMailer.mail_router (this.buffer.mail, "noreply.caosweb@gmail.com", this.buffer.login, this.buffer.pw, c_r, "localhost:1337/ConfirmRegistrationCaos");//TODO
 			} else {
 				nodeMailer.mail_router (this.buffer.mail, "noreply.caosweb@gmail.com", this.buffer.login, this.buffer.pw, c_r, "localhost:1337/ConfirmRegistration");
 			}

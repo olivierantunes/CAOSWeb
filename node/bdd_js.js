@@ -168,7 +168,6 @@ exports.check_subscribe_log = function (log, email, obj, func_name) {
 				}
 			}
 		}, function () {
-			console.log(func_name+"###################");
 			obj[func_name](flag);
 		});
 	util.log("CHECK_SUBSCRIBE_LOG - Closing");
@@ -546,16 +545,16 @@ exports.get_date = function (articleID, obj, func_name) {
 exports.get_right = function (cookie, obj, func_name) {
 		util.log("GET_RIGHT - Opening");
 		var stmt = "SELECT right FROM test WHERE cookie =\"" + cookie +"\"";
-		var art = new Array();
+		var rep;
 		db.each(stmt, function (e,r) {
 		if(e) {
 			util.log("ERROR - SQL - GET_RIGHT function: " + e);
 			} else {
 				util.inspect(r);
+				rep = r;
 			}
-			art.push(r);
 		}, function () {
-			obj[func_name](art);
+			obj[func_name](rep);
 		});
 	util.log("GET_RIGHT - Closing");
 };
@@ -598,8 +597,8 @@ exports.get_user_reg = function (cookie_reg, obj, func_name) {
  */
 exports.register = function (log, pw, email, right, site, obj, func_name) {
 		util.log("REGISTER - Opening");
-		var cookie_reg  = create_cookie(log);
-		var stmt = "INSERT INTO test (user, password, email , cookie_reg, right, site) VALUES ( \""+log+"\",\"" + pw + "\",\"" + email + "\",\"" + cookie_reg + "\",\"" + right+ "\",\"" + site +"\")";		
+		var cookie  = create_cookie(log);
+		var stmt = "INSERT INTO test (user, password, email , cookie, right, site) VALUES ( \""+log+"\",\"" + pw + "\",\"" + email + "\",\"" + cookie + "\",\"" + right+ "\",\"" + site +"\")";		
 		db.each(stmt, function (e, r) {
 			if(e) {
 				util.log("ERROR - SQL - REGISTER function: " + e);
@@ -608,7 +607,7 @@ exports.register = function (log, pw, email, right, site, obj, func_name) {
 				}
 			}
 		}, function() {
-			obj[func_name](cookie_reg);
+			obj[func_name](cookie);
 		});
 	util.log("REGISTER - Closing");
 };
@@ -642,8 +641,8 @@ exports.get_site = function (user, obj, func_name) {
  * 
  * 
  */
-exports.read = function () {
-	var stmt = "SELECT * FROM test";
+read = function () {
+	var stmt = "SELECT user FROM test";
     db.each(stmt, function (e, r) {
         console.log(util.inspect(r));
     });

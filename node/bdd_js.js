@@ -153,7 +153,7 @@ exports.unsubscribe = function (log, obj, func_name) {
  * @param (string)email
  * @param (object) this
  * @param (string) func_name
- * @callback (boolean) calls the callback with a boolean argument
+ * @callback (boolean) calls the callback with a boolean argument: 1 <=> log and/or already existing, else 0
  */ 
 exports.check_subscribe_log = function (log, email, obj, func_name) {
 		util.log("CHECK_SUBSCRIBE_LOG - Opening");

@@ -88,11 +88,16 @@ go_post:
     function (b) {
 		var _this = this;		
         b = JSON.parse(b);
+		console.log("b.action: " + b.action);
 		this.buffer = b;
 		_this.resp.writeHead(200, {"Content-Type": "application/json"});
 		if (b.action == "login") {
 			util.log("login");
 			db.check_log(b.pseudo, b.password, _this, "cb_check_log");
+		} else if (b.action == "get-user-site") {
+			util.log("APPEL ACTION : get-user-site");
+			
+			
 		} else if (b.action == "register-blog") {
 			util.log("register-blog");
 			db.check_subscribe_log (b.login, b.mail, _this, "cb_check_subscribe_log_blog");
@@ -155,7 +160,7 @@ cb_assign_cookie:
 
 cb_check_subscribe_log_blog:
 	function (ko) {
-		if (ko) {
+		if (!ko) {
 			db.register_blog(this.buffer.login, this.buffer.pw, this.buffer.mail, 0, this, "cb_register");
 		} else {
 			this.resp.write(JSON.stringify({resp: "ko"}));
@@ -174,14 +179,13 @@ cb_check_subscribe_log_caosweb:
 	},
 	
 cb_register:
-	function (c_r) {
-	console.log("tac");
+	function (c) {
 		if (c) {
 			if (this.buffer.siteName) {
-				nodeMailer.mail_router (this.buffer.email, "noreply.caosweb@gmail.com", this.buffer.login, this.buffer.password, c_r, "localhost:1337/ConfirmRegistrationCaos");
+				nodeMailer.mail_router (this.buffer.email, "noreply.caosweb@gmail.com", this.buffer.login, this.buffer.password, c, "localhost:1337/ConfirmRegistrationCaos");
 				this.resp.write(JSON.stringify({"site": this.buffer.siteName}));
 			} else {
-				nodeMailer.mail_router (this.buffer.email, "noreply.caosweb@gmail.com", this.buffer.login, this.buffer.password, c_r, "localhost:1337/ConfirmRegistration");
+				nodeMailer.mail_router (this.buffer.email, "noreply.caosweb@gmail.com", this.buffer.login, this.buffer.password, c, "localhost:1337/ConfirmRegistration");
 				this.resp.write(JSON.stringify({resp: "ok"}));
 			}
 			this.resp.end();
@@ -293,7 +297,6 @@ cb_send_articles:
 	
 cb_get_rights:
 	function (r) {
-	console.log("tic" + r);
 		if (r) {
 			this.resp.write(JSON.stringify({"role": r}));
 			

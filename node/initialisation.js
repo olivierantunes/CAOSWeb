@@ -36,3 +36,5 @@ db_co.create = function () {
 	db.run("CREATE TABLE test (user TEXT PRIMARY KEY, password TEXT, email TEXT, cookie TEXT, cookie_reg TEXT, right INT, articleID TEXT, articleStatus INT, author TEXT, date DATETIME, site TEXT)");
 	util.log("CREATE - Closing");
 };
+
+db_co.create();

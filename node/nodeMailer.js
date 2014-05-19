@@ -34,7 +34,7 @@ exports.mail_router = function (targetMail, senderMail, userLogin, userPw, userI
 		mailRegistration = {
 			from: senderMail,//smtpTransport.auth[0],
 			to: targetMail,
-			subject: "Confirmation inscription à " + domain,
+			subject: "Validation d'inscription à " + domain,
 			html: "<b>Bonjour, Bienvenue sur " + domain + " !</b><br>Nous vous remercions de votre inscription.<br>"
 					+ "<br>Votre login est : " + userLogin
 					+ "<br>Votre mot de passe est : " + userPw

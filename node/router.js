@@ -110,7 +110,7 @@ go_post:
 			db.get_user_reg(b.id, _this, "cb_confirm_registration_blog");
 		} else if (b.action == "get-rights") {
 			util.log("get-rights");
-			db.get_right (_this.req.headers.cookie, _this, "cb_get_rights");
+			db.get_right(_this.req.headers.cookie, _this, "cb_get_rights");
 		} else if (b.action == "get-article") {
 			util.log("get-article");
 			db.order_article (1, _this, "cb_order_article");
@@ -176,13 +176,15 @@ cb_check_subscribe_log_caosweb:
 cb_register:
 	function (c_r) {
 	console.log("tac");
-		if (c_r) {
+		if (c) {
 			if (this.buffer.siteName) {
-				nodeMailer.mail_router (this.buffer.email, "noreply.caosweb@gmail.com", this.buffer.login, this.buffer.pw, c_r, "localhost:1337/ConfirmRegistrationCaos");//TODO
+				nodeMailer.mail_router (this.buffer.email, "noreply.caosweb@gmail.com", this.buffer.login, this.buffer.password, c_r, "localhost:1337/ConfirmRegistrationCaos");
+				this.resp.write(JSON.stringify({"site": this.buffer.siteName}));
 			} else {
-				nodeMailer.mail_router (this.buffer.email, "noreply.caosweb@gmail.com", this.buffer.login, this.buffer.pw, c_r, "localhost:1337/ConfirmRegistration");
+				nodeMailer.mail_router (this.buffer.email, "noreply.caosweb@gmail.com", this.buffer.login, this.buffer.password, c_r, "localhost:1337/ConfirmRegistration");
+				this.resp.write(JSON.stringify({resp: "ok"}));
 			}
-			this.resp.write(JSON.stringify({resp: "ok"}));
+			this.resp.end();
 		} else {
 			this.resp.write(JSON.stringify({resp: "ko"}));
 			this.resp.end();
@@ -291,12 +293,14 @@ cb_send_articles:
 	
 cb_get_rights:
 	function (r) {
+	console.log("tic" + r);
 		if (r) {
 			this.resp.write(JSON.stringify({"role": r}));
+			
 		} else {
 			this.resp.write(JSON.stringify({"role": ""}));
-			this.resp.end();
 		}
+		this.resp.end();
 	},	
 	
 cb_log_out:

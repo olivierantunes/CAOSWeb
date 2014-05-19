@@ -11,92 +11,96 @@ site.ask_right = function() {
 };
 
 site.cb_rights = function () {
-	//if (readystate) //TODO
-	var rights = 1; //JSON.parse(this.responseText);
-	//right=rights.role;
-	var elt = document.getElementsByClassName("dynamic-rights")[0];
-	if (rights == 0) {
-	elt.innerHTML +="<div class=\"container\">"+
-						"<ul class=\"nav nav-pills pull-left\">"+
-							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"RedigerArticle.html\">Publier</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"ValiderArticle.html\">Valider</a></li>"+
-							"<li class=\"dropdown blog-nav-item active\">"+
-								"<a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">Admin<b class=\"caret\"></b></a>"+
-								"<ul class=\"dropdown-menu\">"+
-									"<li><a href=\"gererMembres.html\">Gérer les utilisateurs</a></li>"+
-									"<li><a href=\"changerForme.html\">Changer la forme</a></li>"+
-								"</ul>"+
-							"</li>"+
-						"</ul>"+
-						"<ul class=\"nav nav-pills pull-right\">"+
-							"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
-						"</ul>"+
-					"</div>";
-	}
-	else if (rights == 1) {
-	elt.innerHTML +="<div class=\"container\">"+
-						"<ul class=\"nav nav-pills pull-left\">"+
-							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"RedigerArticle.html\">Publier</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"ValiderArticle.html\">Valider</a></li>"+
-							"<li class=\"dropdown blog-nav-item active\">"+
-								"<a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">Admin<b class=\"caret\"></b></a>"+
-								"<ul class=\"dropdown-menu\">"+
-									"<li><a href=\"gererMembres.html\">Gérer les utilisateurs</a></li>"+
-									"<li><a href=\"changerForme.html\">Changer la forme</a></li>"+
-								"</ul>"+
-							"</li>"+
-						"</ul>"+
-						"<ul class=\"nav nav-pills pull-right\">"+
-							"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
-						"</ul>"+
-					"</div>";
-	}
-	else if (rights == 2) {
-	elt.innerHTML +="<div class=\"container\">"+
-						"<ul class=\"nav nav-pills pull-left\">"+
-							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"RedigerArticle.html\">Publier</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"ValiderArticle.html\">Valider</a></li>"+
-						"</ul>"+
-						"<ul class=\"nav nav-pills pull-right\">"+
-							"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
-						"</ul>"+
-					"</div>";
-	}
-	else if (rights == 3) {
-	elt.innerHTML +="<div class=\"container\">"+
-						"<ul class=\"nav nav-pills pull-left\">"+
-							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"RedigerArticle.html\">Publier</a></li>"+
-						"</ul>"+
-						"<ul class=\"nav nav-pills pull-right\">"+
-							"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
-						"</ul>"+
-					"</div>";
-	}
-	else if (rights == 4) {
-	elt.innerHTML +="<div class=\"container\">"+
-						"<ul class=\"nav nav-pills pull-left\">"+
-							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
-						"</ul>"+
-						"<ul class=\"nav nav-pills pull-right\">"+
-							"<li class=\"blog-nav-item  logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
-						"</ul>"+
-					"</div>";
-	}
-	else {
-	elt.innerHTML +="<div class=\"container\">"+
-						"<ul class=\"nav nav-pills pull-left\">"+
-							"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
-						"</ul>"+
-						"<ul class=\"nav nav-pills pull-right\">"+
-							"<li class=\"blog-nav-item active\"><a href=\"Sinscrire.html\">S'incrire</a></li>"+
-							"<li class=\"blog-nav-item active\"><a href=\"SeConnecter.html\">Se connecter</a></li>"+
-						"</ul>"+
-					"</div>";
-	}
+	if (this.readyState == 4 && this.statusCode == 200) {
+		var right = JSON.parse(this.responseText);	
+		rights=right.role;
+		var elt = document.getElementsByClassName("dynamic-rights")[0];
+			if (rights == 0) {
+				elt.innerHTML +="<div class=\"container\">"+
+							"<ul class=\"nav nav-pills pull-left\">"+
+								"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
+								"<li class=\"blog-nav-item active\"><a href=\"RedigerArticle.html\">Publier</a></li>"+
+								"<li class=\"blog-nav-item active\"><a href=\"ValiderArticle.html\">Valider</a></li>"+
+								"<li class=\"dropdown blog-nav-item active\">"+
+									"<a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">Admin<b class=\"caret\"></b></a>"+
+									"<ul class=\"dropdown-menu\">"+
+										"<li><a href=\"gererMembres.html\">Gérer les utilisateurs</a></li>"+
+										"<li><a href=\"changerForme.html\">Changer la forme</a></li>"+
+									"</ul>"+
+								"</li>"+
+							"</ul>"+
+							"<ul class=\"nav nav-pills pull-right\">"+
+								"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
+							"</ul>"+
+						"</div>";
+			}
+			else if (rights == 1) {
+				elt.innerHTML +="<div class=\"container\">"+
+							"<ul class=\"nav nav-pills pull-left\">"+
+								"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
+								"<li class=\"blog-nav-item active\"><a href=\"RedigerArticle.html\">Publier</a></li>"+
+								"<li class=\"blog-nav-item active\"><a href=\"ValiderArticle.html\">Valider</a></li>"+
+								"<li class=\"dropdown blog-nav-item active\">"+
+									"<a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">Admin<b class=\"caret\"></b></a>"+
+									"<ul class=\"dropdown-menu\">"+
+										"<li><a href=\"gererMembres.html\">Gérer les utilisateurs</a></li>"+
+										"<li><a href=\"changerForme.html\">Changer la forme</a></li>"+
+									"</ul>"+
+								"</li>"+
+							"</ul>"+
+							"<ul class=\"nav nav-pills pull-right\">"+
+								"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
+							"</ul>"+
+						"</div>";
+			}
+			else if (rights == 2) {
+				elt.innerHTML +="<div class=\"container\">"+
+							"<ul class=\"nav nav-pills pull-left\">"+
+								"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
+								"<li class=\"blog-nav-item active\"><a href=\"RedigerArticle.html\">Publier</a></li>"+
+								"<li class=\"blog-nav-item active\"><a href=\"ValiderArticle.html\">Valider</a></li>"+
+							"</ul>"+
+							"<ul class=\"nav nav-pills pull-right\">"+
+								"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
+							"</ul>"+
+						"</div>";
+			}
+			else if (rights == 3) {
+				elt.innerHTML +="<div class=\"container\">"+
+							"<ul class=\"nav nav-pills pull-left\">"+
+								"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
+								"<li class=\"blog-nav-item active\"><a href=\"RedigerArticle.html\">Publier</a></li>"+
+							"</ul>"+
+							"<ul class=\"nav nav-pills pull-right\">"+
+								"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
+							"</ul>"+
+						"</div>";
+			}
+			else if (rights == 4) {
+				elt.innerHTML +="<div class=\"container\">"+
+							"<ul class=\"nav nav-pills pull-left\">"+
+								"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
+							"</ul>"+
+							"<ul class=\"nav nav-pills pull-right\">"+
+								"<li class=\"blog-nav-item  logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
+							"</ul>"+
+						"</div>";
+			}
+			else {
+				elt.innerHTML +="<div class=\"container\">"+
+							"<ul class=\"nav nav-pills pull-left\">"+
+								"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
+							"</ul>"+
+							"<ul class=\"nav nav-pills pull-right\">"+
+								"<li class=\"blog-nav-item active\"><a href=\"Sinscrire.html\">S'incrire</a></li>"+
+								"<li class=\"blog-nav-item active\"><a href=\"SeConnecter.html\">Se connecter</a></li>"+
+							"</ul>"+
+						"</div>";
+				}
+		} 
+		else if {
+			alert("La page n'a pas pu se charger correctment. Veuillez réessayer ultèrieurument.");
+		}
 };
 
 site.logout = function() {

@@ -25,7 +25,7 @@ confirmRegistration.sendID=function () {
 
 confirmRegistration.ask_site = function() {
     var data ={action: "get-user-site"};
-	console.log("ask_right");//added by loic
+	//console.log("ask_right");//added by loic
 	tools.post(data, confirmRegistration.cb_user_site);
 };
 
@@ -34,7 +34,7 @@ confirmRegistration.cb_user_site = function () {
 	if (this.readyState == 4 && this.status == 200) {
 		var r = JSON.parse(this.responseText);	
 		if (r.resp == "ok") {
-			has_class("go_site").add_href("localhost:1337/site/ConfirmRegistration" + r.id_site);// rajouter au bouton "go site" href du nom de domaine.
+			alert("Vous devriez recevoir un mail sous peu.");
 		} 
 		else {
 			alert("Votre confirmation n'as pas pu être prise en compte, veuillez réessayer ultérieurement.");

@@ -138,7 +138,7 @@ go_post:
 cb_check_log:
 	function (resCheckLog) {
 		if (resCheckLog) {
-				db.assign_cookie (_this.buffer.pseudo, _this, "cb_assign_cookie");
+				db.assign_cookie (this.buffer.pseudo, this, "cb_assign_cookie");
 			} else {
 				_this.resp.write(JSON.stringify({resp: "ko"}));
 				_this.resp.end();
@@ -156,7 +156,7 @@ cb_assign_cookie:
 cb_check_subscribe_log_blog:
 	function (ko) {
 		if (ko) {
-			db.register_blog (_this.buffer.login, _this.buffer..pw, _this.buffer.mail, 0, _this, "cb_register");
+			db.register_blog (this.buffer.login, this.buffer..pw, this.buffer.mail, 0, this, "cb_register");
 		} else {
 			_this.resp.write(JSON.stringify({resp: "ko"}));
 		}
@@ -166,7 +166,7 @@ cb_check_subscribe_log_blog:
 cb_check_subscribe_log_caosweb:
 	function (ko) {
 		if (ko) {
-			db.register (_this.buffer.login, _this.buffer.pw, _this.buffer.mail, 0, _this.buffer.siteName, _this, "cb_register");
+			db.register (this.buffer.login, this.buffer.pw, this.buffer.mail, 0, this.buffer.siteName, this, "cb_register");
 		} else {
 			_this.resp.write(JSON.stringify({resp: "ko"}));
 		}
@@ -177,9 +177,9 @@ cb_register:
 	function (c_r) {
 		if (c_r) {
 			if (_this.b.nameWebsite) {
-				nodeMailer.mail_router (_this.buffer.mail, "noreply.caosweb@gmail.com", _this.buffer.login, _this.buffer.pw, c_r, "localhost:1337/ConfirmRegistrationCaos");
+				nodeMailer.mail_router (this.buffer.mail, "noreply.caosweb@gmail.com", this.buffer.login, this.buffer.pw, c_r, "localhost:1337/ConfirmRegistrationCaos");
 			} else {
-				nodeMailer.mail_router (_this.buffer.mail, "noreply.caosweb@gmail.com", _this.buffer.login, _this.buffer.pw, c_r, "localhost:1337/ConfirmRegistration");
+				nodeMailer.mail_router (this.buffer.mail, "noreply.caosweb@gmail.com", this.buffer.login, this.buffer.pw, c_r, "localhost:1337/ConfirmRegistration");
 			}
 		} else {
 			_this.resp.write(JSON.stringify({resp: "ko"}));
@@ -190,8 +190,17 @@ cb_register:
 cb_confirm_registration_caosweb:
 	function (user) {
 		if (user) {
-			//db.get_site ();//= function (cookie_reg, obj, func_name) --> change into 
-			db.assign_cookie (user, _this, "cb_assign_cookie");	
+			db.get_site (user, this, "cb_get_site");	
+		} else {
+			_this.resp.write(JSON.stringify({resp: "ko"}));
+		}
+		_this.resp.end();
+	},
+	
+cb_get_site:
+	function (site) {
+		if (site) {
+			_this.resp.write(JSON.stringify({"nameSite": "ko"}));
 		} else {
 			_this.resp.write(JSON.stringify({resp: "ko"}));
 		}
@@ -201,7 +210,7 @@ cb_confirm_registration_caosweb:
 cb_confirm_registration_blog:
 	function (user) {
 		if (user) {
-			db.assign_cookie (user, _this, "cb_assign_cookie");	
+			db.assign_cookie (user, this, "cb_assign_cookie");	
 		} else {
 			_this.resp.write(JSON.stringify({resp: "ko"}));
 		}
@@ -211,7 +220,7 @@ cb_confirm_registration_blog:
 cb_submit_article:
 	function (id) {
 		if (id) {
-			gestionArticles.push_article_db(id, _this.buffer, "cb_push_article_db");
+			gestionArticles.push_article_db(id, this.buffer, "cb_push_article_db");
 		} else {
 			_this.resp.write(JSON.stringify({resp: "ko"}));
 		}
@@ -241,7 +250,7 @@ cb_push_content:
 cb_delete_article:
 	function (ok) {
 		if (ok) {
-			gestionArticles.delete_article(b.articleId);
+			gestionArticles.delete_article(this.buffer.articleId);
 		} else {
 			_this.resp.write(JSON.stringify({resp: "ko"}));
 		}
@@ -261,7 +270,7 @@ cb_update_article_status:
 cb_order_article:
 	function (a) {
 		if (a) {
-			gestionArticles.load_articles (a, _this, "cb_send_articles");
+			gestionArticles.load_articles (a, this, "cb_send_articles");
 		} else {
 			_this.resp.write(JSON.stringify({resp: "ko"}));
 		}
@@ -281,9 +290,9 @@ cb_send_articles:
 cb_get_rights:
 	function (r) {
 		if (r) {
-			_this.resp.write(JSON.stringify({"rights": r}));
+			_this.resp.write(JSON.stringify({"role": r}));
 		} else {
-			_this.resp.write(JSON.stringify({"rights": ""}));
+			_this.resp.write(JSON.stringify({"role": ""}));
 		}
 		_this.resp.end();
 	},	

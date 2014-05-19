@@ -4,7 +4,7 @@ var fs = require("fs");
 require("./styles.js").add_theme();
 var db = require("./bdd_js.js");
 var artManage = require("./gestionArticles.js");
-var regFcts = require("./registerFunctions.js");
+var nodeMailer = require ("./nodeMailer.js");
 
 var dirName = './article/';
 
@@ -74,7 +74,7 @@ post_method:
             buff += c;
         });
         this.req.on("end", function () {
-			util.log("post_method -> echangeur");
+			util.log("post_method -> routeur");
             _this.go_post(buff);
         });
     },
@@ -91,44 +91,44 @@ go_post:
 		this.buffer = b;
 		_this.resp.writeHead(200, {"Content-Type": "application/json"});
 		if (b.action == "login") {
+			util.log("login");
 			db.check_log(b.pseudo, b.password, _this, "cb_check_log");
-			_this.resp.end();
 		} else if (b.action == "register-blog") {
+			util.log("register-blog");
 			db.check_subscribe_log (b.login, b.mail, _this, "cb_check_subscribe_log_blog");
-			_this.resp.end();
 		} else if (b.action == "register-caosweb") {
+			util.log("register-caosweb");
 			db.check_subscribe_log (b.login, b.mail, _this, "cb_check_subscribe_log_caosweb");
-			_this.resp.end();
-		}else if (b.action == "submit article") {
+		}else if (b.action == "submit-article") {
+			util.log("submit article");
 			db.submit_article (b.author, _this, "cb_submit_article");
-			_this.resp.end();
 		} else if ("confirm-registration-caosweb" == b.action) {
+			util.log("confirm-registration-caosweb");
 			db.get_user_reg(b.id, _this, "cb_confirm_registration_caosweb");
-			_this.resp.end();
 		} else if ("confirm-registration-blog" == b.action) {
+			util.log("confirm-registration-blog");
 			db.get_user_reg(b.id, _this, "cb_confirm_registration_blog");
-			_this.resp.end();
 		} else if (b.action == "get-rights") {
+			util.log("get-rights");
 			db.get_right (_this.req.headers.cookie, _this, "cb_get_rights");
-			_this.resp.end();
 		} else if (b.action == "get-article") {
+			util.log("get-article");
 			db.order_article (1, _this, "cb_order_article");
-			_this.resp.end();
 		} else if (b.action == "get-validate") {
+			util.log("get-validate");
 			db.order_article (0, _this, "cb_order_article");
-			_this.resp.end();
 		} else if (b.action == "validation-article") {
+			util.log("validation-article");
 			db.update_article_status (b.articleId, _this, "cb_update_article_status");
-			_this.resp.end();
 		} else if (b.action == "delete-article") {
+			util.log("delete-article");
 			db.delete_article (b.articleId, _this, "cb_delete_article");
-			_this.resp.end();
 		} else if (b.action == "get-members") {
-			db.users_list (_this, "cb_users_list") {
-			_this.resp.end();
+			util.log("get-members");
+			db.users_list (_this, "cb_users_list");
 		} else if (b.action == "logout") {
+			util.log("logout");
 			db.log_out (_this.req.headers.cookie, _this, "cb_log_out");
-			_this.resp.end();
 		} else {
 			_this.resp.write(JSON.stringify({resp: "Service not found"}));
 			_this.resp.end();
@@ -140,71 +140,73 @@ cb_check_log:
 		if (resCheckLog) {
 				db.assign_cookie (this.buffer.pseudo, this, "cb_assign_cookie");
 			} else {
-				_this.resp.write(JSON.stringify({resp: "ko"}));
-				_this.resp.end();
+				this.resp.write(JSON.stringify({resp: "ko"}));
+				this.resp.end();
 			}
 	},
 	
 cb_assign_cookie:
 	function (c) {
-		_this.resp.writeHead(200,"ok",{"Context-Type": 'application/json', "Set-Cookie": c});
-		_this.resp.write(JSON.stringify({resp: "ok"}));
+		this.resp.writeHead(200,"ok",{"Context-Type": 'application/json', "Set-Cookie": c});
+		this.resp.write(JSON.stringify({resp: "ok"}));
 		util.log("log in complete | cookie assigned");
-		_this.resp.end();
+		this.resp.end();
 	},
 
 cb_check_subscribe_log_blog:
 	function (ko) {
 		if (ko) {
-			db.register_blog (this.buffer.login, this.buffer.pw, this.buffer.mail, 0, this, "cb_register");
+			db.register_blog(this.buffer.login, this.buffer.pw, this.buffer.mail, 0, this, "cb_register");
 		} else {
-			_this.resp.write(JSON.stringify({resp: "ko"}));
+			this.resp.write(JSON.stringify({resp: "ko"}));
+			this.resp.end();
 		}
-		_this.resp.end();
 	},
 	
 cb_check_subscribe_log_caosweb:
 	function (ko) {
-		if (ko) {
-			db.register (this.buffer.login, this.buffer.pw, this.buffer.mail, 0, this.buffer.siteName, this, "cb_register");
+		if (!ko) {
+			db.register(this.buffer.login, this.buffer.pw, this.buffer.mail, 0, this.buffer.siteName, this, "cb_register");
 		} else {
-			_this.resp.write(JSON.stringify({resp: "ko"}));
+			this.resp.write(JSON.stringify({resp: "ko"}));
+			this.resp.end();
 		}
-		_this.resp.end();
 	},
 	
 cb_register:
 	function (c_r) {
+	console.log("tac");
 		if (c_r) {
-			if (_this.b.nameWebsite) {
-				nodeMailer.mail_router (this.buffer.mail, "noreply.caosweb@gmail.com", this.buffer.login, this.buffer.pw, c_r, "localhost:1337/ConfirmRegistrationCaos");//TODO
+			if (this.buffer.siteName) {
+				nodeMailer.mail_router (this.buffer.email, "noreply.caosweb@gmail.com", this.buffer.login, this.buffer.pw, c_r, "localhost:1337/ConfirmRegistrationCaos");//TODO
 			} else {
-				nodeMailer.mail_router (this.buffer.mail, "noreply.caosweb@gmail.com", this.buffer.login, this.buffer.pw, c_r, "localhost:1337/ConfirmRegistration");
+				nodeMailer.mail_router (this.buffer.email, "noreply.caosweb@gmail.com", this.buffer.login, this.buffer.pw, c_r, "localhost:1337/ConfirmRegistration");
 			}
+			this.resp.write(JSON.stringify({resp: "ok"}));
 		} else {
-			_this.resp.write(JSON.stringify({resp: "ko"}));
+			this.resp.write(JSON.stringify({resp: "ko"}));
+			this.resp.end();
 		}
-		_this.resp.end();
 	},
 	
 cb_confirm_registration_caosweb:
 	function (user) {
 		if (user) {
-			db.get_site (user, this, "cb_get_site");	
+			db.get_site (user, this, "cb_get_site");
 		} else {
-			_this.resp.write(JSON.stringify({resp: "ko"}));
+			this.resp.write(JSON.stringify({resp: "ko"}));
+			this.resp.end();
 		}
-		_this.resp.end();
 	},
 	
 cb_get_site:
 	function (site) {
 		if (site) {
-			_this.resp.write(JSON.stringify({"nameSite": "ko"}));
+			this.resp.write(JSON.stringify({"nameSite": "ko"}));
 		} else {
-			_this.resp.write(JSON.stringify({resp: "ko"}));
+			this.resp.write(JSON.stringify({resp: "ko"}));
+			this.resp.end();
 		}
-		_this.resp.end();
 	},
 	
 cb_confirm_registration_blog:
@@ -212,9 +214,9 @@ cb_confirm_registration_blog:
 		if (user) {
 			db.assign_cookie (user, this, "cb_assign_cookie");	
 		} else {
-			_this.resp.write(JSON.stringify({resp: "ko"}));
+			this.resp.write(JSON.stringify({resp: "ko"}));
+			this.resp.end();
 		}
-		_this.resp.end();
 	},
 	
 cb_submit_article:
@@ -222,9 +224,9 @@ cb_submit_article:
 		if (id) {
 			gestionArticles.push_article_db(id, this.buffer, "cb_push_article_db");
 		} else {
-			_this.resp.write(JSON.stringify({resp: "ko"}));
+			this.resp.write(JSON.stringify({resp: "ko"}));
+			this.resp.end();
 		}
-		_this.resp.end();
 	},
 	
 cb_push_article_db:
@@ -232,19 +234,19 @@ cb_push_article_db:
 		if (id) {
 			gestionArticles.push_content(dirPath, id, b, "cb_push_content");
 		} else {
-			_this.resp.write(JSON.stringify({resp: "ko"}));
+			this.resp.write(JSON.stringify({resp: "ko"}));
+			this.resp.end();
 		}
-		_this.resp.end();
 	},
 	
 cb_push_content:
 	function (ok) {
 		if (ok) {
-			_this.resp.write(JSON.stringify({resp: "ok"}));
+			this.resp.write(JSON.stringify({resp: "ok"}));
 		} else {
-			_this.resp.write(JSON.stringify({resp: "ko"}));
+			this.resp.write(JSON.stringify({resp: "ko"}));
+			this.resp.end();
 		}
-		_this.resp.end();
 	},
 
 cb_delete_article:
@@ -252,19 +254,19 @@ cb_delete_article:
 		if (ok) {
 			gestionArticles.delete_article(this.buffer.articleId);
 		} else {
-			_this.resp.write(JSON.stringify({resp: "ko"}));
+			this.resp.write(JSON.stringify({resp: "ko"}));
+			this.resp.end();
 		}
-		_this.resp.end();
 	},
 	
 cb_update_article_status:
 	function (ok) {
 		if (ok) {
-			_this.resp.write(JSON.stringify({resp: "ok"}));
+			this.resp.write(JSON.stringify({resp: "ok"}));
 		} else {
-			_this.resp.write(JSON.stringify({resp: "ko"}));
+			this.resp.write(JSON.stringify({resp: "ko"}));
+			this.resp.end();
 		}
-		_this.resp.end();
 	},
 	
 cb_order_article:
@@ -272,49 +274,49 @@ cb_order_article:
 		if (a) {
 			gestionArticles.load_articles (a, this, "cb_send_articles");
 		} else {
-			_this.resp.write(JSON.stringify({resp: "ko"}));
+			this.resp.write(JSON.stringify({resp: "ko"}));
+			this.resp.end();
 		}
-		_this.resp.end();
 	},
 	
 cb_send_articles:
 	function (a) {
 		if (a) {
-			_this.resp.write(JSON.stringify({"articles": a}));
+			this.resp.write(JSON.stringify({"articles": a}));
 		} else {
-			_this.resp.write(JSON.stringify({resp: "ko"}));
+			this.resp.write(JSON.stringify({resp: "ko"}));
+			this.resp.end();
 		}
-		_this.resp.end();
 	},
 	
 cb_get_rights:
 	function (r) {
 		if (r) {
-			_this.resp.write(JSON.stringify({"role": r}));
+			this.resp.write(JSON.stringify({"role": r}));
 		} else {
-			_this.resp.write(JSON.stringify({"role": ""}));
+			this.resp.write(JSON.stringify({"role": ""}));
+			this.resp.end();
 		}
-		_this.resp.end();
 	},	
 	
 cb_log_out:
 	function (ok) {
 		if (ok) {
-			_this.resp.write(JSON.stringify({resp: "ok"}));
+			this.resp.write(JSON.stringify({resp: "ok"}));
 		} else {
-			_this.resp.write(JSON.stringify({resp: "ko"}));
+			this.resp.write(JSON.stringify({resp: "ko"}));
+			this.resp.end();
 		}
-		_this.resp.end();
 	},
 	
 cb_ursers_list:
 	function (a) {
 		if (a) {
-			_this.resp.write(JSON.stringify({resp: a}));
+			this.resp.write(JSON.stringify({resp: a}));
 		} else {
 			_this.resp.write(JSON.stringify({resp: "ko"}));
+			this.resp.end();
 		}
-		_this.resp.end();
 	},
 	
 get_method:

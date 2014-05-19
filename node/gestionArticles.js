@@ -110,5 +110,5 @@ exports.delete_article = function (articleId) {
 			});
 			this.resp.end();
 		}
-	}
+	});
 };

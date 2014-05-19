@@ -9,7 +9,6 @@ register.on_click = function (ev){
 	var src = ev.target;
 	console.log("on_click avant 19");
 	if (src.has_class("registerCAOSWeb")){
-		console.log("on_click apres 112");
 		register.submit();
 	}
 };
@@ -43,14 +42,14 @@ register.submit = function () {
 			cpw.add_class("alert-success");
 		}
 	}
-	else if (mail.value = cmail.value || mail.value || pw.value = cpw.value || pw.value){
-		var data = {action: "register-CAOSWeb", email: mail, password: pw, login: p, site-name: nom};
-		tools.post(data, site.cb_reg_CAOSWeb);
+	else if (mail.value == cmail.value || mail.value || pw.value == cpw.value || pw.value){
+		var data = {action: "register-caosweb", email: mail.value, password: pw.value, login: p.value, site_name: nom.valuex};
+		tools.post(data, register.cb_reg_CAOSWeb);
 	} 
 }
 
-site.cd_reg_CAOSWeb = function () {
-	if (this.readyState == 4 && this.statusCode == 200) {
+register.cb_reg_CAOSWeb = function () {
+	if (this.readyState == 4 && this.status == 200) {
 		var r = JSON.parse(this.responseText);
 		if (r.resp == "ok") {
 			alert("Un mail vous a été envoyé pour pouvoir finir votre inscription.");
@@ -68,7 +67,7 @@ register.reset_class = function (e) {
 
 window.onload = function () {
 	setTimeout(register.on_ready, 1);
-	setTimeout(site.cb_rights, 1);
+	setTimeout(register.cb_rights, 1);
 };
 
 

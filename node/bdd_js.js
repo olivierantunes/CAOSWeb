@@ -55,6 +55,7 @@ exports.create_cookie = function (user) {
 };
 
 var create_cookie = function (user) {
+console.log("tuc" + user);
 	if (user && typeof user == "string") {
 		var a = Math.random();
 		var b = user.substring(0,3);
@@ -167,7 +168,8 @@ exports.check_subscribe_log = function (log, email, obj, func_name) {
 				}
 			}
 		}, function () {
-			obj[fun_name](flag);
+			console.log(func_name+"###################");
+			obj[func_name](flag);
 		});
 	util.log("CHECK_SUBSCRIBE_LOG - Closing");
 };

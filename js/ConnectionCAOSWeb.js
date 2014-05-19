@@ -14,7 +14,7 @@ site.on_click = function (ev){
 site.check_login= function() {
 	var m = document.getElementsByClassName("login")[0];
 	var pw= document.getElementsByClassName("pass")[0];
-	var data = {action: "login", mail: m, password: pw};
+	var data = {action: "login", mail: m.value, password: pw.value};
 	tools.post(data, site.cb_check_logCAOSWeb);
 };
 

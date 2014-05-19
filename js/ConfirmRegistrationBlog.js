@@ -1,14 +1,14 @@
 var confirmRegistration = {};
 
-site.ask_right = function() {
+confirmRegistration.ask_right = function() {
     var data ={"action": "get-rights"};
-	tools.post(data, site.cb_rights);
+	tools.post(data, confirmRegistration.cb_rights);
 };
 
-site.cb_rights = function () {
+confirmRegistration.cb_rights = function () {
 	if (this.readyState == 4 && this.status == 200) {
 		var right = JSON.parse(this.responseText);	
-		rights=right.role;
+		rights=(right.role === "") ? -1 : right.role;
 		var elt = document.getElementsByClassName("dynamic-rights")[0];
 			if (rights == 0) {
 				elt.innerHTML +="<div class=\"container\">"+
@@ -28,8 +28,7 @@ site.cb_rights = function () {
 								"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 							"</ul>"+
 						"</div>";
-			}
-			else if (rights == 1) {
+			} else if (rights == 1) {
 				elt.innerHTML +="<div class=\"container\">"+
 							"<ul class=\"nav nav-pills pull-left\">"+
 								"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
@@ -91,10 +90,7 @@ site.cb_rights = function () {
 								"<li class=\"blog-nav-item active\"><a href=\"SeConnecter.html\">Se connecter</a></li>"+
 							"</ul>"+
 						"</div>";
-				}
-		} 
-		else if {
-			alert("La page n'a pas pu se charger correctment. Veuillez réessayer ultèrieurument.");
+			}
 		}
 };
 
@@ -117,7 +113,7 @@ var getid = function (cb){
 
 confirmRegistration.sendID=function () {
 	//RESPONSE TEXT
-	var data = {action: "confirm-registration-CAOSWeb", ID: idsite};
+	var data = {action: "confirm-registration-CAOSWeb", ID: idsite.value};
 	tools.post(data, site.cb_reg_blog);
 };
 

@@ -2,6 +2,7 @@ var confirmRegistration = {};
 
 confirmRegistration.on_ready = function () {
 	document.addEventListener("click", confirmRegistration.on_click);
+	confirmRegistration.ask_site();
 };
 
 confirmRegistration.on_click = function (ev){
@@ -18,15 +19,22 @@ var getid = function (cb){
 
 confirmRegistration.sendID=function () {
 	//RESPONSE TEXT
-	var data = {action: "confirm-registration-CAOSWeb", ID: idsite};
+	var data = {action: "confirm-registration-CAOSWeb", ID: idsite.value};
 	tools.post(data, site.cb_reg_caos);
 };
 
-confirmRegistration.cb_reg_caos = function () {
+confirmRegistration.ask_site = function() {
+    var data ={action: "get-user-site"};
+	console.log("ask_right");//added by loic
+	tools.post(data, confirmRegistration.cb_user_site);
+};
+
+
+confirmRegistration.cb_user_site = function () {
 	if (this.readyState == 4 && this.status == 200) {
 		var r = JSON.parse(this.responseText);	
 		if (r.resp == "ok") {
-			has_class("go_site").add_href("localhost:" + r.id_site);// rajouter au bouton "go site" href du nom de domaine.
+			has_class("go_site").add_href("localhost:1337/site/ConfirmRegistration" + r.id_site);// rajouter au bouton "go site" href du nom de domaine.
 		} 
 		else {
 			alert("Votre confirmation n'as pas pu être prise en compte, veuillez réessayer ultérieurement.");

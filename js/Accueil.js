@@ -15,7 +15,7 @@ site.ask_right = function() {
 site.cb_rights = function () {
 	if (this.readyState == 4 && this.status == 200) {
 		var right = JSON.parse(this.responseText);	
-		rights=right.role;
+		rights=(right.role === "") ? -1 : right.role;
 		var elt = document.getElementsByClassName("dynamic-rights")[0];
 			if (rights == 0) {
 				elt.innerHTML +="<div class=\"container\">"+
@@ -35,8 +35,7 @@ site.cb_rights = function () {
 								"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 							"</ul>"+
 						"</div>";
-			}
-			else if (rights == 1) {
+			} else if (rights == 1) {
 				elt.innerHTML +="<div class=\"container\">"+
 							"<ul class=\"nav nav-pills pull-left\">"+
 								"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
@@ -98,10 +97,7 @@ site.cb_rights = function () {
 								"<li class=\"blog-nav-item active\"><a href=\"SeConnecter.html\">Se connecter</a></li>"+
 							"</ul>"+
 						"</div>";
-				}
-		} 
-		else if {
-			alert("La page n'a pas pu se charger correctment. Veuillez réessayer ultèrieurument.");
+			}
 		}
 };
 
@@ -147,13 +143,9 @@ site.cb_art = function () {
 						"</blockquote>";
 		}
 	}
-	else if {
-		alert("Les articles n'ont pas pu se charger correctement, veuillez réessayer ultèrieureument.");
-	}
 };
 
 
 window.onload = function () {
 	setTimeout(site.on_ready, 1);
-	setTimeout(site.cb_art, 1000);
 };

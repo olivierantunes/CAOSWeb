@@ -28,7 +28,7 @@ site.ask_right = function() {
 site.cb_rights = function () {
 	if (this.readyState == 4 && this.status == 200) {
 		var right = JSON.parse(this.responseText);	
-		rights=right.role;
+		rights=(right.role === "") ? -1 : right.role;
 		var elt = document.getElementsByClassName("dynamic-rights")[0];
 			if (rights == 0) {
 				elt.innerHTML +="<div class=\"container\">"+
@@ -48,8 +48,7 @@ site.cb_rights = function () {
 								"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
 							"</ul>"+
 						"</div>";
-			}
-			else if (rights == 1) {
+			} else if (rights == 1) {
 				elt.innerHTML +="<div class=\"container\">"+
 							"<ul class=\"nav nav-pills pull-left\">"+
 								"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
@@ -111,10 +110,7 @@ site.cb_rights = function () {
 								"<li class=\"blog-nav-item active\"><a href=\"SeConnecter.html\">Se connecter</a></li>"+
 							"</ul>"+
 						"</div>";
-				}
-		} 
-		else if {
-			alert("La page n'a pas pu se charger correctment. Veuillez réessayer ultèrieurument.");
+			}
 		}
 };
 
@@ -152,14 +148,11 @@ site.cb_membres = function () {
 						"</tr>";
 		}
 	}
-	else if{
-		alert("Votre confirmation n'as pas pu être prise en compte, veuillez réessayer ultérieurement.");
-	}
 };
 
 site.modify_r= function () {
 	var new_r = document.getElementsByClassName(new_right)[0];
-	var data = {action: "modify-rights", right: new_r};
+	var data = {action: "modify-rights", right: new_r.value};
 	tools.post(data, site.cb_val_new_r);
 }
 
@@ -177,7 +170,7 @@ site.cb_val_new_r = function () {
 
 site.delete_member= function() {
 	var log = document.getElementsByClassName(r[a].login)[0];
-	var data = {action: "delete-member", login: log};
+	var data = {action: "delete-member", login: log.value};
 	tools.post(data, site.cb_del_member);
 };
 

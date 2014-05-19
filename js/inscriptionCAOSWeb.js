@@ -43,7 +43,7 @@ register.submit = function () {
 		}
 	}
 	else if (mail.value == cmail.value || mail.value || pw.value == cpw.value || pw.value){
-		var data = {action: "register-caosweb", email: mail.value, password: pw.value, login: p.value, site_name: nom.valuex};
+		var data = {action: "register-caosweb", email: mail.value, password: pw.value, login: p.value, site_name: nom.value};
 		tools.post(data, register.cb_reg_CAOSWeb);
 	} 
 }

@@ -12,7 +12,7 @@ site.ask_right = function() {
 };
 
 site.cb_rights = function () {
-	if (this.readyState == 4 && this.statusCode == 200) {
+	if (this.readyState == 4 && this.status == 200) {
 		var right = JSON.parse(this.responseText);	
 		rights=right.role;
 		var elt = document.getElementsByClassName("dynamic-rights")[0];
@@ -110,7 +110,7 @@ site.logout = function() {
 };
 
 site.cb_logo = function () {
-	if (this.readyState == 4 && this.statusCode == 200) {
+	if (this.readyState == 4 && this.status == 200) {
 		var r = JSON.parse(this.responseText);
 		if (r.resp == "ok") {
 			alert("Vous êtes bien déconnecté");
@@ -135,7 +135,7 @@ site.ask_article = function() {
 };
 
 site.cb_art = function () {
-	if (this.readyState == 4 && this.statusCode == 200) {
+	if (this.readyState == 4 && this.status == 200) {
 		var art = JSON.parse(this.responseText);	
 		var elt = document.getElementsByClassName("dynamic-art")[0];
 		for (a in r) {

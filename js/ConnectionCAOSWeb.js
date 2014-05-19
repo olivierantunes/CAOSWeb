@@ -19,7 +19,7 @@ site.check_login= function() {
 };
 
 site.cb_check_logCAOSWeb = function () {
-	if (this.readyState == 4 && this.statusCode == 200) {
+	if (this.readyState == 4 && this.status == 200) {
 		var r = JSON.parse(this.responseText);
 		if (r.resp == "ok") {
 			alert("Vous êtes bien connecté");

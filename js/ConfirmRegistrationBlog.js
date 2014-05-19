@@ -6,7 +6,7 @@ site.ask_right = function() {
 };
 
 site.cb_rights = function () {
-	if (this.readyState == 4 && this.statusCode == 200) {
+	if (this.readyState == 4 && this.status == 200) {
 		var right = JSON.parse(this.responseText);	
 		rights=right.role;
 		var elt = document.getElementsByClassName("dynamic-rights")[0];

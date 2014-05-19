@@ -23,7 +23,7 @@ confirmRegistration.sendID=function () {
 };
 
 confirmRegistration.cb_reg_caos = function () {
-	if (this.readyState == 4 && this.statusCode == 200) {
+	if (this.readyState == 4 && this.status == 200) {
 		var r = JSON.parse(this.responseText);	
 		if (r.resp == "ok") {
 			has_class("go_site").add_href("localhost:" + r.id_site);// rajouter au bouton "go site" href du nom de domaine.

@@ -12,7 +12,7 @@ register.ask_right = function() {
 };
 
 register.cb_rights = function () {
-	if (this.readyState == 4 && this.statusCode == 200) {
+	if (this.readyState == 4 && this.status == 200) {
 		var right = JSON.parse(this.responseText);	
 		rights=right.role;
 		var elt = document.getElementsByClassName("dynamic-rights")[0];
@@ -110,7 +110,7 @@ register.logout = function() {
 };
 
 register.cb_logo = function () {
-	if (this.readyState == 4 && this.statusCode == 200) {
+	if (this.readyState == 4 && this.status == 200) {
 		var r = JSON.parse(this.responseText);
 		if (r.resp == "ok") {
 			alert("Vous êtes bien déconnecté");
@@ -161,14 +161,14 @@ register.submit = function () {
 			cpw.add_class("alert-success");
 		}
 	}
-	else if (mail.value = cmail.value || mail.value || pw.value = cpw.value || pw.value){
-		var data = {action: "register-blog", email: mail, password: pw, login: p};
+	else if (mail.value == cmail.value || mail.value || pw.value == cpw.value || pw.value){
+		var data = {action: "register-blog", email: mail.value, password: pw.value, login: p.value};
 		tools.post(data, register.cb_reg_blog);
 	} 
 }
 
 register.cd_reg_blog = function () {
-	if (this.readyState == 4 && this.statusCode == 200) {
+	if (this.readyState == 4 && this.status == 200) {
 		var r = JSON.parse(this.responseText);
 		if (r.resp == "ok") {
 			alert("Un mail vous a été envoyé pour pouvoir finir votre inscription.");

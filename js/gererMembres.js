@@ -26,7 +26,7 @@ site.ask_right = function() {
 };
 
 site.cb_rights = function () {
-	if (this.readyState == 4 && this.statusCode == 200) {
+	if (this.readyState == 4 && this.status == 200) {
 		var right = JSON.parse(this.responseText);	
 		rights=right.role;
 		var elt = document.getElementsByClassName("dynamic-rights")[0];
@@ -132,7 +132,7 @@ site.rights_match = {
 };
 
 site.cb_membres = function () {
-	if (this.readyState == 4 && this.statusCode == 200) {
+	if (this.readyState == 4 && this.status == 200) {
 		var membre = JSON.parse(this.responseText);	
 		var elt = document.getElementsByClassName("dynamic-membres")[0];
 		for (a in r) {
@@ -164,7 +164,7 @@ site.modify_r= function () {
 }
 
 site.cb_val_new_r = function () {
-	if (this.readyState == 4 && this.statusCode == 200) {
+	if (this.readyState == 4 && this.status == 200) {
 		var r = JSON.parse(this.responseText);
 		if (r.resp == "ok") {
 			alert("droits du membres bien modifié");
@@ -182,7 +182,7 @@ site.delete_member= function() {
 };
 
 site.cb_del_valid = function () {
-	if (this.readyState == 4 && this.statusCode == 200) {
+	if (this.readyState == 4 && this.status == 200) {
 		var r = JSON.parse(this.responseText);
 		if (r.resp == "ok") {
 			alert("membre supprimé");
@@ -199,7 +199,7 @@ site.logout = function() {
 };
 
 site.cb_logo = function () {
-	if (this.readyState == 4 && this.statusCode == 200) {
+	if (this.readyState == 4 && this.status == 200) {
 		var r = JSON.parse(this.responseText);
 		if (r.resp == "ok") {
 			alert("Vous êtes bien déconnecté");

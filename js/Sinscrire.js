@@ -125,7 +125,6 @@ register.on_click = function (ev){
 	var src = ev.target;
 	console.log("on_click avant 19");
 	if (src.has_class("submit-register")){
-		console.log("on_click apres 112");
 		register.submit();
 	}
 	if (src.has_class("logout")){
@@ -167,7 +166,7 @@ register.submit = function () {
 	} 
 }
 
-register.cd_reg_blog = function () {
+register.cb_reg_blog = function () {
 	if (this.readyState == 4 && this.status == 200) {
 		var r = JSON.parse(this.responseText);
 		if (r.resp == "ok") {

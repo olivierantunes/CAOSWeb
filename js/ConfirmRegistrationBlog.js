@@ -121,7 +121,7 @@ confirmRegistration.sendID=function () {
 	tools.post(data, site.cb_reg_blog);
 };
 
-confirmRegistration.cd_reg_blog = function () {
+confirmRegistration.cb_reg_blog = function () {
 	if (this.readyState == 4 && this.statusCode == 200) {
 		var r = JSON.parse(this.responseText);
 		if (r.resp == "ok") {

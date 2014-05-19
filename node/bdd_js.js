@@ -72,11 +72,11 @@ console.log("tuc" + user);
  * @param (string) pw
  * @param (object) this
  * @param (string) func_name
- * @callback (boolean) calls the callback with a boolean argument
+ * @callback (boolean) calls the callback with a boolean argument: 1 if log and mail ok, else 0
  */
-exports.check_log = function (log, pw, obj, func_name) {
+exports.check_log = function (email, pw, obj, func_name) {
 		util.log("CHECK_LOG - Opening");
-		var stmt = "SELECT user FROM test WHERE user=\"" + log + "\" AND password=\"" + pw +"\"";
+		var stmt = "SELECT user FROM test WHERE email=\"" + email + "\" AND password=\"" + pw +"\"";
 		var flag = 0;
 		db.each(stmt, function (e, r) {
 			if (e) {
@@ -168,6 +168,7 @@ exports.check_subscribe_log = function (log, email, obj, func_name) {
 				}
 			}
 		}, function () {
+			console.log("flag: " + flag);
 			obj[func_name](flag);
 		});
 	util.log("CHECK_SUBSCRIBE_LOG - Closing");

@@ -62,7 +62,7 @@ exports.push_content = function (dirPath, articleID, obj, funcName) {//added fun
  * @param dirPath (Array): array of article ids
  * @return (array of JSON objects): articles = [{title: 'title1', author: 'author1', date: 'date1', content: 'content1', idArticle: 'idArticle1'}, {title: 'title2', author: 'author2', date: 'date2', content: 'content2'}, ...]
  */
-exports.load_articles = function (arrayArticleIdAndDate, obj, nameFunc) {//deleted the 'exports.'
+exports.load_articles = function (arrayArticleIdAndDate, obj, funcName) {//deleted the 'exports.'
 	var returnedArticles = new Array ();
 	
 	if (!arrayArticleIdAndDate) {
@@ -75,13 +75,13 @@ exports.load_articles = function (arrayArticleIdAndDate, obj, nameFunc) {//delet
 					this.resp.write(JSON.stringify({resp: "failed loading article"}));
 					this.resp.end();
 				} else {
-					var object = '{title: ' + data.title
+					var article = '{title: ' + data.title
 								+ ', author: ' + data.author
 								+ ', content: ' + data.content
 								+ ', date: ' + arrayArticleIdAndDate[i].date
 								+ ', articleId: ' + arrayArticleIdAndDate[i].articleId
 								+ '}';
-					returnedArticles.push(data);
+					returnedArticles.push(article);
 				}
 			});
 		};

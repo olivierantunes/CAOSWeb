@@ -167,6 +167,7 @@ register.cb_reg_blog = function () {
 		var r = JSON.parse(this.responseText);
 		if (r.resp == "ok") {
 			alert("Un mail vous a été envoyé pour pouvoir finir votre inscription.");
+			location.assign("../site/Accueil.html");
 		} else {
 			alert("Votre inscription n'as pas pu être prise en compte, veuillez réessayer ultérieurement.");
 		}

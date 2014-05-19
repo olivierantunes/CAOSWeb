@@ -23,7 +23,7 @@ var mailAddressee = {
 exports.mail_router = function (targetMail, senderMail, userLogin, userPw, userId, nameWebsite) {
 	//args: + service?, auth: password? //IL FAUT GENERER UNE ADRESSE MAIL POUR LE BLOG!!!
 	var domain = url.parse(nameWebsite).hostname,
-		textLink = nameWebsite + ".html/?id=" + userId,
+		textLink = nameWebsite;// + ".html/?id=" + userId,
 		smtpTransport = nodemailer.createTransport ("SMTP", {
 			service: "Gmail", //default?
 			auth: {

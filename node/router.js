@@ -190,6 +190,7 @@ cb_register:
 cb_confirm_registration_caosweb:
 	function (user) {
 		if (user) {
+			//db.get_site ();//= function (cookie_reg, obj, func_name) --> change into 
 			db.assign_cookie (user, _this, "cb_assign_cookie");	
 		} else {
 			_this.resp.write(JSON.stringify({resp: "ko"}));

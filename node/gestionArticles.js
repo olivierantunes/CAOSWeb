@@ -10,7 +10,7 @@ var dirName = './article/';
  * @param b (JSON object): article data
  * @return (String): "ok" or "ko"
  */
-push_article_db = function (articleID, b, funcName) {
+exports.push_article_db = function (articleID, b, funcName) {
 	var dirPath = dirName + articleID;
 	
 	fs.exists(dirPath, function(exists) {
@@ -38,7 +38,7 @@ push_article_db = function (articleID, b, funcName) {
  * @param b (JSON object) : article data
  * @return (String) : "ok" or "ko"
  */
-push_content = function (dirPath, articleID, obj, funcName) {//added funcName
+exports.push_content = function (dirPath, articleID, obj, funcName) {//added funcName
 	fs.exists(articlePath, function(exists) {
 		if (!exists) {
 			util.log ("file does not exist -> creation");
@@ -62,7 +62,7 @@ push_content = function (dirPath, articleID, obj, funcName) {//added funcName
  * @param dirPath (Array): array of article ids
  * @return (array of JSON objects): articles = [{title: 'title1', author: 'author1', date: 'date1', content: 'content1', idArticle: 'idArticle1'}, {title: 'title2', author: 'author2', date: 'date2', content: 'content2'}, ...]
  */
-load_articles = function (arrayArticleIdAndDate, obj, nameFunc) {//deleted the 'exports.'
+exports.load_articles = function (arrayArticleIdAndDate, obj, nameFunc) {//deleted the 'exports.'
 	var returnedArticles = new Array ();
 	
 	if (!arrayArticleIdAndDate) {
@@ -94,7 +94,7 @@ load_articles = function (arrayArticleIdAndDate, obj, nameFunc) {//deleted the '
  * @param articleId (Int): article id
  * @return (String): "ok" or "ko"
  */
-delete_article = function (articleId) {
+exports.delete_article = function (articleId) {
 	var articlePath = dirPath + articleId;//think about destroying the whole directory and its gatherings recursively
 	fs.exists(articlePath, function(exists) {
 		if (!exists) {

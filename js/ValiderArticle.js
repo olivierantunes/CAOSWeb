@@ -7,7 +7,7 @@ site.on_ready = function () {
 };
 
 site.ask_right = function() {
-    var data ={"action": "get_rights"};
+    var data ={"action": "get-rights"};
 	tools.post(data, site.cb_rights);
 };
 
@@ -122,7 +122,7 @@ site.cb_logo = function () {
 };
 
 site.ask_validate = function() {
-	var data ={"action": "get_validate"};
+	var data ={"action": "get-validate"};
 	tools.post(data, site.cb_valid);
 };
 

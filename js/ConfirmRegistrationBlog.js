@@ -1,7 +1,7 @@
 var confirmRegistration = {};
 
 site.ask_right = function() {
-    var data ={"action": "get_rights"};
+    var data ={"action": "get-rights"};
 	tools.post(data, site.cb_rights);
 };
 
@@ -111,7 +111,7 @@ confirmRegistration.on_click = function (ev){
 };
 
 var getid = function (cb){
-	var data = {action: "get_id"};
+	var data = {action: "get-id"};
 	tools.post(data, cb);
 };
 

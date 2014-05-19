@@ -6,7 +6,7 @@ site.on_ready = function () {
 };
 
 site.ask_right = function() {
-    var data ={"action": "get_rights"};
+    var data ={"action": "get-rights"};
 	tools.post(data, site.cb_rights);
 };
 
@@ -133,7 +133,7 @@ site.on_click = function (ev){
 site.submit_arti= function() {
 	var t = document.getElementsByClassName("title")[0];
 	var c= document.getElementsByClassName("content")[0];
-	var data = {action: "submit_article", title: t, content: c};
+	var data = {action: "submit-article", title: t, content: c};
 	tools.post(data, site.cb_sub_art);
 };
 

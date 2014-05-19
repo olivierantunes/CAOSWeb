@@ -7,7 +7,7 @@ site.on_ready = function () {
 };
 
 site.ask_right = function() {
-    var data ={"action": "get_rights"};
+    var data ={"action": "get-rights"};
 	tools.post(data, site.cb_rights);
 };
 
@@ -130,7 +130,7 @@ site.on_click = function (ev){
 };
 
 site.ask_article = function() {
-	var data ={"action": "get_article"};
+	var data ={"action": "get-article"};
 	tools.post(data, site.cb_art);
 };
 

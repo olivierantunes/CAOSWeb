@@ -21,7 +21,7 @@ site.on_click = function (ev){
 };
 
 site.ask_right = function() {
-    var data ={"action": "get_rights"};
+    var data ={"action": "get-rights"};
 	tools.post(data, site.cb_rights);
 };
 
@@ -119,7 +119,7 @@ site.cb_rights = function () {
 };
 
 site.members = function() {
-    var data ={"action": "get_members"};
+    var data ={"action": "get-members"};
 	tools.post(data, site.cb_members);
 };
 

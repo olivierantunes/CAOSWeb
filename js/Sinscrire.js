@@ -7,7 +7,7 @@ register.on_ready = function () {
 };
 
 register.ask_right = function() {
-    var data ={"action": "get_rights"};
+    var data ={"action": "get-rights"};
 	tools.post(data, site.cb_rights);
 };
 

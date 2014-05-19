@@ -2,7 +2,8 @@ var site={};
 
 site.on_ready = function () {
 	document.addEventListener("click", site.on_click);
-	site.cb_rights();
+	site.ask_rights();
+	site.ask_article();
 };
 
 site.ask_right = function() {

@@ -31,7 +31,7 @@ site.cb_rights = function () {
 								"</li>"+
 							"</ul>"+
 							"<ul class=\"nav nav-pills pull-right\">"+
-								"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
+								"<li class=\"blog-nav-item logout active\">Se déconnecter</li>"+
 							"</ul>"+
 						"</div>";
 			} else if (rights == 1) {
@@ -49,7 +49,7 @@ site.cb_rights = function () {
 								"</li>"+
 							"</ul>"+
 							"<ul class=\"nav nav-pills pull-right\">"+
-								"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
+								"<li class=\"blog-nav-item logout active\">Se déconnecter</li>"+
 							"</ul>"+
 						"</div>";
 			}
@@ -61,7 +61,7 @@ site.cb_rights = function () {
 								"<li class=\"blog-nav-item active\"><a href=\"ValiderArticle.html\">Valider</a></li>"+
 							"</ul>"+
 							"<ul class=\"nav nav-pills pull-right\">"+
-								"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
+								"<li class=\"blog-nav-item logout active\">Se déconnecter</li>"+
 							"</ul>"+
 						"</div>";
 			}
@@ -72,7 +72,7 @@ site.cb_rights = function () {
 								"<li class=\"blog-nav-item active\"><a href=\"RedigerArticle.html\">Publier</a></li>"+
 							"</ul>"+
 							"<ul class=\"nav nav-pills pull-right\">"+
-								"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
+								"<li class=\"blog-nav-item logout active\">Se déconnecter</li>"+
 							"</ul>"+
 						"</div>";
 			}
@@ -82,7 +82,7 @@ site.cb_rights = function () {
 								"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
 							"</ul>"+
 							"<ul class=\"nav nav-pills pull-right\">"+
-								"<li class=\"blog-nav-item  logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
+								"<li class=\"blog-nav-item  logout active\">Se déconnecter</li>"+
 							"</ul>"+
 						"</div>";
 			}
@@ -100,7 +100,7 @@ site.cb_rights = function () {
 		}
 };
 
-site.logout = function() {
+site.log_out = function() {
     var data ={"action": "logout"};
 	tools.post(data, site.cb_logo);
 };
@@ -185,7 +185,7 @@ site.on_click = function (ev){
 	site.delte_arti();
 	}
 	else if (src.has_class("logout")){
-	site.logout();
+	site.log_out();
 	}
 };
 

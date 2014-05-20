@@ -55,7 +55,7 @@ exports.create_cookie = function (user) {
 };
 
 var create_cookie = function (user) {
-console.log("tuc" + user);
+	console.log("create_cookie user: " + user);
 	if (user && typeof user == "string") {
 		var a = Math.random();
 		var b = user.substring(0,3);
@@ -86,7 +86,8 @@ exports.check_log = function (email, pw, obj, func_name) {
 					flag++;
 				}
 			}
-		}, function () {
+		}, function (err,n) {
+			console.log ("CHECK_LOG--------------------------\nerr: " + err + "\nnb lines = " + n);
 			obj[func_name](flag);
 		});
 	util.log("CHECK_LOG - Closing");
@@ -188,16 +189,17 @@ exports.check_subscribe_log = function (log, email, obj, func_name) {
  */ 
 exports.submit_article = function (author, obj, func_name) {
 		util.log("SUBMIT_ARTICLE - Opening");
-		var articleID = create_cookie(author); // create_cookie is the same of create_ID
-		var stmt = "INSERT INTO test (articleID, articleStatus, author, date) VALUES (articleID,0,\""+author+"\", NOW() )";
+		var articleID = create_cookie(author);
+		var stmt = "INSERT INTO test (articleID, articleStatus, author, date) VALUES (\""+articleID+"\",0,\""+author+"\")";
 		db.each(stmt, function (e,r) {
-		if(e) {
-			util.log("ERROR - SQL - SUBMIT_ARTICLE function: " + e);
+			if (e) {
+				util.log("ERROR - SQL - SUBMIT_ARTICLE function: " + e);
 			} else {
-				util.inspect(r);
+				console.log("EEEHHHHHZIOECHVJEROIHJVOIERHV: " + util.inspect(r));
 			}
-		}, function () {
-			obj[func_name](articleID);
+			}, function (err,n) {
+				console.log ("EEEHHHHHZIOECHVJEROIHJVOIERHV\nerr: " + err + "\nnb lines = " + n + "\n");
+				obj[func_name](articleID);
 		});
 	util.log("SUBMIT_ARTICLE - Closing");
 };
@@ -293,10 +295,10 @@ exports.delete_article = function (articleID, obj, func_name) {
  * @param (string) func_name
  * @callback (boolean) calls the callback with the cookie
  */ 
-exports.assign_cookie = function (user, obj, func_name) {
+exports.assign_cookie = function (email, obj, func_name) {
 		util.log("ASSIGN_COOKIE - Opening");
-		var cookie = create_cookie(user);
-		var stmt = "UPDATE test SET cookie = cookie WHERE user =\""+ user +"\"" ;
+		var cookie = create_cookie(email);
+		var stmt = "UPDATE test SET cookie = \""+cookie+"\" WHERE email =\""+ email +"\"" ;
 		db.each(stmt, function (e,r) {
 		if(e) {
 			util.log("ERROR - SQL - ASSIGN_COOKIE function: " + e);
@@ -392,7 +394,7 @@ exports.update_article_status = function (articleID, obj, func_name) {
  */ 
 exports.log_out = function(cookie, obj, func_name) {
 		util.log("LOG_OUT - Opening");
-		var stmt = "UPDATE test cookie = 0 WHERE cookie = \""+cookie+"\"";
+		var stmt = "UPDATE test SET cookie = 'null' WHERE cookie = \""+cookie+"\"";
 		var flag = 0;
 		db.each(stmt, function (e,r) {
 		if(e) {
@@ -400,10 +402,11 @@ exports.log_out = function(cookie, obj, func_name) {
 			} else {
 				if (r) {
 					flag++;
-					util.inspect(r);
+					console.log("LAAAAAAAAAAAAAAAAAAA = " + util.inspect(r));
 				}
 			}
-		}, function () {
+		}, function (err,n) {
+			console.log ("err: " + err + "\nnb lines = " + n + "\nFLAG: " + flag);
 			obj[func_name](flag);
 		});
 	util.log("LOG_OUT - Closing");
@@ -457,6 +460,7 @@ exports.order_article = function(articleStatus, obj, func_name) {
 			}
 				art.push({articleID : r.articleID, date : r.date });
 			}, function () {
+			console.log("################################# "+util.inspect(art));
 				obj[func_name](art);
 			});
 		util.log("ORDER_ARTICLE - Closing");
@@ -495,17 +499,20 @@ exports.users_list = function(obj, func_name) {
  */
 exports.get_user = function (cookie, obj, func_name) {
 		util.log("GET_USER - Opening");
+		var rep;
 		var stmt = "SELECT user FROM test WHERE cookie =\"" + cookie +"\"";
-		var art = new Array();
 		db.each(stmt, function (e,r) {
 		if(e) {
 			util.log("ERROR - SQL - GET_USER function: " + e);
 			} else {
-				util.inspect(r);
+				if (r) {
+					console.log("IIICCCCCCCCIIIIIIIIIIIIIIIIIII: " + util.inspect(r));
+					rep = r;
+				}
 			}
-			art.push(r);
-		}, function () {
-			obj[func_name](art);
+		}, function (err,n) {
+			console.log ("err: " + err + "\nnb lines = " + n + "\n");
+			obj[func_name](rep);
 		});
 	util.log("GET_USER - Closing");
 };
@@ -554,10 +561,10 @@ exports.get_right = function (cookie, obj, func_name) {
 				util.log("ERROR - SQL - GET_RIGHT function: " + e);
 			} else {
 				util.log("before 'util.inspect(r);'-----------------------");
-				util.inspect(r);
+				console.log(util.inspect(r));
 				util.log("after 'util.inspect(r);'-----------------------");
 				rep = r;
-				util.log("rep = " + rep + " -----------------------");
+				util.log("rep.right = " + rep.right + " -----------------------");
 			}
 		}, function (err,n) {
 			console.log ("err: " + err + "\nnb lines = " + n + "\nREP: " + rep);
@@ -604,7 +611,7 @@ exports.get_user_reg = function (cookie_reg, obj, func_name) {
  */
 exports.register = function (log, pw, email, right, site, obj, func_name) {
 		util.log("REGISTER - Opening");
-		var cookie  = create_cookie(log);
+		var cookie  = create_cookie(email);
 		var stmt = "INSERT INTO test (user, password, email , cookie, right, site) VALUES ( \""+log+"\",\"" + pw + "\",\"" + email + "\",\"" + cookie + "\",\"" + right+ "\",\"" + site +"\")";		
 		db.each(stmt, function (e, r) {
 			if(e) {
@@ -613,7 +620,8 @@ exports.register = function (log, pw, email, right, site, obj, func_name) {
 				if (r) { 
 				}
 			}
-		}, function() {
+		}, function(err, n) {
+			console.log ("REGISTER-----------------\nerr: " + err + "\nnb lines = " + n + "\n");
 			obj[func_name](cookie);
 		});
 	util.log("REGISTER - Closing");

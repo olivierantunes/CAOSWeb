@@ -547,17 +547,23 @@ exports.get_right = function (cookie, obj, func_name) {
 		util.log("GET_RIGHT - Opening");
 		var stmt = "SELECT right FROM test WHERE cookie =\"" + cookie +"\"";
 		var rep;
+		console.log("POUETPOUETPOUETPOUETPOUETPOUETPOUETPOUETPOUETPOUETPOUETPOUETPOUETPOUETPOUET\n" + stmt + "\n");
 		db.each(stmt, function (e,r) {
-		if(e) {
-			util.log("ERROR - SQL - GET_RIGHT function: " + e);
+			console.log("RRRRRRRRRRRRRRRRRRRRRRRR: " + r);
+			if(e) {
+				util.log("ERROR - SQL - GET_RIGHT function: " + e);
 			} else {
+				util.log("before 'util.inspect(r);'-----------------------");
 				util.inspect(r);
+				util.log("after 'util.inspect(r);'-----------------------");
 				rep = r;
+				util.log("rep = " + rep + " -----------------------");
 			}
-		}, function () {
+		}, function (err,n) {
+			console.log ("err: " + err + "\nnb lines = " + n + "\nREP: " + rep);
 			obj[func_name](rep);
 		});
-	util.log("GET_RIGHT - Closing");
+		util.log("GET_RIGHT - Closing");
 };
 
 /**

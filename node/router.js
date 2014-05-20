@@ -100,7 +100,7 @@ go_post:
 			_this.resp.write(JSON.stringify({resp: "nameSite to be returned"}));
 			_this.resp.end();
 		} else if (b.action == "register-blog") {
-			util.log("register-blog");
+			util.log("ACTIIOOOOOOOOOOOOOOOOOOOOONNNN: register-blog");
 			db.check_subscribe_log (b.login, b.mail, _this, "cb_check_subscribe_log_blog");
 		} else if (b.action == "register-caosweb") {
 			util.log("register-caosweb");
@@ -307,6 +307,7 @@ cb_send_articles:
 	
 cb_get_rights:
 	function (r) {
+		util.log("RIGHTS = " + r + "||||||||||");
 		if (r) {
 			console.log("riIIIIIIIIIIIIIIIIIIIIIIIIIIIIights = " + r);
 			this.resp.write(JSON.stringify({"role": r}));

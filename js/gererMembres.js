@@ -36,13 +36,7 @@ site.cb_rights = function () {
 								"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
 								"<li class=\"blog-nav-item active\"><a href=\"RedigerArticle.html\">Publier</a></li>"+
 								"<li class=\"blog-nav-item active\"><a href=\"ValiderArticle.html\">Valider</a></li>"+
-								"<li class=\"dropdown blog-nav-item active\">"+
-									"<a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">Admin<b class=\"caret\"></b></a>"+
-									"<ul class=\"dropdown-menu\">"+
-										"<li><a href=\"gererMembres.html\">Gérer les utilisateurs</a></li>"+
-										"<li><a href=\"changerForme.html\">Changer la forme</a></li>"+
-									"</ul>"+
-								"</li>"+
+								"<li><a href=\"gererMembres.html\">Gérer les utilisateurs</a></li>"+
 							"</ul>"+
 							"<ul class=\"nav nav-pills pull-right\">"+
 								"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
@@ -54,13 +48,7 @@ site.cb_rights = function () {
 								"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
 								"<li class=\"blog-nav-item active\"><a href=\"RedigerArticle.html\">Publier</a></li>"+
 								"<li class=\"blog-nav-item active\"><a href=\"ValiderArticle.html\">Valider</a></li>"+
-								"<li class=\"dropdown blog-nav-item active\">"+
-									"<a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">Admin<b class=\"caret\"></b></a>"+
-									"<ul class=\"dropdown-menu\">"+
-										"<li><a href=\"gererMembres.html\">Gérer les utilisateurs</a></li>"+
-										"<li><a href=\"changerForme.html\">Changer la forme</a></li>"+
-									"</ul>"+
-								"</li>"+
+								"<li><a href=\"gererMembres.html\">Gérer les utilisateurs</a></li>"+
 							"</ul>"+
 							"<ul class=\"nav nav-pills pull-right\">"+
 								"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
@@ -96,7 +84,7 @@ site.cb_rights = function () {
 								"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
 							"</ul>"+
 							"<ul class=\"nav nav-pills pull-right\">"+
-								"<li class=\"blog-nav-item  logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
+								"<li class=\"blog-nav-item  logout active\">Se déconnecter</li>"+
 							"</ul>"+
 						"</div>";
 			}

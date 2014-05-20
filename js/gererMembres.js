@@ -36,7 +36,7 @@ site.cb_rights = function () {
 								"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
 								"<li class=\"blog-nav-item active\"><a href=\"RedigerArticle.html\">Publier</a></li>"+
 								"<li class=\"blog-nav-item active\"><a href=\"ValiderArticle.html\">Valider</a></li>"+
-								"<li><a href=\"gererMembres.html\">Gérer les utilisateurs</a></li>"+
+								"<li class=\"blog-nav-item active\"><a href=\"gererMembres.html\">Gérer les utilisateurs</a></li>"+
 							"</ul>"+
 							"<ul class=\"nav nav-pills pull-right\">"+
 								"<li class=\"blog-nav-item logout active\">Se déconnecter</li>"+
@@ -48,7 +48,7 @@ site.cb_rights = function () {
 								"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
 								"<li class=\"blog-nav-item active\"><a href=\"RedigerArticle.html\">Publier</a></li>"+
 								"<li class=\"blog-nav-item active\"><a href=\"ValiderArticle.html\">Valider</a></li>"+
-								"<li><a href=\"gererMembres.html\">Gérer les utilisateurs</a></li>"+
+								"<li class=\"blog-nav-item active\"><a href=\"gererMembres.html\">Gérer les utilisateurs</a></li>"+
 							"</ul>"+
 							"<ul class=\"nav nav-pills pull-right\">"+
 								"<li class=\"blog-nav-item logout active\">Se déconnecter</li>"+

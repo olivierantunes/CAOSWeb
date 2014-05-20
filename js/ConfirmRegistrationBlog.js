@@ -25,7 +25,7 @@ confirmRegistration.cb_rights = function () {
 								"</li>"+
 							"</ul>"+
 							"<ul class=\"nav nav-pills pull-right\">"+
-								"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
+								"<li class=\"blog-nav-item logout active\">Se déconnecter</li>"+
 							"</ul>"+
 						"</div>";
 			} else if (rights == 1) {
@@ -43,7 +43,7 @@ confirmRegistration.cb_rights = function () {
 								"</li>"+
 							"</ul>"+
 							"<ul class=\"nav nav-pills pull-right\">"+
-								"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
+								"<li class=\"blog-nav-item logout active\">Se déconnecter</li>"+
 							"</ul>"+
 						"</div>";
 			}
@@ -55,7 +55,7 @@ confirmRegistration.cb_rights = function () {
 								"<li class=\"blog-nav-item active\"><a href=\"ValiderArticle.html\">Valider</a></li>"+
 							"</ul>"+
 							"<ul class=\"nav nav-pills pull-right\">"+
-								"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
+								"<li class=\"blog-nav-item logout active\">Se déconnecter</li>"+
 							"</ul>"+
 						"</div>";
 			}
@@ -66,7 +66,7 @@ confirmRegistration.cb_rights = function () {
 								"<li class=\"blog-nav-item active\"><a href=\"RedigerArticle.html\">Publier</a></li>"+
 							"</ul>"+
 							"<ul class=\"nav nav-pills pull-right\">"+
-								"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
+								"<li class=\"blog-nav-item logout active\">Se déconnecter</li>"+
 							"</ul>"+
 						"</div>";
 			}
@@ -76,7 +76,7 @@ confirmRegistration.cb_rights = function () {
 								"<li class=\"blog-nav-item active\"><a href=\"Accueil.html\">Accueil</a></li>"+
 							"</ul>"+
 							"<ul class=\"nav nav-pills pull-right\">"+
-								"<li class=\"blog-nav-item  logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
+								"<li class=\"blog-nav-item  logout active\">Se déconnecter</li>"+
 							"</ul>"+
 						"</div>";
 			}
@@ -94,6 +94,23 @@ confirmRegistration.cb_rights = function () {
 		}
 };
 
+confirmRegistration.log_out = function() {
+    var data ={"action": "logout"};
+	tools.post(data, confirmRegistration.cb_logo);
+};
+
+confirmRegistration.cb_logo = function () {
+	if (this.readyState == 4 && this.status == 200) {
+		var r = JSON.parse(this.responseText);
+		if (r.resp == "ok") {
+			alert("Vous êtes bien déconnecté");
+			location.assign("Accueil.html");
+		} else {
+			alert("Vous n'avez pas pu être déconnecté. Veulliez ré-essayer ultérieurement s'il-vous-plait.");
+		}
+	}
+};
+
 confirmRegistration.on_ready = function () {
 	document.addEventListener("click", confirmRegistration.on_click);
 	confirmRegistration.ask_right();
@@ -103,6 +120,9 @@ confirmRegistration.on_click = function (ev){
 	var src = ev.target;
 	if (src.has_class("go_site")){
 		confirmRegistration.gosite();
+	}
+	else if (src.has_class("logout")){
+	confirmRegistration.log_out();
 	}
 };
 

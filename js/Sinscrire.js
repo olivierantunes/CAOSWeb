@@ -25,7 +25,7 @@ register.cb_rights = function () {
 								"<li><a href=\"gererMembres.html\">Gérer les utilisateurs</a></li>"+
 							"</ul>"+
 							"<ul class=\"nav nav-pills pull-right\">"+
-								"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
+								"<li class=\"blog-nav-item logout active\">Se déconnecter</li>"+
 							"</ul>"+
 						"</div>";
 			} else if (rights == 1) {
@@ -37,7 +37,7 @@ register.cb_rights = function () {
 								"<li><a href=\"gererMembres.html\">Gérer les utilisateurs</a></li>"+
 							"</ul>"+
 							"<ul class=\"nav nav-pills pull-right\">"+
-								"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
+								"<li class=\"blog-nav-item logout active\">Se déconnecter</li>"+
 							"</ul>"+
 						"</div>";
 			}
@@ -49,7 +49,7 @@ register.cb_rights = function () {
 								"<li class=\"blog-nav-item active\"><a href=\"ValiderArticle.html\">Valider</a></li>"+
 							"</ul>"+
 							"<ul class=\"nav nav-pills pull-right\">"+
-								"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
+								"<li class=\"blog-nav-item logout active\">Se déconnecter</li>"+
 							"</ul>"+
 						"</div>";
 			}
@@ -60,7 +60,7 @@ register.cb_rights = function () {
 								"<li class=\"blog-nav-item active\"><a href=\"RedigerArticle.html\">Publier</a></li>"+
 							"</ul>"+
 							"<ul class=\"nav nav-pills pull-right\">"+
-								"<li class=\"blog-nav-item logout active\"><a href=\"Accueil.html\">Se déconnecter</a></li>"+
+								"<li class=\"blog-nav-item logout active\">Se déconnecter</li>"+
 							"</ul>"+
 						"</div>";
 			}
@@ -88,7 +88,7 @@ register.cb_rights = function () {
 		}
 };
 
-register.logout = function() {
+register.log_out = function() {
     var data ={"action": "logout"};
 	tools.post(data, register.cb_logo);
 };
@@ -112,7 +112,7 @@ register.on_click = function (ev){
 		register.submit();
 	}
 	if (src.has_class("logout")){
-	register.logout();
+	register.log_out();
 	}
 };
 

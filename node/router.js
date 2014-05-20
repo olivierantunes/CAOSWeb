@@ -88,12 +88,12 @@ go_post:
     function (b) {
 		var _this = this;		
         b = JSON.parse(b);
-		console.log("b.action: " + b.action);
+		console.log("\n\n\n\n\nb.action: " + b.action);
 		this.buffer = b;
 		console.log(util.inspect(b));
 		_this.resp.writeHead(200, {"Content-Type": "application/json"});
 		if (b.action == "login") {
-			util.log("----------------------------------------------------------login");
+			util.log("----------------------------------------------------------mail: " + b.mail);
 			db.check_log(b.mail, b.password, _this, "cb_check_log");
 		} else if (b.action == "get-user-site") {
 			util.log("get-user-site");
@@ -106,8 +106,8 @@ go_post:
 			util.log("register-caosweb");
 			db.check_subscribe_log (b.login, b.email, _this, "cb_check_subscribe_log_caosweb");
 		}else if (b.action == "submit-article") {
-			util.log("submit article");
-			db.submit_article (b.author, _this, "cb_submit_article");
+			util.log("SUBMIT_ARTICLE");
+			db.get_user (_this.req.headers.cookie, _this, "cb_get_user")
 		} else if ("confirm-registration-caosweb" == b.action) {
 			util.log("confirm-registration-caosweb");
 			db.get_user_reg(b.id, _this, "cb_confirm_registration_caosweb");
@@ -134,7 +134,8 @@ go_post:
 			util.log("get-members");
 			db.users_list (_this, "cb_users_list");
 		} else if (b.action == "logout") {
-			util.log("logout");
+			util.log("LOGOUTLOGOUTLOGOUTLOGOUTLOGOUTLOGOUTLOGOUTLOGOUTLOGOUTLOGOUTLOGOUTLOGOUTLOGOUTLOGOUTLOGOUTLOGOUTLOGOUTLOGOUTLOGOUT");
+			console.log("_this.req.headers.cookie = " + _this.req.headers.cookie);
 			db.log_out (_this.req.headers.cookie, _this, "cb_log_out");
 		} else {
 			_this.resp.write(JSON.stringify({resp: "Service not found"}));
@@ -156,11 +157,11 @@ cb_check_log:
 	
 cb_assign_cookie:
 	function (c) {
-		console.log("cookie = " + c);
+		console.log("ASSIGN_COOKIE\ncookie = " + c);
 		//this.resp.writeHead(200,"ok",{"Context-Type": 'application/json', "Set-Cookie": c});
 		this.resp.writeHead(200,{"Context-Type": 'application/json', "Set-Cookie": c});
 		util.log("log in complete | cookie assigned");
-		console.log("this.req.headers.cookie = " + this.req.headers.cookie);
+		console.log("this.req.headers.cookie = " + c);
 		this.resp.write(JSON.stringify({resp: "ok"}));
 		this.resp.end();
 	},
@@ -234,10 +235,19 @@ cb_confirm_registration_blog:
 		}
 	},
 	
+cb_get_user:
+	function (u) {
+		if (u) {
+			db.submit_article (u.user, this, "cb_submit_article");//last change _this -> this.buffer
+		} else {
+			this.resp.write(JSON.stringify({resp: "ko"}));
+		}
+	},
+	
 cb_submit_article:
 	function (id) {
 		if (id) {
-			gestionArticles.push_article_db(id, this.buffer, "cb_push_article_db");
+			gestionArticles.push_article_db(id, this, "cb_push_article_db");
 		} else {
 			this.resp.write(JSON.stringify({resp: "ko"}));
 			this.resp.end();
@@ -245,9 +255,9 @@ cb_submit_article:
 	},
 	
 cb_push_article_db:
-	function (dirPath, id, b) {
+	function (dirPath, id) {
 		if (id) {
-			gestionArticles.push_content(dirPath, id, b, "cb_push_content");
+			gestionArticles.push_content(dirPath, id, this.buffer, this, "cb_push_content");
 		} else {
 			this.resp.write(JSON.stringify({resp: "ko"}));
 			this.resp.end();
@@ -260,8 +270,8 @@ cb_push_content:
 			this.resp.write(JSON.stringify({resp: "ok"}));
 		} else {
 			this.resp.write(JSON.stringify({resp: "ko"}));
-			this.resp.end();
 		}
+		this.resp.end();
 	},
 
 cb_delete_article:
@@ -310,7 +320,7 @@ cb_get_rights:
 		util.log("RIGHTS = " + r + "||||||||||");
 		if (r) {
 			console.log("riIIIIIIIIIIIIIIIIIIIIIIIIIIIIights = " + r);
-			this.resp.write(JSON.stringify({"role": r}));
+			this.resp.write(JSON.stringify({"role": r.right}));
 		} else {
 			this.resp.write(JSON.stringify({"role": ""}));
 		}
@@ -319,7 +329,7 @@ cb_get_rights:
 	
 cb_log_out:
 	function (ok) {
-		if (ok) {
+		if (!ok) {
 			this.resp.write(JSON.stringify({resp: "ok"}));
 		} else {
 			this.resp.write(JSON.stringify({resp: "ko"}));

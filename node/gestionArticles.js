@@ -12,7 +12,6 @@ var dirName = './article/';
  */
 exports.push_article_db = function (articleID, b, funcName) {
 	var dirPath = dirName + articleID;
-	
 	fs.exists(dirPath, function(exists) {
 		if (!exists) {
 			fs.mkdir(dirPath, function() {
@@ -23,7 +22,7 @@ exports.push_article_db = function (articleID, b, funcName) {
 					}
 				});
 			});
-			b[funcName](dirPath, articleID, b);
+			b[funcName](dirPath, articleID);
 		} else {
 			this.resp.write(JSON.stringify({resp: "folder already existing"}));//if the folder already exists, then do not stop the process
 			this.resp.end();
@@ -38,7 +37,12 @@ exports.push_article_db = function (articleID, b, funcName) {
  * @param b (JSON object) : article data
  * @return (String) : "ok" or "ko"
  */
-exports.push_content = function (dirPath, articleID, obj, funcName) {//added funcName
+exports.push_content = function (dirPath, articleID, b, obj, funcName) {//added funcName 
+	var articlePath = dirPath + "/" + articleID;
+	var data = "{ title: " + b.title
+				+ ", content: " + b.content
+				+ "}";
+	console.log("OOBBBBJJJJJJJJJJJ: " + util.inspect(b));//remplacement de obj par b, Olivier
 	fs.exists(articlePath, function(exists) {
 		if (!exists) {
 			util.log ("file does not exist -> creation");
@@ -47,7 +51,7 @@ exports.push_content = function (dirPath, articleID, obj, funcName) {//added fun
 					this.resp.write(JSON.stringify({resp: "error uploading file"}));
 					this.resp.end();
 				} else {
-					obj[funcName](1);
+					obj[funcName](1); // remplacement de obj par b by Olivier
 				}
 			});
 		} else {

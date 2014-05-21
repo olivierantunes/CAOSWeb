@@ -33,12 +33,14 @@ exports.mail_router = function (targetMail, senderMail, userLogin, userPw, userI
 			from: senderMail,
 			to: targetMail,
 			subject: "Validation d'inscription à " + domain,
-			html: "<b>Bonjour, Bienvenue sur " + domain + " !</b><br>Nous vous remercions de votre inscription.<br>"
+			html: "<b>Bonjour, Bienvenue sur " + domain + " !</b><br><br>Nous vous remercions de votre inscription.<br>"
+					+ "<br>Gardez précieusement les informations suivantes, il s'agit de vos identifiants qui vous permettent de vous connecter sur le site !"
 					+ "<br>Votre login est : " + userLogin
 					+ "<br>Votre mot de passe est : " + userPw
-					+ "<br>Cliquez sur " + '<a href=\"'+ textLink.toString() + '\">ce</a>' + " lien pour terminer votre inscription à " + domain + "."
-					+ "<br><br>Bon surf."
-					+ "<br><br><br>lien : " + textLink
+					+ "<br><br>Vous pouvez dès à présent vous rendre sur le blog, et participer à son évolution."
+					//+ "<br>Cliquez sur " + '<a href=\"'+ textLink.toString() + '\">ce</a>' + " lien pour terminer votre inscription à " + domain + "."
+					+ "<br><br><br>L'équipe d'administration."
+					//+ "<br><br><br>lien : " + textLink
 		};
 
 	smtpTransport.sendMail(mailRegistration, function (error, response) {

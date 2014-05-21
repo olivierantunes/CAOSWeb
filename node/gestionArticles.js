@@ -92,12 +92,13 @@ exports.load_articles = function (arrayArticleIdAndDate, obj, funcName) {
 					console.log("b.title: " + b.title);
 					console.log("\n\n");
 					
+					/*
 					var a = {title: b.title,
 							content: b.content,
 							date: arrayArticleIdAndDate[i].date,
 							author: arrayArticleIdAndDate[i].author, articleId: arrayArticleIdAndDate[i].articleId
 							};
-								
+					*/			
 								
 					returnedArticles.push(a);
 				}

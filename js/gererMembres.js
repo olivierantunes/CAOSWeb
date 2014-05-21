@@ -115,20 +115,22 @@ site.rights_match = {
 	4:"Utilisateur"
 };
 
-site.cb_membres = function () {
+site.cb_members = function () {
 	if (this.readyState == 4 && this.status == 200) {
 		var membre = JSON.parse(this.responseText);	
+		//var membre = new Array();
+		//membre= JSON.parse(this.responseText);
 		var elt = document.getElementsByClassName("dynamic-membres")[0];
-		for (a in r) {
+		for (a in membre) {
 			var tac = "";
-			if (r[a].rights) {
+			if (membre[a].right) {
 				tac = "<button class=\"btn delete-member btn-danger\"><span class=\"glyphicon glyphicon-trash\"></span></button>";
 			}
-			r[a].rights = site.rights_match[r[a].rights];
+			membre[a].right = site.rights_match[membre[a].right];
 			elt.innerHTML += 	"<tr>"+
-						"<td>"+r[a].login+"</td>"+
-						"<td>"+r[a].mail+"</td>"+
-						"<td>"+r[a].rights+"</td>"+
+						"<td>"+membre[a].user+"</td>"+
+						"<td>"+membre[a].email+"</td>"+
+						"<td>"+membre[a].right+"</td>"+
 						"<td><select class=\"input-xlarge new_right\">"+
 						"<option> </option><option>1</option><option>2</option><option>3</option><option>4</option></select>"+
 						"<button class=\"btn validate-new-right btn-success\"><span class=\"glyphicon glyphicon-ok\"></span></button></td>"+
@@ -139,10 +141,11 @@ site.cb_membres = function () {
 };
 
 site.modify_r= function () {
-	var new_r = document.getElementsByClassName(new_right)[0];
+	//var new_r = document.getElementsByClassName("new_right")[0];
+	var new_r = 2;
 	var data = {action: "modify-rights", right: new_r.value};
 	tools.post(data, site.cb_val_new_r);
-}
+};
 
 site.cb_val_new_r = function () {
 	if (this.readyState == 4 && this.status == 200) {
@@ -151,7 +154,7 @@ site.cb_val_new_r = function () {
 			alert("droits du membres bien modifié");
 			location.reload(); 
 		} else {
-			alert("Les droits de ce membre n'a pas pu être modifié. Veulliez ré-essayer ultérieurement s'il-vous-plait.");
+			alert("Les droits de ce membre n'ont pas pu être modifié. Veulliez ré-essayer ultérieurement s'il-vous-plait.");
 		}
 	}
 };

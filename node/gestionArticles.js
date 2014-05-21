@@ -37,12 +37,12 @@ exports.push_article_db = function (articleID, b, funcName) {
  * @param b (JSON object) : article data
  * @return (String) : "ok" or "ko"
  */
-exports.push_content = function (dirPath, articleID, b, obj, funcName) {//added funcName 
+exports.push_content = function (dirPath, articleID, b, obj, funcName) {
 	var articlePath = dirPath + "/" + articleID;
-	var data = "{ title: " + b.title
-				+ ", content: " + b.content
+	var data = "{ title: \"" + b.title
+				+ "\", content: \"" + b.content
 				+ "}";
-	console.log("OOBBBBJJJJJJJJJJJ: " + util.inspect(b));//remplacement de obj par b, Olivier
+	console.log("OOBBBBJJJJJJJJJJJ: " + util.inspect(b));
 	fs.exists(articlePath, function(exists) {
 		if (!exists) {
 			util.log ("file does not exist -> creation");
@@ -51,7 +51,7 @@ exports.push_content = function (dirPath, articleID, b, obj, funcName) {//added 
 					this.resp.write(JSON.stringify({resp: "error uploading file"}));
 					this.resp.end();
 				} else {
-					obj[funcName](1); // remplacement de obj par b by Olivier
+					obj[funcName](1);
 				}
 			});
 		} else {
@@ -66,26 +66,40 @@ exports.push_content = function (dirPath, articleID, b, obj, funcName) {//added 
  * @param dirPath (Array): array of article ids
  * @return (array of JSON objects): articles = [{title: 'title1', author: 'author1', date: 'date1', content: 'content1', idArticle: 'idArticle1'}, {title: 'title2', author: 'author2', date: 'date2', content: 'content2'}, ...]
  */
-exports.load_articles = function (arrayArticleIdAndDate, obj, funcName) {//deleted the 'exports.'
-	var returnedArticles = new Array ();
+exports.load_articles = function (arrayArticleIdAndDate, obj, funcName) {
+	var returnedArticles = new Array (),
+		content,
+		b;
+	
+	console.log("SIIIIIIIIIIIIIZE\narrayArticleIdAndDate.length: " + arrayArticleIdAndDate.length);
 	
 	if (!arrayArticleIdAndDate) {
-		this.resp.write(JSON.stringify({resp: "articles array transmission failed"}));
+		obj[funcName](0);
 	} else {
 		for (var i = 0 ; i < arrayArticleIdAndDate.length ; i ++) {
 			var articlePath = dirName + arrayArticleIdAndDate[i].articleID + '/' + arrayArticleIdAndDate[i].articleID;
+			console.log("tab recu: " + util.inspect(arrayArticleIdAndDate[i]));
 			fs.readFile(articlePath, function (err, data) {
 				if (err) {
-					this.resp.write(JSON.stringify({resp: "failed loading article"}));
-					this.resp.end();
+					obj[funcName](0);
 				} else {
-					var article = '{title: ' + data.title
-								+ ', author: ' + data.author
-								+ ', content: ' + data.content
-								+ ', date: ' + arrayArticleIdAndDate[i].date
-								+ ', articleId: ' + arrayArticleIdAndDate[i].articleId
-								+ '}';
-					returnedArticles.push(article);
+					content = data;
+					console.log("content: " + content);
+					b = JSON.stringify(content);
+					
+					//console.log("data.title: " + data.title);
+					//console.log("content.title: " + content.title);
+					console.log("b.title: " + b.title);
+					console.log("\n\n");
+					
+					var a = {title: b.title,
+							content: b.content,
+							date: arrayArticleIdAndDate[i].date,
+							author: arrayArticleIdAndDate[i].author, articleId: arrayArticleIdAndDate[i].articleId
+							};
+								
+								
+					returnedArticles.push(a);
 				}
 			});
 		};

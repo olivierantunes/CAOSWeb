@@ -21,18 +21,16 @@ var mailAddressee = {
  * @return null
  */
 exports.mail_router = function (targetMail, senderMail, userLogin, userPw, userId, nameWebsite) {
-	//args: + service?, auth: password? //IL FAUT GENERER UNE ADRESSE MAIL POUR LE BLOG!!!
 	var domain = url.parse(nameWebsite).hostname,
-		textLink = nameWebsite;// + ".html/?id=" + userId,
+		textLink = nameWebsite;
 		smtpTransport = nodemailer.createTransport ("SMTP", {
-			service: "Gmail", //default?
 			auth: {
 				user: senderMail,
 				pass: "CAOsWebEsme2014"
 			}
 		}),
 		mailRegistration = {
-			from: senderMail,//smtpTransport.auth[0],
+			from: senderMail,
 			to: targetMail,
 			subject: "Validation d'inscription à " + domain,
 			html: "<b>Bonjour, Bienvenue sur " + domain + " !</b><br>Nous vous remercions de votre inscription.<br>"

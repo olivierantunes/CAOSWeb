@@ -176,31 +176,36 @@ exports.check_subscribe_log = function (log, email, obj, func_name) {
 };
 
 /**
- * \brief 6 - submit_article function adds an article in the DB
- * it's used to submit an article which has to be checked before publication
- * In default situation, the article has a status equal to 0, it's mean ths article is Waiting a validation.
- * The function call "create_cookie" function to create an articleID. Notice that create_cookie and create ID runs exactly in same way.
- * The current date is automaticly insert in the row  
+ * \brief 6 - this function inserts an article 
  * Test OK le 06/05 
- * @param (string) author
- * @param (object) this
- * @param (string) func_name
- * @callback (boolean) calls the callback with a an articleID
+ * @param author (String): article author
+ * @param this (object)
+ * @param func_name (String): callback function name
+ * @callback (boolean) with articleId for success, 0 for failure
  */ 
 exports.submit_article = function (author, obj, func_name) {
 		util.log("SUBMIT_ARTICLE - Opening");
-		var articleID = create_cookie(author);
-		var stmt = "INSERT INTO test (articleID, articleStatus, author, date) VALUES (\""+articleID+"\",0,\""+author+"\")";
+		var articleID = create_cookie(author),
+			td = new Date(),
+			d = td.getDate(),
+			m = td.getMonth() + 1,
+			stmt = "INSERT INTO test (articleID, articleStatus, author, date) VALUES (\""
+					+ articleID
+					+ "\",0,\""
+					+ author 
+					+ "\",\""+td+"\")";
+		
+		td = m + "/" + d;
+		
 		db.each(stmt, function (e,r) {
-			if (e) {
-				util.log("ERROR - SQL - SUBMIT_ARTICLE function: " + e);
-			} else {
-				console.log("EEEHHHHHZIOECHVJEROIHJVOIERHV: " + util.inspect(r));
-			}
+				if (e) {
+					util.log("ERROR - SQL - SUBMIT_ARTICLE function: " + e);
+					obj[func_name](0);
+				}
 			}, function (err,n) {
-				console.log ("EEEHHHHHZIOECHVJEROIHJVOIERHV\nerr: " + err + "\nnb lines = " + n + "\n");
+				console.log("pushed to db with success");
 				obj[func_name](articleID);
-		});
+			});
 	util.log("SUBMIT_ARTICLE - Closing");
 };
 
@@ -441,29 +446,39 @@ exports.modif_pw = function(user, pw, obj, func_name) {
 };
 
 /**
- * \brief 16 - order_article function return the 5 last articles
- * you have to input the status (articleStatus) of the article (1 or 0)
+ * \brief 16 - This function looks for the last five articles pushed into the db (with date)
  * Test OK le 10/05
- * @param (INT) articleStatus
- * @param (object) this
- * @param (string) func_name
- * @callback calls the callback with an array wich includes the 5 last articleID published and date of each them
+ * @param articleStatus (Int): 1 for validated articles, 0 (default status) else
+ * @param this(object) 
+ * @param func_name (String):
+ * @callback 
  */ 
 
 exports.order_article = function(articleStatus, obj, func_name) {
 	util.log("ORDER_ARTICLE - Opening");
-	var stmt = "SELECT articleID FROM test WHERE articleStatus=\""+articleStatus+"\"ORDER BY date DSC LIMIT 5" ;
-	var art = new Array();
-		db.each(stmt, function (e,r) {
-			if(e) {
+	
+	var stmt = "select articleID,author,date,articleStatus from test where articleStatus = " + articleStatus,//+ "\"ORDER BY date DSC LIMIT 5",
+		a = new Array();
+		
+	console.log("\n\narticleStatus: " + articleStatus);
+	console.log("stmt: " + stmt + "\n");
+	
+	db.each(stmt, function (e,r) {
+			if (e) {
 				util.log("ERROR - SQL - ORDER_ARTICLE function: " + e);
+				obj[func_name](0);
 			}
-				art.push({articleID : r.articleID, date : r.date });
-			}, function () {
-			console.log("################################# "+util.inspect(art));
-				obj[func_name](art);
-			});
-		util.log("ORDER_ARTICLE - Closing");
+			
+			var j = {articleId: r.articleId,
+					author: r.author,
+					date: r.date
+					};
+					
+			a.push({articleID: r.articleID, date: r.date, author: r.author});
+		}, function () {
+			obj[func_name](a);
+		});
+	util.log("ORDER_ARTICLE - Closing");
 };
 
 /**
@@ -476,17 +491,20 @@ exports.order_article = function(articleStatus, obj, func_name) {
  */
 exports.users_list = function(obj, func_name) {
 	util.log("USERS_LIST - Opening");
-	var stmt = "SELECT * FROM test ORDER BY date DSC" ;
+	var stmt = "SELECT * FROM test ORDER BY date" ;
 	var art = new Array();
-		db.each(stmt, function (e,r) {
-			if(e) {
-				util.log("ERROR - SQL - USERS_LIST function: " + e);
-			}
-				art.push({user : r.user, email : r.email, right : r.right });
-			}, function () {
-				obj[func_name](art);
-			});
-		util.log("USERS_LIST - Closing");
+	db.each(stmt, function (e,r) {
+		if(e) {
+			util.log("ERROR - SQL - USERS_LIST function: " + e);
+		} else {
+			var u = {user: r.user,
+					email: r.email,
+					right: r.right};
+			art.push(u);
+		}}, function () {
+			obj[func_name](art);
+		});
+	util.log("USERS_LIST - Closing");
 };
 
 /**
@@ -506,12 +524,10 @@ exports.get_user = function (cookie, obj, func_name) {
 			util.log("ERROR - SQL - GET_USER function: " + e);
 			} else {
 				if (r) {
-					console.log("IIICCCCCCCCIIIIIIIIIIIIIIIIIII: " + util.inspect(r));
 					rep = r;
 				}
 			}
-		}, function (err,n) {
-			console.log ("err: " + err + "\nnb lines = " + n + "\n");
+		}, function () {
 			obj[func_name](rep);
 		});
 	util.log("GET_USER - Closing");
@@ -554,20 +570,15 @@ exports.get_right = function (cookie, obj, func_name) {
 		util.log("GET_RIGHT - Opening");
 		var stmt = "SELECT right FROM test WHERE cookie =\"" + cookie +"\"";
 		var rep;
-		console.log("POUETPOUETPOUETPOUETPOUETPOUETPOUETPOUETPOUETPOUETPOUETPOUETPOUETPOUETPOUET\n" + stmt + "\n");
 		db.each(stmt, function (e,r) {
-			console.log("RRRRRRRRRRRRRRRRRRRRRRRR: " + r);
 			if(e) {
 				util.log("ERROR - SQL - GET_RIGHT function: " + e);
 			} else {
-				util.log("before 'util.inspect(r);'-----------------------");
-				console.log(util.inspect(r));
-				util.log("after 'util.inspect(r);'-----------------------");
 				rep = r;
 				util.log("rep.right = " + rep.right + " -----------------------");
 			}
 		}, function (err,n) {
-			console.log ("err: " + err + "\nnb lines = " + n + "\nREP: " + rep);
+			//console.log ("err: " + err + "\nnb lines = " + n + "\nREP: " + rep);
 			obj[func_name](rep);
 		});
 		util.log("GET_RIGHT - Closing");
@@ -621,7 +632,6 @@ exports.register = function (log, pw, email, right, site, obj, func_name) {
 				}
 			}
 		}, function(err, n) {
-			console.log ("REGISTER-----------------\nerr: " + err + "\nnb lines = " + n + "\n");
 			obj[func_name](cookie);
 		});
 	util.log("REGISTER - Closing");

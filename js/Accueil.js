@@ -124,11 +124,11 @@ site.cb_art = function () {
 	if (this.readyState == 4 && this.status == 200) {
 		var art = JSON.parse(this.responseText);	
 		var elt = document.getElementsByClassName("dynamic-art")[0];
-		for (a in r) {
-		elt.innerHTML += "<h3 class=\"blog-post-title\" id=\"jan\">" + r[a].title + " " + a + "</h3>" +
-						"<p class=\"blog-post-meta\">" + r[a].date + " par <a href=\"#\">" + r[a].author + "</a><button id=\"delete\" name=\"button1id\" class=\"btn btn-danger pull-right\"><span class=\"glyphicon glyphicon-trash\"></span></button></p>" +
+		for (a in art) {
+		elt.innerHTML += "<h3 class=\"blog-post-title\" id=\"jan\">" + art[a].title + " " + a + "</h3>" +
+						"<p class=\"blog-post-meta\">" + art[a].date + " par <a href=\"#\">" + art[a].author + "</a><button id=\"delete\" name=\"button1id\" class=\"btn btn-danger pull-right\"><span class=\"glyphicon glyphicon-trash\"></span></button></p>" +
 						"<blockquote>" +
-							"<p>" + r[a].content + "</p>" +
+							"<p>" + art[a].content + "</p>" +
 						"</blockquote>";
 		}
 	}

@@ -74,7 +74,7 @@ post_method:
             buff += c;
         });
         this.req.on("end", function () {
-			util.log("post_method -> routeur");
+			util.log("\n\n\n\n\npost_method -> routeur");
             _this.go_post(buff);
         });
     },
@@ -88,7 +88,7 @@ go_post:
     function (b) {
 		var _this = this;		
         b = JSON.parse(b);
-		console.log("\n\n\n\n\nb.action: " + b.action);
+		console.log("\nb.action: " + b.action);
 		this.buffer = b;
 		console.log(util.inspect(b));
 		_this.resp.writeHead(200, {"Content-Type": "application/json"});
@@ -169,7 +169,6 @@ cb_assign_cookie:
 cb_check_subscribe_log_blog:
 	function (ok) {
 		if (ok) {
-			console.log("PUTAIN");
 			this.resp.write(JSON.stringify({resp: "ko"}));
 			this.resp.end();
 		} else {
@@ -218,11 +217,11 @@ cb_confirm_registration_caosweb:
 cb_get_site:
 	function (site) {
 		if (site) {
-			this.resp.write(JSON.stringify({"nameSite": "ko"}));
+			this.resp.write(JSON.stringify({"nameSite": site}));
 		} else {
 			this.resp.write(JSON.stringify({resp: "ko"}));
-			this.resp.end();
 		}
+		this.resp.end();
 	},
 	
 cb_confirm_registration_blog:
@@ -238,9 +237,10 @@ cb_confirm_registration_blog:
 cb_get_user:
 	function (u) {
 		if (u) {
-			db.submit_article (u.user, this, "cb_submit_article");//last change _this -> this.buffer
+			db.submit_article (u.user, this, "cb_submit_article");
 		} else {
 			this.resp.write(JSON.stringify({resp: "ko"}));
+			this.resp.end();
 		}
 	},
 	
@@ -290,14 +290,14 @@ cb_update_article_status:
 			this.resp.write(JSON.stringify({resp: "ok"}));
 		} else {
 			this.resp.write(JSON.stringify({resp: "ko"}));
-			this.resp.end();
 		}
+		this.resp.end();
 	},
 	
 cb_order_article:
 	function (a) {
-		if (a) {
-			console.log("a.length = " + a.length + "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHJENAIMARRE!!!");
+		if (a || a instanceof Array) {
+			console.log("UTIL.INSPECT(a): " + util.inspect(a));
 			gestionArticles.load_articles (a, this, "cb_send_articles");
 		} else {
 			this.resp.write(JSON.stringify({resp: "ko"}));
@@ -307,19 +307,18 @@ cb_order_article:
 	
 cb_send_articles:
 	function (a) {
-		if (a) {
+		if (a || typeof a == "Array" && a.length != 0) {
+			console.log("AAAAAAAAAAAAA: " + a);
 			this.resp.write(JSON.stringify({"articles": a}));
 		} else {
 			this.resp.write(JSON.stringify({resp: "ko"}));
-			this.resp.end();
 		}
+		this.resp.end();
 	},
 	
 cb_get_rights:
 	function (r) {
-		util.log("RIGHTS = " + r + "||||||||||");
 		if (r) {
-			console.log("riIIIIIIIIIIIIIIIIIIIIIIIIIIIIights = " + r);
 			this.resp.write(JSON.stringify({"role": r.right}));
 		} else {
 			this.resp.write(JSON.stringify({"role": ""}));
@@ -333,18 +332,19 @@ cb_log_out:
 			this.resp.write(JSON.stringify({resp: "ok"}));
 		} else {
 			this.resp.write(JSON.stringify({resp: "ko"}));
-			this.resp.end();
 		}
+		this.resp.end();
 	},
 	
-cb_ursers_list:
+cb_users_list:
 	function (a) {
-		if (a) {
-			this.resp.write(JSON.stringify({resp: a}));
+		if (a && 0 != a.length) {
+			//this.resp.write(JSON.stringify({resp: a}));
+			this.resp.write(JSON.stringify(a));
 		} else {
-			_this.resp.write(JSON.stringify({resp: "ko"}));
-			this.resp.end();
+			this.resp.write(JSON.stringify({resp: "ko"}));
 		}
+		this.resp.end();
 	},
 	
 get_method:
